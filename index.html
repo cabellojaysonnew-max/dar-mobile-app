@@ -3,196 +3,303 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAR QuickSubmit</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
+    <title>DAR Secure Relay</title>
     <style>
-        /* MINIMALIST DESIGN */
-        body { font-family: -apple-system, sans-serif; background: #f8f9fa; padding: 20px; color: #2d3748; }
-        .container { max-width: 400px; margin: 0 auto; }
+        /* --- CLEAN MOBILE STYLING --- */
+        body { background-color: #f3f4f6; font-family: -apple-system, sans-serif; padding: 20px; color: #1f2937; }
+        .container { max-width: 400px; margin: 0 auto; padding-bottom: 80px; }
         
-        /* CARD STYLE */
-        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        h1 { color: #003811; font-size: 20px; text-align: center; margin-bottom: 5px; }
-        p.sub { text-align: center; color: #718096; font-size: 13px; margin-bottom: 25px; }
+        /* CARDS */
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 15px; }
+        h2 { color: #003811; text-align: center; margin: 0 0 5px 0; font-size: 20px; }
+        .sub { text-align: center; color: #6b7280; font-size: 12px; margin-bottom: 20px; }
 
         /* INPUTS */
-        label { font-size: 11px; font-weight: bold; color: #718096; display: block; margin-bottom: 4px; }
-        input, select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #e2e8f0; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
-        input:focus { border-color: #003811; outline: none; }
+        label { font-size: 11px; font-weight: bold; color: #4b5563; display: block; margin-bottom: 5px; text-transform: uppercase; }
+        input, select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #d1d5db; border-radius: 8px; box-sizing: border-box; font-size: 16px; background: #fff; }
+        input:focus { border-color: #003811; outline: 2px solid #003811; }
 
         /* BUTTONS */
-        button { width: 100%; padding: 14px; background: #003811; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 15px; }
-        button:disabled { background: #cbd5e0; cursor: not-allowed; }
-        button.secondary { background: white; border: 1px solid #cbd5e0; color: #4a5568; margin-top: 10px; }
-
-        /* ERROR BOX */
-        #error-box { background: #fff5f5; border: 1px solid #feb2b2; color: #c53030; padding: 15px; border-radius: 8px; font-size: 13px; margin-top: 20px; display: none; }
-        .fix-link { color: #c53030; text-decoration: underline; font-weight: bold; }
+        button { width: 100%; padding: 14px; background: #003811; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; }
+        button:disabled { background: #9ca3af; cursor: wait; }
+        .btn-outline { background: white; border: 1px solid #d1d5db; color: #374151; margin-top: 10px; }
 
         /* UTILS */
-        .hidden { display: none; }
-        .success { color: #003811; text-align: center; font-weight: bold; margin-bottom: 15px; }
+        .hidden { display: none !important; }
+        .error-msg { color: #dc2626; font-size: 13px; text-align: center; margin-top: 10px; font-weight: bold; }
+        .success-msg { color: #059669; font-size: 13px; text-align: center; margin-top: 10px; font-weight: bold; }
+
+        /* NAV BAR */
+        .nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid #e5e7eb; display: flex; padding-bottom: env(safe-area-inset-bottom); }
+        .nav-item { flex: 1; text-align: center; padding: 12px 0; font-size: 10px; font-weight: bold; color: #9ca3af; }
+        .nav-item.active { color: #003811; background: #f9fafb; }
+        .icon { font-size: 18px; display: block; margin-bottom: 2px; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div id="view-login" class="card">
-            <h1>DAR TRAVEL</h1>
-            <p class="sub">Quick Access Portal</p>
+    <div id="view-login" class="container" style="margin-top: 50px;">
+        <div class="card">
+            <h2>DAR TRAVEL</h2>
+            <p class="sub">Secure Relay Connection</p>
+            <hr style="border:0; border-top:1px solid #eee; margin-bottom:20px;">
 
             <label>Employee ID</label>
-            <input type="text" id="uid" placeholder="e.g. 503250005" pattern="\d*">
+            <input type="text" id="uid" placeholder="Enter ID" inputmode="numeric">
+            
+            <label>Password</label>
+            <input type="password" id="pwd" placeholder="••••••">
 
-            <button onclick="checkID()" id="btn-check">ENTER SYSTEM</button>
+            <button onclick="doLogin()" id="btn-login">CONNECT</button>
+            <div id="login-msg" class="error-msg"></div>
+        </div>
+        <p style="text-align:center; font-size:10px; color:#999;">v5.0 • No-Library Proxy Mode</p>
+    </div>
 
-            <div id="error-box">
-                <strong>Connection Failed.</strong><br>
-                Your database is blocking this website.<br><br>
-                1. Go to Supabase Dashboard<br>
-                2. Click <strong>Authentication</strong> (Lock Icon) on left sidebar<br>
-                3. Click <strong>URL Configuration</strong><br>
-                4. Add this link to "Redirect URLs":<br>
-                <code style="background:#eee; padding:2px;">https://cabellojaysonnew-max.github.io</code>
+    <div id="view-app" class="container hidden">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+            <div>
+                <strong style="color:#003811; font-size:16px;" id="u-name">User</strong>
+                <div style="font-size:12px; color:#666;" id="u-div">Division</div>
+            </div>
+            <button onclick="location.reload()" style="width:auto; padding:6px 12px; font-size:11px; background:#fff; color:#333; border:1px solid #ccc;">Exit</button>
+        </div>
+
+        <div id="tab-post">
+            <div class="card">
+                <label>Transport</label>
+                <select id="p-trans">
+                    <option>LAND</option>
+                    <option>GOV'T VEHICLE</option>
+                    <option>AIR</option>
+                </select>
+
+                <label>Report To</label>
+                <input type="text" id="p-rep" placeholder="Official Name">
+
+                <hr style="border:0; border-top:1px dashed #ddd; margin:15px 0;">
+
+                <label>Date</label>
+                <input type="date" id="p-date">
+                
+                <label>Destination</label>
+                <input type="text" id="p-dest">
+                
+                <label>Purpose</label>
+                <input type="text" id="p-purp">
+
+                <button onclick="submitOrder()" id="btn-submit">SUBMIT ORDER</button>
             </div>
         </div>
 
-        <div id="view-app" class="card hidden">
-            <div class="success">Welcome, <span id="u-name">User</span></div>
-            
-            <label>Destination</label>
-            <input type="text" id="p-dest">
+        <div id="tab-hist" class="hidden">
+            <button onclick="loadHistory()" class="btn-outline" style="width:100%; margin-bottom:15px;">Refresh List</button>
+            <div id="hist-list"></div>
+        </div>
+    </div>
 
-            <label>Date</label>
-            <input type="date" id="p-date">
-
-            <label>Purpose</label>
-            <input type="text" id="p-purp">
-
-            <button onclick="submitOrder()" id="btn-submit">SUBMIT ORDER</button>
-            <button class="secondary" onclick="location.reload()">Logout</button>
+    <div id="navbar" class="nav hidden">
+        <div class="nav-item active" onclick="nav('post', this)">
+            <span class="icon">✏️</span>New
+        </div>
+        <div class="nav-item" onclick="nav('hist', this)">
+            <span class="icon">📋</span>History
         </div>
     </div>
 
     <script>
         // --- CONFIGURATION ---
-        const DB_URL = "https://ytfpiyfapvybihlngxks.supabase.co";
-        const DB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0ZnBpeWZhcHZ5YmlobG5neGtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxMDA2MTIsImV4cCI6MjA4NTY3NjYxMn0.7TRVjvFjxVtxkP_hL3wnlxPT6FXJd0y7aKHNzDHThAQ";
+        const PROXY = "https://corsproxy.io/?";
+        const DB_URL = "https://ytfpiyfapvybihlngxks.supabase.co/rest/v1";
+        const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0ZnBpeWZhcHZ5YmlobG5neGtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxMDA2MTIsImV4cCI6MjA4NTY3NjYxMn0.7TRVjvFjxVtxkP_hL3wnlxPT6FXJd0y7aKHNzDHThAQ";
         
-        // Initialize Supabase Client
-        let supabase = null;
         let currentUser = null;
 
-        window.onload = function() {
-            if(window.supabase) {
-                supabase = window.supabase.createClient(DB_URL, DB_KEY);
-            } else {
-                alert("Critical Error: Supabase library failed to load.");
-            }
-        };
+        // --- THE MAGIC FUNCTION (Proxy Fetch) ---
+        async function dbRequest(endpoint, method = "GET", body = null) {
+            // 1. Build the Target URL
+            const target = `${DB_URL}/${endpoint}`;
+            
+            // 2. Wrap it in the Proxy URL (This bypasses the blocking)
+            const finalUrl = PROXY + encodeURIComponent(target);
 
-        // --- 1. SIMPLE LOGIN (ID CHECK) ---
-        async function checkID() {
-            const uid = document.getElementById('uid').value.trim();
-            const btn = document.getElementById('btn-check');
-            const errBox = document.getElementById('error-box');
+            const options = {
+                method: method,
+                headers: {
+                    "apikey": API_KEY,
+                    "Authorization": "Bearer " + API_KEY,
+                    "Content-Type": "application/json",
+                    "Prefer": "return=representation" // Ask DB to return data
+                }
+            };
 
-            if (!uid) return alert("Please enter Employee ID");
-
-            btn.innerText = "CHECKING...";
-            btn.disabled = true;
-            errBox.style.display = 'none';
+            if (body) options.body = JSON.stringify(body);
 
             try {
-                // Try to get user. If this fails, it's a connection/CORS issue.
-                const { data, error } = await supabase
-                    .from('employees')
-                    .select('*')
-                    .eq('emp_id', uid)
-                    .single();
+                const res = await fetch(finalUrl, options);
+                if (!res.ok) throw new Error(`DB Error: ${res.status}`);
+                return await res.json();
+            } catch (err) {
+                console.error(err);
+                throw new Error("Connection Blocked. Try Data instead of WiFi.");
+            }
+        }
 
-                if (error) throw error;
-                if (!data) throw new Error("ID not found in database.");
+        // --- 1. LOGIN ---
+        async function doLogin() {
+            const uid = document.getElementById('uid').value.trim();
+            const pwd = document.getElementById('pwd').value.trim();
+            const btn = document.getElementById('btn-login');
+            const msg = document.getElementById('login-msg');
+
+            if (!uid || !pwd) { msg.innerText = "Enter ID and Password"; return; }
+
+            btn.innerText = "VERIFYING...";
+            btn.disabled = true;
+            msg.innerText = "";
+
+            try {
+                // Fetch User
+                const data = await dbRequest(`employees?emp_id=eq.${uid}&select=*`);
+                
+                if (!data || data.length === 0) throw new Error("ID not found.");
+                const user = data[0];
+
+                // Check Password (Exact Match)
+                // Note: If you used bcrypt in Python, this mobile version 
+                // expects the raw password or needs a password reset to plain text.
+                if (user.pass !== pwd) throw new Error("Incorrect Password.");
 
                 // Success
-                currentUser = data;
+                currentUser = user;
                 document.getElementById('view-login').classList.add('hidden');
                 document.getElementById('view-app').classList.remove('hidden');
-                document.getElementById('u-name').innerText = data.full_name.split(" ")[0]; // First name only
+                document.getElementById('navbar').classList.remove('hidden');
+                
+                document.getElementById('u-name').innerText = user.full_name;
+                document.getElementById('u-div').innerText = user.division || "DAR";
 
-            } catch (error) {
-                console.error(error);
-                // IF ERROR IS "Failed to fetch", SHOW THE INSTRUCTION BOX
-                if (error.message.includes("fetch") || error.message.includes("Network")) {
-                    errBox.style.display = 'block';
-                } else {
-                    alert("Error: " + error.message);
-                }
-                btn.innerText = "ENTER SYSTEM";
+            } catch (e) {
+                msg.innerText = e.message;
+                btn.innerText = "CONNECT";
                 btn.disabled = false;
             }
         }
 
-        // --- 2. SIMPLE SUBMIT ---
+        // --- 2. SUBMIT ---
         async function submitOrder() {
             const dest = document.getElementById('p-dest').value;
             const date = document.getElementById('p-date').value;
             const purp = document.getElementById('p-purp').value;
+            const rep = document.getElementById('p-rep').value;
 
-            if (!dest || !date) return alert("Fill Destination and Date");
-
+            if (!dest || !date) { alert("Missing Details"); return; }
+            
             const btn = document.getElementById('btn-submit');
             btn.innerText = "SENDING...";
             btn.disabled = true;
 
             try {
-                // 1. Generate TO Number
+                // A. Generate TO Number
                 const yr = "2026";
                 const div = (currentUser.division || "DAR").substring(0,4).toUpperCase();
                 
-                // Get count for ID
-                const { count } = await supabase
-                    .from('travel_orders')
-                    .select('*', { count: 'exact', head: true })
-                    .ilike('to_no', `${yr}-${div}-%`);
+                // Get latest count
+                const recent = await dbRequest(`travel_orders?to_no=ilike.${yr}-${div}-%&order=created_at.desc&limit=1`);
                 
-                const nextNum = (count || 0) + 1;
+                let nextNum = 1;
+                if (recent.length > 0) {
+                    const parts = recent[0].to_no.split('-');
+                    if (parts.length > 2) nextNum = parseInt(parts[2]) + 1;
+                }
                 const toNo = `${yr}-${div}-${String(nextNum).padStart(4,'0')}`;
 
-                // 2. Insert Header
-                const { error: err1 } = await supabase.from('travel_orders').insert({
+                // B. Status Logic
+                let st = "PENDING_CHIEF";
+                const u = (currentUser.unit || "").toUpperCase();
+                if (u === "PARPO") st = "PENDING_PARPO";
+                else if (u && u !== "NONE") st = "PENDING_UNIT_HEAD";
+
+                // C. Insert Order
+                await dbRequest('travel_orders', 'POST', {
                     to_no: toNo,
                     emp_id: currentUser.emp_id,
                     emp_name: currentUser.full_name,
                     division: currentUser.division,
                     unit: currentUser.unit,
-                    status: "PENDING_CHIEF", // Default status
-                    transport: "LAND",
-                    report_to: "Official"
+                    status: st,
+                    transport: document.getElementById('p-trans').value,
+                    report_to: rep
                 });
-                if(err1) throw err1;
 
-                // 3. Insert Itinerary
-                const { error: err2 } = await supabase.from('itinerary').insert({
+                // D. Insert Itinerary
+                await dbRequest('itinerary', 'POST', {
                     to_no: toNo,
                     travel_date: date,
                     destination: dest,
                     purpose: purp
                 });
-                if(err2) throw err2;
 
                 alert("Success! TO # " + toNo);
                 
-                // Reset Fields
+                // Reset
                 document.getElementById('p-dest').value = "";
                 document.getElementById('p-purp').value = "";
-                
-            } catch (error) {
-                alert("Submission Failed: " + error.message);
+                nav('hist', document.querySelectorAll('.nav-item')[1]);
+
+            } catch (e) {
+                alert("Error: " + e.message);
             }
             btn.innerText = "SUBMIT ORDER";
             btn.disabled = false;
+        }
+
+        // --- 3. HISTORY ---
+        async function loadHistory() {
+            const list = document.getElementById('hist-list');
+            list.innerHTML = "<p style='text-align:center;color:#999;margin-top:20px;'>Loading...</p>";
+
+            try {
+                const data = await dbRequest(`travel_orders?emp_id=eq.${currentUser.emp_id}&order=created_at.desc&limit=10`);
+                
+                list.innerHTML = "";
+                if (data.length === 0) {
+                    list.innerHTML = "<p style='text-align:center;color:#999;margin-top:20px;'>No History</p>";
+                    return;
+                }
+
+                data.forEach(x => {
+                    const color = x.status === 'APPROVED' ? '#059669' : '#d97706';
+                    const bg = x.status === 'APPROVED' ? '#d1fae5' : '#fef3c7';
+                    
+                    list.innerHTML += `
+                        <div class="card" style="padding:15px; margin-bottom:10px;">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+                                <strong style="color:#111;">${x.to_no}</strong>
+                                <span style="background:${bg}; color:${color}; padding:3px 8px; border-radius:4px; font-size:10px; font-weight:bold;">${x.status.replace('PENDING_', '')}</span>
+                            </div>
+                            <div style="font-size:12px; color:#666;">Report To: ${x.report_to || 'N/A'}</div>
+                        </div>
+                    `;
+                });
+            } catch (e) {
+                list.innerHTML = "<p style='text-align:center;color:red;'>Failed to load.</p>";
+            }
+        }
+
+        // --- NAVIGATION ---
+        function nav(tab, el) {
+            document.getElementById('tab-post').classList.add('hidden');
+            document.getElementById('tab-hist').classList.add('hidden');
+            document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+            
+            el.classList.add('active');
+            
+            if (tab === 'post') document.getElementById('tab-post').classList.remove('hidden');
+            else {
+                document.getElementById('tab-hist').classList.remove('hidden');
+                loadHistory();
+            }
         }
     </script>
 </body>
