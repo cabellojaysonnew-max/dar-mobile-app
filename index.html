@@ -3,272 +3,297 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAR Lite</title>
+    <title>DAR Travel Relay</title>
     <style>
-        /* CSS RESET & STYLES */
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #f4f4f5; margin: 0; padding: 20px; color: #333; }
-        .container { max-width: 400px; margin: 0 auto; }
+        /* CLEAN MOBILE STYLES */
+        body { background-color: #f4f4f5; font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 20px; color: #333; }
+        .container { max-width: 400px; margin: 0 auto; padding-bottom: 80px; }
         
-        /* CARDS */
-        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        
-        /* TYPOGRAPHY */
-        h2 { margin: 0 0 5px 0; color: #003811; font-weight: 800; letter-spacing: -0.5px; }
-        .sub { color: #666; font-size: 13px; margin-bottom: 20px; display: block; }
-        label { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; display: block; margin-bottom: 5px; }
-        
+        /* CARD DESIGN */
+        .card { background: white; padding: 25px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); margin-bottom: 15px; }
+        .header { text-align: center; margin-bottom: 25px; }
+        .header h2 { margin: 0; color: #003811; font-size: 24px; letter-spacing: -0.5px; }
+        .header p { margin: 5px 0 0 0; color: #666; font-size: 13px; }
+
         /* INPUTS */
-        input, select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; box-sizing: border-box; }
-        input:focus { outline: none; border-color: #003811; }
+        label { font-size: 11px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 6px; }
+        input { width: 100%; padding: 14px; margin-bottom: 16px; border: 1px solid #e1e1e1; border-radius: 10px; font-size: 16px; box-sizing: border-box; background: #fafafa; transition: 0.2s; }
+        input:focus { border-color: #003811; background: #fff; outline: none; }
         
         /* BUTTONS */
-        button { width: 100%; padding: 14px; border: none; border-radius: 8px; font-size: 14px; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .btn-primary { background: #003811; color: white; }
-        .btn-primary:active { background: #00250b; transform: scale(0.98); }
-        .btn-sec { background: #eee; color: #333; margin-top: 10px; }
+        button { width: 100%; padding: 16px; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; transition: transform 0.1s; }
+        button:active { transform: scale(0.98); }
+        .btn-primary { background: #003811; color: white; box-shadow: 0 4px 12px rgba(0, 56, 17, 0.2); }
+        .btn-logout { background: #fff; border: 1px solid #ddd; color: #666; padding: 8px 15px; font-size: 12px; width: auto; }
         
         /* UTILS */
-        .hidden { display: none; }
-        .badge { display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; }
-        .bg-green { background: #d1fae5; color: #065f46; }
-        .bg-orange { background: #ffedd5; color: #9a3412; }
-        
-        /* NAVIGATION */
-        .nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; padding-bottom: env(safe-area-inset-bottom); }
-        .nav-item { flex: 1; text-align: center; padding: 15px 0; font-size: 11px; color: #999; cursor: pointer; }
-        .nav-item.active { color: #003811; font-weight: bold; background: #f9f9f9; }
-        .emoji { font-size: 18px; display: block; margin-bottom: 2px; }
+        .hidden { display: none !important; }
+        .badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; }
+        .approved { background: #dcfce7; color: #166534; }
+        .pending { background: #ffedd5; color: #9a3412; }
+        .status-bar { font-size: 11px; text-align: center; color: #999; margin-top: 20px; }
+
+        /* NAV */
+        .nav { position: fixed; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid #eee; display: flex; padding-bottom: env(safe-area-inset-bottom); z-index: 100; }
+        .nav-item { flex: 1; text-align: center; padding: 12px 0; color: #aaa; font-size: 10px; font-weight: 600; }
+        .nav-item.active { color: #003811; background: #fcfcfc; }
+        .nav-icon { font-size: 20px; display: block; margin-bottom: 2px; }
     </style>
 </head>
 <body>
 
-    <div id="view-login" class="container" style="margin-top: 50px;">
+    <div id="view-login" class="container" style="margin-top: 40px;">
         <div class="card">
-            <h2 style="text-align: center;">DAR TRAVEL</h2>
-            <span class="sub" style="text-align: center;">Lite Connection (No-Lib)</span>
-            <hr style="border:0; border-top:1px solid #eee; margin-bottom:20px;">
-
+            <div class="header">
+                <h2>DAR TRAVEL</h2>
+                <p>Secure Relay Connection</p>
+            </div>
+            
             <label>Employee ID</label>
-            <input type="text" id="uid" placeholder="Enter ID">
-
+            <input type="text" id="uid" placeholder="Enter ID (e.g. 1001)">
+            
             <label>Password</label>
             <input type="password" id="pwd" placeholder="••••••">
-
-            <button onclick="doLogin()" class="btn-primary" id="btn-login">SECURE LOGIN</button>
-            <div id="login-msg" style="text-align:center; font-size:12px; margin-top:15px; color:#d32f2f;"></div>
+            
+            <button onclick="doLogin()" class="btn-primary" id="btn-login">CONNECT SECURELY</button>
+            <div id="login-msg" style="text-align:center; color:#dc2626; font-size:13px; margin-top:15px;"></div>
         </div>
+        <div class="status-bar">v4.0 Relay • No VPN Required</div>
     </div>
 
-    <div id="view-app" class="container hidden" style="padding-bottom: 80px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <div id="view-app" class="container hidden">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding: 0 5px;">
             <div>
-                <h2 id="disp-name">User</h2>
-                <span class="sub" id="disp-div" style="margin:0">Division</span>
+                <h3 id="u-name" style="margin:0; color:#003811;">User</h3>
+                <span id="u-div" style="font-size:12px; color:#666;">Division</span>
             </div>
-            <button onclick="location.reload()" style="width:auto; padding:8px 15px; background:#fff; border:1px solid #ddd; color:#333;">Logout</button>
+            <button onclick="location.reload()" class="btn-logout">Exit</button>
         </div>
 
-        <div id="sec-post">
+        <div id="page-post">
             <div class="card">
+                <div class="header" style="margin-bottom:15px; text-align:left;">
+                    <h3 style="margin:0; font-size:18px;">New Travel Order</h3>
+                </div>
+                
                 <label>Destination</label>
                 <input type="text" id="p-dest">
                 
-                <label>Date</label>
+                <label>Date of Travel</label>
                 <input type="date" id="p-date">
                 
                 <label>Purpose</label>
                 <input type="text" id="p-purp">
                 
-                <button onclick="submitOrder()" class="btn-primary">SUBMIT ORDER</button>
+                <button onclick="submitOrder()" class="btn-primary">SUBMIT APPLICATION</button>
             </div>
         </div>
 
-        <div id="sec-mon" class="hidden">
-            <button onclick="loadHistory()" class="btn-sec" style="margin-bottom:15px;">Refresh History</button>
+        <div id="page-hist" class="hidden">
+            <button onclick="loadHistory()" class="btn-logout" style="width:100%; margin-bottom:15px;">Refresh List</button>
             <div id="hist-list"></div>
         </div>
     </div>
 
     <div id="navbar" class="nav hidden">
-        <div class="nav-item active" onclick="nav('post', this)"><span class="emoji">✏️</span>New</div>
-        <div class="nav-item" onclick="nav('mon', this)"><span class="emoji">📋</span>History</div>
+        <div class="nav-item active" onclick="nav('post', this)">
+            <span class="nav-icon">✏️</span>Apply
+        </div>
+        <div class="nav-item" onclick="nav('hist', this)">
+            <span class="nav-icon">📋</span>History
+        </div>
     </div>
 
     <script>
-        // CONFIGURATION
-        const CONFIG = {
-            url: "https://ytfpiyfapvybihlngxks.supabase.co",
-            key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0ZnBpeWZhcHZ5YmlobG5neGtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxMDA2MTIsImV4cCI6MjA4NTY3NjYxMn0.7TRVjvFjxVtxkP_hL3wnlxPT6FXJd0y7aKHNzDHThAQ"
-        };
+        // --- CONFIGURATION ---
+        // We route through 'corsproxy.io' to bypass your phone's blocking issues
+        const PROXY = "https://corsproxy.io/?";
+        const DB_URL = "https://ytfpiyfapvybihlngxks.supabase.co/rest/v1";
+        const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0ZnBpeWZhcHZ5YmlobG5neGtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxMDA2MTIsImV4cCI6MjA4NTY3NjYxMn0.7TRVjvFjxVtxkP_hL3wnlxPT6FXJd0y7aKHNzDHThAQ";
+        
+        let currentUser = null;
 
-        let user = null;
+        // --- THE "SILVER BULLET" FETCH FUNCTION ---
+        async function secureFetch(endpoint, method = "GET", body = null) {
+            // Construct the FULL URL with the Proxy
+            // encodeURIComponent ensures the DB URL passes safely through the proxy
+            const targetUrl = `${DB_URL}/${endpoint}`;
+            const finalUrl = PROXY + encodeURIComponent(targetUrl);
 
-        // --- CORE: DIRECT API CALLER ---
-        async function apiCall(table, params = "", method = "GET", body = null) {
-            const headers = {
-                "apikey": CONFIG.key,
-                "Authorization": "Bearer " + CONFIG.key,
-                "Content-Type": "application/json",
-                "Prefer": "return=representation" // Ask Supabase to return the data after insert
+            const options = {
+                method: method,
+                headers: {
+                    "apikey": API_KEY,
+                    "Authorization": "Bearer " + API_KEY,
+                    "Content-Type": "application/json",
+                    "Prefer": "return=representation"
+                }
             };
 
-            const url = `${CONFIG.url}/rest/v1/${table}${params}`;
-            
-            try {
-                const response = await fetch(url, {
-                    method: method,
-                    headers: headers,
-                    body: body ? JSON.stringify(body) : null
-                });
+            if (body) options.body = JSON.stringify(body);
 
-                if (!response.ok) throw new Error(`API Error: ${response.status}`);
-                return await response.json();
-            } catch (e) {
-                console.error(e);
-                throw e; // Pass error up
+            try {
+                const res = await fetch(finalUrl, options);
+                if (!res.ok) throw new Error(`Server Error: ${res.status}`);
+                return await res.json();
+            } catch (err) {
+                console.error(err);
+                throw new Error("Network Blocked. Switch to Data/WiFi.");
             }
         }
 
-        // --- LOGIN LOGIC ---
+        // --- 1. LOGIN ---
         async function doLogin() {
             const uid = document.getElementById('uid').value.trim();
             const pwd = document.getElementById('pwd').value.trim();
             const btn = document.getElementById('btn-login');
             const msg = document.getElementById('login-msg');
 
-            if (!uid || !pwd) { msg.innerText = "Please enter credentials"; return; }
+            if (!uid || !pwd) { msg.innerText = "Please enter ID and Password"; return; }
 
-            btn.innerText = "CONNECTING...";
+            btn.innerText = "CONNECTING VIA RELAY...";
             btn.disabled = true;
             msg.innerText = "";
 
             try {
-                // 1. Direct Fetch User (GET /employees?emp_id=eq.X)
-                const data = await apiCall('employees', `?emp_id=eq.${uid}&select=*`);
-
+                // Fetch User via Proxy
+                const data = await secureFetch(`employees?emp_id=eq.${uid}&select=*`);
+                
                 if (!data || data.length === 0) throw new Error("User ID not found");
                 
-                const u = data[0];
-
-                // 2. Password Check (Direct comparison only since no library)
-                // WARNING: If your DB has hashed passwords, this strict check might fail.
-                // We are checking if they match exactly.
-                if (u.pass !== pwd) {
-                    throw new Error("Incorrect Password (Verify Case Sensitivity)");
-                }
+                const user = data[0];
+                
+                // Simple Password Check
+                if (user.pass !== pwd) throw new Error("Incorrect Password");
 
                 // Success
-                user = u;
+                currentUser = user;
                 document.getElementById('view-login').classList.add('hidden');
                 document.getElementById('view-app').classList.remove('hidden');
                 document.getElementById('navbar').classList.remove('hidden');
-
-                document.getElementById('disp-name').innerText = u.full_name;
-                document.getElementById('disp-div').innerText = u.division || "DAR";
+                
+                document.getElementById('u-name').innerText = user.full_name;
+                document.getElementById('u-div').innerText = user.division || "DAR";
 
             } catch (e) {
                 msg.innerText = e.message;
-                btn.innerText = "SECURE LOGIN";
+                btn.innerText = "CONNECT SECURELY";
                 btn.disabled = false;
             }
         }
 
-        // --- SUBMIT LOGIC ---
+        // --- 2. SUBMIT ---
         async function submitOrder() {
             const dest = document.getElementById('p-dest').value;
             const date = document.getElementById('p-date').value;
             const purp = document.getElementById('p-purp').value;
 
-            if(!dest || !date) { alert("Fill all fields"); return; }
-            if(!confirm("Submit Order?")) return;
+            if (!dest || !date) { alert("Please fill all fields"); return; }
+            if (!confirm("Submit this Travel Order?")) return;
 
-            const btn = document.querySelector('#sec-post button');
+            const btn = document.querySelector('#page-post button');
             btn.innerText = "SENDING...";
             btn.disabled = true;
 
             try {
-                // 1. Generate TO No (Count existing)
+                // Generate TO Number Logic
                 const yr = "2026";
-                const div = (user.division || "DAR").substring(0,4).toUpperCase();
-                // We use 'head=true' logic via count header, but simpler here: fetch recent
-                const recent = await apiCall('travel_orders', `?to_no=ilike.${yr}-${div}-%&order=created_at.desc&limit=1`);
+                const div = (currentUser.division || "DAR").substring(0,4).toUpperCase();
+                
+                // Fetch latest to calculate number
+                const recent = await secureFetch(`travel_orders?to_no=ilike.${yr}-${div}-%&order=created_at.desc&limit=1`);
                 
                 let nextNum = 1;
-                if(recent.length > 0) {
+                if (recent.length > 0) {
                     const parts = recent[0].to_no.split('-');
-                    if(parts.length > 2) nextNum = parseInt(parts[2]) + 1;
+                    if (parts.length > 2) nextNum = parseInt(parts[2]) + 1;
                 }
                 const toNo = `${yr}-${div}-${String(nextNum).padStart(4,'0')}`;
 
-                // 2. Insert Order
-                let st = "PENDING_CHIEF";
-                if((user.unit||"").toUpperCase() === "PARPO") st = "PENDING_PARPO";
-                else if(user.unit && user.unit !== "None") st = "PENDING_UNIT_HEAD";
+                // Determine Status
+                let status = "PENDING_CHIEF";
+                const u = (currentUser.unit || "").toUpperCase();
+                if (u === "PARPO") status = "PENDING_PARPO";
+                else if (u && u !== "NONE") status = "PENDING_UNIT_HEAD";
 
-                await apiCall('travel_orders', '', 'POST', {
-                    to_no: toNo, emp_id: user.emp_id, emp_name: user.full_name,
-                    division: user.division, unit: user.unit, status: st,
-                    transport: "LAND", report_to: "Official"
+                // Post Order
+                await secureFetch('travel_orders', 'POST', {
+                    to_no: toNo,
+                    emp_id: currentUser.emp_id,
+                    emp_name: currentUser.full_name,
+                    division: currentUser.division,
+                    unit: currentUser.unit,
+                    status: status,
+                    transport: "LAND",
+                    report_to: "Official"
                 });
 
-                // 3. Insert Itinerary
-                await apiCall('itinerary', '', 'POST', {
-                    to_no: toNo, travel_date: date, destination: dest, purpose: purp
+                // Post Itinerary
+                await secureFetch('itinerary', 'POST', {
+                    to_no: toNo,
+                    travel_date: date,
+                    destination: dest,
+                    purpose: purp
                 });
 
-                alert("Success! TO: " + toNo);
-                // Reset
+                alert("Success! TO # " + toNo);
+                
+                // Clear and switch
                 document.getElementById('p-dest').value = "";
-                btn.innerText = "SUBMIT ORDER";
-                btn.disabled = false;
-                nav('mon', document.querySelectorAll('.nav-item')[1]);
+                document.getElementById('p-purp').value = "";
+                nav('hist', document.querySelectorAll('.nav-item')[1]);
 
-            } catch(e) {
+            } catch (e) {
                 alert("Error: " + e.message);
-                btn.innerText = "SUBMIT ORDER";
-                btn.disabled = false;
             }
+            btn.innerText = "SUBMIT APPLICATION";
+            btn.disabled = false;
         }
 
-        // --- HISTORY LOGIC ---
+        // --- 3. HISTORY ---
         async function loadHistory() {
             const list = document.getElementById('hist-list');
-            list.innerHTML = "Loading...";
+            list.innerHTML = "<p style='text-align:center;color:#999;margin-top:20px;'>Loading Records...</p>";
 
             try {
-                const data = await apiCall('travel_orders', `?emp_id=eq.${user.emp_id}&order=created_at.desc&limit=10`);
+                const data = await secureFetch(`travel_orders?emp_id=eq.${currentUser.emp_id}&order=created_at.desc&limit=10`);
                 
                 list.innerHTML = "";
-                if(data.length === 0) { list.innerHTML = "<div style='text-align:center;color:#999;margin-top:20px;'>No records</div>"; return; }
+                if (data.length === 0) {
+                    list.innerHTML = "<p style='text-align:center;color:#999;margin-top:20px;'>No History Found</p>";
+                    return;
+                }
 
-                data.forEach(x => {
-                    const badgeClass = x.status === 'APPROVED' ? 'bg-green' : 'bg-orange';
+                data.forEach(item => {
+                    const badgeClass = item.status === 'APPROVED' ? 'approved' : 'pending';
                     list.innerHTML += `
                         <div class="card" style="padding:15px; margin-bottom:10px;">
-                            <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                                <strong style="font-size:14px;">${x.to_no}</strong>
-                                <span class="badge ${badgeClass}">${x.status}</span>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                                <strong style="font-size:14px; color:#333;">${item.to_no}</strong>
+                                <span class="badge ${badgeClass}">${item.status}</span>
                             </div>
-                            <div style="font-size:12px; color:#666;">Transport: ${x.transport || 'N/A'}</div>
+                            <div style="font-size:12px; color:#666;">
+                                Transport: ${item.transport || 'N/A'}
+                            </div>
                         </div>
                     `;
                 });
-            } catch(e) {
-                list.innerHTML = "Error loading history";
+            } catch (e) {
+                list.innerHTML = "<p style='text-align:center;color:red;'>Failed to load history.</p>";
             }
         }
 
-        // --- UI UTILS ---
-        function nav(id, el) {
-            document.getElementById('sec-post').classList.add('hidden');
-            document.getElementById('sec-mon').classList.add('hidden');
+        // --- NAV ---
+        function nav(page, el) {
+            document.getElementById('page-post').classList.add('hidden');
+            document.getElementById('page-hist').classList.add('hidden');
             document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
             
             el.classList.add('active');
             
-            if(id === 'post') document.getElementById('sec-post').classList.remove('hidden');
+            if (page === 'post') document.getElementById('page-post').classList.remove('hidden');
             else {
-                document.getElementById('sec-mon').classList.remove('hidden');
+                document.getElementById('page-hist').classList.remove('hidden');
                 loadHistory();
             }
         }
