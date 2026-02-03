@@ -4,359 +4,270 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>DAR Mobile Portal</title>
-    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
-
     <style>
-        :root { --dar-green: #003811; --dar-gold: #D4AF37; --bg-main: #F3F4F6; }
-        body { background-color: var(--bg-main); font-family: sans-serif; -webkit-tap-highlight-color: transparent; }
-        
-        /* Login Styles */
-        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--dar-green); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; }
-        .login-card { background: white; padding: 30px; border-radius: 12px; width: 85%; max-width: 350px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-        .btn-dar { background-color: var(--dar-green); color: white; font-weight: bold; border: none; }
-        .btn-dar:active { background-color: #00220a; transform: scale(0.98); }
-
-        /* App Styles */
-        .app-section { display: none; padding: 70px 20px 80px 20px; }
+        body { background-color: #F3F4F6; font-family: sans-serif; }
+        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #003811; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; }
+        .login-card { background: white; padding: 30px; border-radius: 12px; width: 85%; max-width: 350px; }
+        .app-section { display: none; padding: 80px 20px 80px 20px; }
         .app-section.active { display: block; }
-        .navbar { background-color: var(--dar-green); color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .card-custom { border: none; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        
-        /* Bottom Nav */
         .nav-bottom { position: fixed; bottom: 0; width: 100%; background: white; border-top: 1px solid #eee; display: flex; height: 60px; z-index: 1000; }
         .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: #999; }
-        .nav-item.active { color: var(--dar-green); font-weight: bold; background: #f0fdf4; }
-        .nav-icon { font-size: 20px; margin-bottom: 2px; }
-
-        /* Status Badges */
-        .badge-approved { background-color: #d1fae5; color: #065f46; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
-        .badge-pending { background-color: #ffedd5; color: #9a3412; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+        .nav-item.active { color: #003811; font-weight: bold; background: #f0fdf4; }
+        .loading-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:3000; display:none; align-items:center; justify-content:center; color:white; flex-direction:column;}
     </style>
 </head>
 <body>
 
+    <div id="loader" class="loading-overlay">
+        <div class="spinner-border text-light mb-2" role="status"></div>
+        <span id="loader-text">Loading...</span>
+    </div>
+
     <div id="login-screen">
         <div class="login-card text-center">
-            <h3 style="font-family: serif; color: var(--dar-green); font-weight: bold;">DAR TRAVEL</h3>
-            <p class="text-muted small mb-4">Official Mobile Portal</p>
+            <h3 style="color: #003811; font-weight: bold;">DAR TRAVEL</h3>
+            <p class="text-muted small mb-4">Mobile Portal</p>
             
-            <div class="text-start mb-3">
-                <label class="form-label small fw-bold text-secondary">ID Number</label>
-                <input type="text" id="uid" class="form-control" placeholder="Enter ID">
-            </div>
-            
-            <div class="text-start mb-4">
-                <label class="form-label small fw-bold text-secondary">Password</label>
-                <input type="password" id="pwd" class="form-control" placeholder="••••••">
-            </div>
+            <input type="text" id="uid" class="form-control mb-3" placeholder="Employee ID">
+            <input type="password" id="pwd" class="form-control mb-4" placeholder="Password">
 
-            <button id="btnLogin" class="btn btn-dar w-100 py-2 mb-3">SECURE LOGIN</button>
+            <button onclick="startLogin()" class="btn btn-success w-100 py-2 fw-bold" style="background-color: #003811;">SECURE LOGIN</button>
             
-            <div id="login-status" class="small text-danger" style="min-height: 20px;"></div>
+            <p id="status-msg" class="text-danger small mt-3"></p>
         </div>
-        <div style="margin-top: 20px; color: rgba(255,255,255,0.5); font-size: 10px;">System v2.1 Mobile</div>
     </div>
 
     <div id="main-app" style="display: none;">
-        <nav class="navbar fixed-top px-3">
-            <div class="d-flex align-items-center">
-                <span class="fw-bold" style="font-family: serif; color: var(--dar-gold); font-size: 1.2rem;">DAR</span>
-                <span class="ms-2 small text-white opacity-75">| &nbsp; <span id="user-name-display">User</span></span>
-            </div>
+        <nav class="navbar fixed-top px-3" style="background-color: #003811; color: white;">
+            <span class="fw-bold">DAR Mobile</span>
+            <span id="user-display" class="small opacity-75">User</span>
         </nav>
 
         <div id="page-post" class="app-section active">
-            <h6 class="text-secondary fw-bold mb-3">NEW APPLICATION</h6>
-            
-            <div class="card card-custom p-3">
-                <label class="small text-muted fw-bold">Transportation</label>
-                <select id="inp-trans" class="form-select form-select-sm mb-3">
-                    <option>LAND</option>
-                    <option>GOV'T VEHICLE</option>
-                    <option>AIR</option>
-                    <option>OTHERS</option>
-                </select>
-
-                <label class="small text-muted fw-bold">Report To</label>
-                <input type="text" id="inp-rep" class="form-control form-control-sm" placeholder="Official Name / Position">
+            <h5>New Travel Order</h5>
+            <div class="card p-3 mb-3 border-0 shadow-sm">
+                <label class="small fw-bold text-muted">Transport</label>
+                <select id="inp-trans" class="form-select mb-2"><option>LAND</option><option>GOV'T VEHICLE</option><option>AIR</option></select>
+                <label class="small fw-bold text-muted">Report To</label>
+                <input type="text" id="inp-rep" class="form-control" placeholder="Name/Position">
             </div>
-
-            <div class="card card-custom p-3">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="small fw-bold text-secondary">ITINERARY</span>
-                    <button onclick="addItin()" class="btn btn-sm btn-light border" style="font-size: 10px;">+ ADD</button>
-                </div>
+            <div class="card p-3 mb-3 border-0 shadow-sm">
+                <h6>Itinerary</h6>
                 <div class="row g-1 mb-2">
-                    <div class="col-4"><input type="date" id="it-date" class="form-control form-control-sm" style="font-size: 10px;"></div>
-                    <div class="col-8"><input type="text" id="it-dest" class="form-control form-control-sm" placeholder="Destination" style="font-size: 10px;"></div>
-                    <div class="col-12"><input type="text" id="it-purp" class="form-control form-control-sm" placeholder="Purpose" style="font-size: 10px;"></div>
+                    <div class="col-4"><input type="date" id="it-date" class="form-control form-control-sm"></div>
+                    <div class="col-8"><input type="text" id="it-dest" class="form-control form-control-sm" placeholder="Destination"></div>
+                    <div class="col-12"><input type="text" id="it-purp" class="form-control form-control-sm" placeholder="Purpose"></div>
                 </div>
-                <ul id="itin-list" class="list-group list-group-flush small"></ul>
+                <button onclick="addItin()" class="btn btn-outline-secondary btn-sm w-100">+ Add Row</button>
+                <ul id="itin-list" class="list-group mt-2 small"></ul>
             </div>
-
-            <button onclick="submitForm()" class="btn btn-dar w-100 shadow py-3">SUBMIT ORDER</button>
+            <button onclick="submitOrder()" class="btn btn-success w-100 py-3 fw-bold" style="background-color: #003811;">SUBMIT</button>
         </div>
 
         <div id="page-monitor" class="app-section">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="text-secondary fw-bold m-0">MY HISTORY</h6>
-                <button onclick="loadHistory()" class="btn btn-sm btn-light text-primary" style="font-size: 10px;">REFRESH</button>
+            <div class="d-flex justify-content-between mb-3">
+                <h5>My History</h5>
+                <button onclick="loadHistory()" class="btn btn-sm btn-light text-primary">Refresh</button>
             </div>
             <div id="history-list"></div>
         </div>
 
         <div id="page-profile" class="app-section text-center">
-            <div class="card card-custom p-4 mt-5">
-                <div style="font-size: 3rem; margin-bottom: 10px;">👤</div>
-                <h5 id="prof-full" class="fw-bold mb-0">User Name</h5>
-                <p id="prof-id" class="text-muted small">ID: ---</p>
-                <hr>
-                <p id="prof-div" class="small fw-bold text-success">Division</p>
-                <button onclick="location.reload()" class="btn btn-outline-danger btn-sm mt-3 w-100">Sign Out</button>
-            </div>
+            <h2 id="prof-name">User</h2>
+            <p id="prof-div" class="text-muted">Division</p>
+            <button onclick="location.reload()" class="btn btn-danger mt-4">Sign Out</button>
         </div>
 
         <div class="nav-bottom">
-            <div class="nav-item active" onclick="switchPage('post', this)">
-                <span class="nav-icon">✏️</span><span>Post</span>
-            </div>
-            <div class="nav-item" onclick="switchPage('monitor', this)">
-                <span class="nav-icon">📋</span><span>Monitor</span>
-            </div>
-            <div class="nav-item" onclick="switchPage('profile', this)">
-                <span class="nav-icon">👤</span><span>Me</span>
-            </div>
+            <div class="nav-item active" onclick="nav('post', this)"><span>✏️</span><span>Post</span></div>
+            <div class="nav-item" onclick="nav('monitor', this)"><span>📋</span><span>Monitor</span></div>
+            <div class="nav-item" onclick="nav('profile', this)"><span>👤</span><span>Me</span></div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
+
     <script>
-        // 1. SETUP
         const SUPA_URL = "https://ytfpiyfapvybihlngxks.supabase.co";
         const SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0ZnBpeWZhcHZ5YmlobG5neGtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxMDA2MTIsImV4cCI6MjA4NTY3NjYxMn0.7TRVjvFjxVtxkP_hL3wnlxPT6FXJd0y7aKHNzDHThAQ";
         
         let supabase = null;
         let currentUser = null;
-        let itinCache = [];
+        let itinData = [];
 
-        // 2. INIT
-        window.onload = function() {
+        // INIT SUPABASE SAFELY
+        window.addEventListener('load', () => {
             try {
                 if(window.supabase) {
                     supabase = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-                    console.log("Supabase Ready");
-                    
-                    // Attach Event Listener MANUALLY to ensure it works
-                    document.getElementById('btnLogin').addEventListener('click', doLogin);
+                    console.log("DB Ready");
                 } else {
-                    document.getElementById('login-status').innerText = "Error: Library failed to load.";
+                    document.getElementById('status-msg').innerText = "Error: Database library failed to load.";
                 }
-            } catch(e) {
-                document.getElementById('login-status').innerText = "Init Error: " + e.message;
-            }
-        };
+            } catch(e) { console.error(e); }
+        });
 
-        // 3. LOGIN FUNCTION
-        async function doLogin() {
-            const btn = document.getElementById('btnLogin');
-            const status = document.getElementById('login-status');
+        // 1. LOGIN FUNCTION
+        async function startLogin() {
+            // DEBUG: If this alert doesn't show, HTML is broken.
+            // alert("Button Clicked!"); 
+
             const uid = document.getElementById('uid').value.trim();
             const pwd = document.getElementById('pwd').value.trim();
+            const stat = document.getElementById('status-msg');
+            const loader = document.getElementById('loader');
 
-            if(!uid || !pwd) {
-                status.innerText = "Please enter ID and Password.";
-                return;
-            }
+            if(!uid || !pwd) { stat.innerText = "Enter ID and Password"; return; }
 
-            btn.disabled = true;
-            btn.innerText = "VERIFYING...";
-            status.innerText = "";
+            stat.innerText = "";
+            loader.style.display = 'flex';
+            document.getElementById('loader-text').innerText = "Verifying...";
 
             try {
-                // A. Direct Database Fetch
+                if(!supabase) throw new Error("Database not connected. Reload page.");
+
+                // A. GET USER
                 const { data, error } = await supabase.from('employees').select('*').eq('emp_id', uid).single();
+                
+                if(error || !data) throw new Error("User ID not found.");
 
-                if (error || !data) {
-                    throw new Error("User ID not found.");
-                }
-
-                // B. Password Check
-                let isMatch = false;
+                // B. CHECK PASSWORD
                 const dbPass = data.pass;
+                let isValid = false;
 
-                // 1. Try Simple Match (Legacy)
-                if(dbPass === pwd) {
-                    isMatch = true;
-                } 
-                // 2. Try Bcrypt (Secure)
-                else if (window.dcodeIO && window.dcodeIO.bcrypt) {
-                     isMatch = dcodeIO.bcrypt.compareSync(pwd, dbPass);
-                }
-                // 3. Try Global Bcrypt (Fallback)
-                else if (window.bcrypt) {
-                     isMatch = bcrypt.compareSync(pwd, dbPass);
-                } 
-                else {
-                    throw new Error("Security Library Missing. Refresh page.");
-                }
-
-                if(isMatch) {
-                    currentUser = data;
-                    // UI Switch
-                    document.getElementById('login-screen').style.display = 'none';
-                    document.getElementById('main-app').style.display = 'block';
-                    
-                    // Populate Profile
-                    document.getElementById('user-name-display').innerText = data.full_name.split(' ')[0];
-                    document.getElementById('prof-full').innerText = data.full_name;
-                    document.getElementById('prof-id').innerText = "ID: " + data.emp_id;
-                    document.getElementById('prof-div').innerText = data.division;
-                    
-                    loadHistory();
+                // Simple check first (Legacy)
+                if(dbPass === pwd) isValid = true;
+                // Bcrypt check (Secure)
+                else if(window.bcrypt && window.bcrypt.compareSync) {
+                    isValid = window.bcrypt.compareSync(pwd, dbPass);
                 } else {
-                    throw new Error("Incorrect Password.");
+                    // Fallback if library failed but pass doesn't match plain text
+                    throw new Error("Security check failed. Library missing.");
                 }
+
+                if(!isValid) throw new Error("Incorrect Password.");
+
+                // C. SUCCESS
+                currentUser = data;
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'block';
+                
+                // Populate Profile
+                document.getElementById('user-display').innerText = data.emp_id;
+                document.getElementById('prof-name').innerText = data.full_name;
+                document.getElementById('prof-div').innerText = data.division || "DAR";
+                
+                loadHistory();
 
             } catch(err) {
-                status.innerText = err.message;
-                btn.disabled = false;
-                btn.innerText = "SECURE LOGIN";
+                stat.innerText = err.message;
             }
+            loader.style.display = 'none';
         }
 
-        // 4. NAVIGATION
-        function switchPage(pageId, navEl) {
-            document.querySelectorAll('.app-section').forEach(el => el.classList.remove('active'));
-            document.getElementById('page-' + pageId).classList.add('active');
-            
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            navEl.classList.add('active');
-
-            if(pageId === 'monitor') loadHistory();
+        // 2. NAV
+        function nav(page, el) {
+            document.querySelectorAll('.app-section').forEach(x => x.classList.remove('active'));
+            document.getElementById('page-' + page).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+            el.classList.add('active');
+            if(page === 'monitor') loadHistory();
         }
 
-        // 5. ITINERARY LOGIC
+        // 3. POSTING
         function addItin() {
             const d = document.getElementById('it-date').value;
-            const dest = document.getElementById('it-dest').value;
+            const dst = document.getElementById('it-dest').value;
             const p = document.getElementById('it-purp').value;
-
-            if(!d || !dest) { alert("Date and Destination required"); return; }
-
-            itinCache.push({date: d, dest: dest, purp: p});
+            if(!d || !dst) return alert("Date/Dest required");
+            itinData.push({date:d, dest:dst, purp:p});
             renderItin();
-            
             document.getElementById('it-dest').value = "";
-            document.getElementById('it-purp').value = "";
         }
 
         function renderItin() {
-            const list = document.getElementById('itin-list');
-            list.innerHTML = "";
-            itinCache.forEach((item, index) => {
-                list.innerHTML += `
-                    <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                        <div style="line-height:1.2">
-                            <span class="fw-bold" style="font-size:11px">${item.date}</span><br>
-                            <span class="text-muted" style="font-size:10px">${item.dest}</span>
-                        </div>
-                        <button onclick="remItin(${index})" class="btn btn-sm text-danger fw-bold" style="font-size:12px">x</button>
-                    </li>`;
+            const l = document.getElementById('itin-list');
+            l.innerHTML = "";
+            itinData.forEach((i,x) => {
+                l.innerHTML += `<li class="list-group-item d-flex justify-content-between p-1">
+                    <div><b>${i.date}</b> ${i.dest}</div>
+                    <button onclick="remItin(${x})" class="btn btn-sm text-danger">x</button>
+                </li>`;
             });
         }
-        window.remItin = function(i) { itinCache.splice(i,1); renderItin(); }
+        window.remItin = (i) => { itinData.splice(i,1); renderItin(); }
 
-        // 6. SUBMIT
-        async function submitForm() {
-            if(itinCache.length === 0) { alert("Add itinerary details first."); return; }
-            if(!confirm("Submit Travel Order?")) return;
+        async function submitOrder() {
+            if(itinData.length === 0) return alert("Add Itinerary first");
+            if(!confirm("Submit Order?")) return;
 
-            const btn = document.querySelector('#page-post .btn-dar');
-            btn.disabled = true; btn.innerText = "SUBMITTING...";
+            const loader = document.getElementById('loader');
+            loader.style.display = 'flex';
+            document.getElementById('loader-text').innerText = "Submitting...";
 
             try {
-                // Generate TO No
+                // Generate ID
                 const yr = new Date().getFullYear();
                 const div = (currentUser.division || "DAR").substring(0,4).toUpperCase();
                 const { count } = await supabase.from('travel_orders').select('*', { count: 'exact', head: true }).ilike('to_no', `${yr}-${div}-%`);
                 const toNo = `${yr}-${div}-${String((count||0)+1).padStart(4,'0')}`;
 
-                // Determine Status
                 let st = "PENDING_CHIEF";
                 const u = (currentUser.unit || "").toUpperCase();
                 if(u === "PARPO") st = "PENDING_PARPO";
-                else if(u && u !== "NONE") st = "PENDING_UNIT_HEAD";
+                else if(u && u!=="NONE") st = "PENDING_UNIT_HEAD";
 
-                // Insert Order
-                const { error: e1 } = await supabase.from('travel_orders').insert([{
-                    to_no: toNo,
-                    emp_id: currentUser.emp_id,
-                    emp_name: currentUser.full_name,
-                    division: currentUser.division,
-                    unit: currentUser.unit,
-                    status: st,
+                // Insert
+                await supabase.from('travel_orders').insert([{
+                    to_no: toNo, emp_id: currentUser.emp_id, emp_name: currentUser.full_name,
+                    division: currentUser.division, unit: currentUser.unit, status: st,
                     transport: document.getElementById('inp-trans').value,
                     report_to: document.getElementById('inp-rep').value
                 }]);
-                if(e1) throw e1;
 
-                // Insert Itinerary
-                const itinPayload = itinCache.map(i => ({
-                    to_no: toNo,
-                    travel_date: i.date,
-                    destination: i.dest,
-                    purpose: i.purp
-                }));
-                const { error: e2 } = await supabase.from('itinerary').insert(itinPayload);
-                if(e2) throw e2;
+                const itinPayload = itinData.map(i => ({ to_no: toNo, travel_date: i.date, destination: i.dest, purpose: i.purp }));
+                await supabase.from('itinerary').insert(itinPayload);
 
-                alert("Success! TO # " + toNo);
-                itinCache = []; renderItin();
-                switchPage('monitor', document.querySelectorAll('.nav-item')[1]);
+                alert("Success! TO#: " + toNo);
+                itinData = []; renderItin();
+                nav('monitor', document.querySelectorAll('.nav-item')[1]);
 
-            } catch(e) {
-                alert("Error: " + e.message);
-            }
-            btn.disabled = false; btn.innerText = "SUBMIT ORDER";
+            } catch(e) { alert(e.message); }
+            loader.style.display = 'none';
         }
 
-        // 7. HISTORY
+        // 4. HISTORY
         async function loadHistory() {
-            const cont = document.getElementById('history-list');
-            cont.innerHTML = '<div class="text-center mt-4 text-muted small">Loading...</div>';
+            const div = document.getElementById('history-list');
+            div.innerHTML = "<p class='text-center mt-3 text-muted'>Loading...</p>";
             
             const { data: ords } = await supabase.from('travel_orders').select('*').eq('emp_id', currentUser.emp_id).order('created_at', {ascending:false});
             const { data: itins } = await supabase.from('itinerary').select('*');
 
-            cont.innerHTML = "";
-            if(!ords || ords.length === 0) {
-                cont.innerHTML = '<div class="text-center mt-5 text-muted small">No applications found.</div>';
-                return;
-            }
+            div.innerHTML = "";
+            if(!ords || ords.length === 0) { div.innerHTML = "<p class='text-center mt-3 text-muted'>No Records</p>"; return; }
 
             ords.forEach(o => {
-                const myItin = itins.filter(x => x.to_no === o.to_no);
-                const dDate = myItin.length > 0 ? myItin[0].travel_date : "No Date";
-                const dDest = myItin.length > 0 ? myItin[0].destination : "";
-                
-                const badgeClass = o.status === 'APPROVED' ? 'badge-approved' : 'badge-pending';
+                const rel = itins.filter(x => x.to_no === o.to_no);
+                const dDate = rel.length ? rel[0].travel_date : "N/A";
+                const dDest = rel.length ? rel[0].destination : "";
+                const bg = o.status === 'APPROVED' ? '#d1fae5' : '#ffedd5';
+                const col = o.status === 'APPROVED' ? '#065f46' : '#9a3412';
 
-                cont.innerHTML += `
-                    <div class="card card-custom p-3">
+                div.innerHTML += `
+                    <div class="card p-3 mb-2 border-0 shadow-sm">
                         <div class="d-flex justify-content-between mb-1">
-                            <span class="fw-bold text-dark" style="font-size:13px">${o.to_no}</span>
-                            <span class="${badgeClass}">${o.status}</span>
+                            <span class="fw-bold">${o.to_no}</span>
+                            <span style="background:${bg}; color:${col}; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:bold">${o.status}</span>
                         </div>
-                        <div class="small text-muted mb-1">📅 ${dDate}</div>
-                        <div class="small text-dark fw-bold">📍 ${dDest}</div>
-                    </div>
-                `;
+                        <div class="small text-muted">${dDate}</div>
+                        <div class="small fw-bold">${dDest}</div>
+                    </div>`;
             });
         }
-
     </script>
 </body>
 </html>
