@@ -6,45 +6,26 @@
     <title>DAR Travel Order Mobile</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
+    <script src="https://unpkg.com/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
     
     <style>
-        :root {
-            --dar-green: #003811;
-            --dar-gold: #D4AF37;
-            --dar-light: #006400;
-            --bg-main: #F3F4F6;
-        }
-        body { background-color: var(--bg-main); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        
-        /* Mobile Header */
-        .navbar { background-color: var(--dar-green); color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .navbar-brand { font-family: 'Times New Roman', serif; font-weight: bold; color: var(--dar-gold) !important; }
-        
-        /* Login Screen */
-        #login-screen { height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--dar-green); color: white; }
-        .login-card { background: white; color: #333; padding: 30px; border-radius: 10px; width: 90%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-        
-        /* Cards */
-        .card-custom { border: none; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-bottom: 15px; }
-        .card-header-custom { background-color: white; border-bottom: 2px solid var(--dar-gold); color: var(--dar-green); font-weight: bold; padding: 15px; border-radius: 12px 12px 0 0; }
-        
-        /* Buttons */
-        .btn-dar { background-color: var(--dar-green); color: white; border: none; }
-        .btn-dar:active { background-color: var(--dar-light); color: var(--dar-gold); }
+        :root { --dar-green: #003811; --dar-gold: #D4AF37; --bg-main: #F3F4F6; }
+        body { background-color: var(--bg-main); font-family: 'Segoe UI', sans-serif; }
+        .navbar { background-color: var(--dar-green); color: white; }
+        .navbar-brand { font-family: 'Times New Roman'; font-weight: bold; color: var(--dar-gold) !important; }
+        #login-screen { height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--dar-green); }
+        .login-card { background: white; padding: 30px; border-radius: 10px; width: 90%; max-width: 400px; }
+        .card-custom { border: none; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .btn-dar { background-color: var(--dar-green); color: white; font-weight: bold; }
+        .app-section { display: none; padding: 20px 20px 80px 20px; }
+        .app-section.active { display: block; }
         .nav-bottom { position: fixed; bottom: 0; width: 100%; background: white; border-top: 1px solid #ddd; display: flex; justify-content: space-around; padding: 10px 0; z-index: 1000; }
-        .nav-item { text-align: center; font-size: 12px; color: #666; cursor: pointer; }
+        .nav-item { text-align: center; font-size: 12px; color: #666; }
         .nav-item.active { color: var(--dar-green); font-weight: bold; }
-        
-        /* Status Tags */
+        .loading-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8); z-index:9999; display:none; align-items:center; justify-content:center;}
         .status-badge { font-size: 0.8em; padding: 5px 10px; border-radius: 20px; font-weight: bold; }
         .st-approved { background: #dcfce7; color: #15803d; }
         .st-pending { background: #fff7ed; color: #c2410c; }
-
-        /* Sections */
-        .app-section { display: none; padding: 20px 20px 80px 20px; }
-        .app-section.active { display: block; }
-        .loading-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.8); z-index:9999; display:none; align-items:center; justify-content:center;}
     </style>
 </head>
 <body>
@@ -55,9 +36,9 @@
 
     <div id="login-screen">
         <div class="login-card text-center">
-            <h3 style="font-family: 'Times New Roman'; color: var(--dar-green); font-weight: bold;">DAR TRAVEL</h3>
-            <p class="text-muted small">Department of Agrarian Reform</p>
-            <hr style="border-top: 3px solid var(--dar-gold);">
+            <h3>DAR TRAVEL</h3>
+            <p class="text-muted small">Mobile Portal</p>
+            <hr>
             <div class="mb-3 text-start">
                 <label class="form-label fw-bold">Employee ID</label>
                 <input type="text" id="login-id" class="form-control" placeholder="Enter ID">
@@ -66,7 +47,7 @@
                 <label class="form-label fw-bold">Password</label>
                 <input type="password" id="login-pass" class="form-control" placeholder="••••••">
             </div>
-            <button onclick="handleLogin()" class="btn btn-dar w-100 py-2 fw-bold">SECURE LOGIN</button>
+            <button onclick="attemptLogin()" class="btn btn-dar w-100 py-2">LOGIN</button>
             <p id="login-msg" class="text-danger mt-3 small"></p>
         </div>
     </div>
@@ -74,319 +55,240 @@
     <div id="app-interface" style="display: none;">
         <nav class="navbar fixed-top">
             <div class="container-fluid">
-                <span class="navbar-brand mb-0 h1">DAR Mobile Portal</span>
+                <span class="navbar-brand mb-0 h1">DAR Mobile</span>
                 <span class="text-white small" id="user-display">User</span>
             </div>
         </nav>
-
         <div style="margin-top: 60px;"></div>
 
         <div id="sec-new" class="app-section active">
-            <h5 class="mb-3 text-secondary">New Application</h5>
-            
-            <div class="card card-custom">
-                <div class="card-header-custom">1. Details</div>
-                <div class="card-body">
-                    <label class="small text-muted">Transport</label>
-                    <select id="inp-transport" class="form-select mb-3">
-                        <option>LAND</option>
-                        <option>GOV'T VEHICLE</option>
-                        <option>AIR</option>
-                        <option>OTHERS</option>
-                    </select>
-
-                    <label class="small text-muted">Report To</label>
-                    <input type="text" id="inp-report" class="form-control mb-3" placeholder="Official Name/Position">
-                </div>
+            <h5 class="text-secondary mb-3">New Travel Order</h5>
+            <div class="card card-custom p-3">
+                <label class="small text-muted">Transport</label>
+                <select id="inp-transport" class="form-select mb-2">
+                    <option>LAND</option>
+                    <option>GOV'T VEHICLE</option>
+                    <option>AIR</option>
+                </select>
+                <label class="small text-muted">Report To</label>
+                <input type="text" id="inp-report" class="form-control mb-2" placeholder="Official Name">
             </div>
 
-            <div class="card card-custom">
-                <div class="card-header-custom">2. Itinerary</div>
-                <div class="card-body">
-                    <div class="row g-2">
-                        <div class="col-6">
-                            <label class="small text-muted">Date</label>
-                            <input type="date" id="itin-date" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-6">
-                            <label class="small text-muted">Destination</label>
-                            <input type="text" id="itin-dest" class="form-control form-control-sm">
-                        </div>
-                        <div class="col-12">
-                            <label class="small text-muted">Purpose</label>
-                            <input type="text" id="itin-purp" class="form-control form-control-sm">
-                        </div>
-                    </div>
-                    <button onclick="addItinerary()" class="btn btn-outline-success w-100 mt-3 btn-sm">+ Add to List</button>
-                    
-                    <ul id="itin-list" class="list-group mt-3 small">
-                        </ul>
+            <div class="card card-custom p-3">
+                <h6 class="text-success border-bottom pb-2">Itinerary Builder</h6>
+                <div class="row g-2">
+                    <div class="col-6"><input type="date" id="itin-date" class="form-control form-control-sm"></div>
+                    <div class="col-6"><input type="text" id="itin-dest" class="form-control form-control-sm" placeholder="Destination"></div>
+                    <div class="col-12"><input type="text" id="itin-purp" class="form-control form-control-sm" placeholder="Purpose"></div>
                 </div>
+                <button onclick="addItem()" class="btn btn-outline-success btn-sm w-100 mt-2">+ Add Row</button>
+                <ul id="itin-list" class="list-group mt-2 small"></ul>
             </div>
-
-            <button onclick="submitTravelOrder()" class="btn btn-dar w-100 py-3 fw-bold shadow">🚀 SUBMIT APPLICATION</button>
+            <button onclick="submitTO()" class="btn btn-dar w-100 py-3 shadow">SUBMIT REQUEST</button>
         </div>
 
         <div id="sec-monitor" class="app-section">
-            <h5 class="mb-3 text-secondary">My Applications</h5>
-            <button onclick="loadMyStatus()" class="btn btn-sm btn-outline-secondary mb-3 w-100">Refresh List</button>
-            <div id="status-container">
-                </div>
+            <h5 class="text-secondary mb-3">My Applications</h5>
+            <button onclick="loadStatus()" class="btn btn-sm btn-outline-secondary w-100 mb-2">Refresh</button>
+            <div id="status-container"></div>
         </div>
 
-        <div id="sec-profile" class="app-section">
-             <div class="card card-custom text-center p-4">
-                 <h4 id="prof-name">Name</h4>
-                 <p id="prof-div" class="text-muted">Division</p>
-                 <hr>
-                 <button onclick="logout()" class="btn btn-danger">Log Out</button>
-             </div>
+        <div id="sec-profile" class="app-section text-center">
+            <div class="card card-custom p-4">
+                <h2 id="prof-name">User</h2>
+                <p id="prof-div" class="text-muted">Division</p>
+                <button onclick="location.reload()" class="btn btn-danger mt-3">Log Out</button>
+            </div>
         </div>
 
         <div class="nav-bottom">
-            <div class="nav-item active" onclick="nav('new', this)">
-                <div style="font-size: 1.2rem;">✏️</div>
-                <div>Post</div>
-            </div>
-            <div class="nav-item" onclick="nav('monitor', this)">
-                <div style="font-size: 1.2rem;">📋</div>
-                <div>Monitor</div>
-            </div>
-            <div class="nav-item" onclick="nav('profile', this)">
-                <div style="font-size: 1.2rem;">👤</div>
-                <div>Me</div>
-            </div>
+            <div class="nav-item active" onclick="nav('new', this)"><div>✏️</div><div>Post</div></div>
+            <div class="nav-item" onclick="nav('monitor', this)"><div>📋</div><div>Monitor</div></div>
+            <div class="nav-item" onclick="nav('profile', this)"><div>👤</div><div>Me</div></div>
         </div>
     </div>
 
     <script>
-        // --- CONFIGURATION ---
+        // CONFIG
         const SUPABASE_URL = "https://ytfpiyfapvybihlngxks.supabase.co";
         const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0ZnBpeWZhcHZ5YmlobG5neGtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxMDA2MTIsImV4cCI6MjA4NTY3NjYxMn0.7TRVjvFjxVtxkP_hL3wnlxPT6FXJd0y7aKHNzDHThAQ";
         
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        let CURRENT_USER = null;
-        let ITINERARY_CACHE = [];
+        let supabase;
+        let currentUser = null;
+        let itineraryData = [];
 
-        // --- AUTHENTICATION ---
-        async function handleLogin() {
+        try {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        } catch(e) {
+            alert("Critical Error: Supabase failed to load. Check internet connection.");
+        }
+
+        // --- LOGIN LOGIC (FIXED) ---
+        async function attemptLogin() {
             const uid = document.getElementById('login-id').value.trim();
             const pwd = document.getElementById('login-pass').value.trim();
             const msg = document.getElementById('login-msg');
+            
+            if(!uid || !pwd) { msg.innerText = "Please fill all fields."; return; }
+            msg.innerText = "Connecting...";
+            document.getElementById('loader').style.display = 'flex';
 
-            if(!uid || !pwd) { msg.innerText = "Please enter ID and Password"; return; }
-
-            toggleLoader(true);
             try {
-                // Fetch user
+                // 1. Fetch User
                 const { data, error } = await supabase.from('employees').select('*').eq('emp_id', uid).single();
                 
                 if (error || !data) {
-                    msg.innerText = "User not found";
-                    toggleLoader(false);
+                    msg.innerText = "User ID not found.";
+                    document.getElementById('loader').style.display = 'none';
                     return;
                 }
 
-                // Verify Password (matches Python's bcrypt logic)
-                const storedHash = data.pass;
-                // Note: In a real browser app, we usually compare hash. 
-                // Since Python used bcrypt, we use bcryptjs here.
+                // 2. Check Password (FIXED BCRYPT REFERENCE)
                 let isValid = false;
-                
-                // Check if plain text (legacy) or hash
+                const storedHash = data.pass;
+
                 if (storedHash === pwd) {
-                    isValid = true;
-                } else if (dcodeIO.bcrypt.compareSync(pwd, storedHash)) {
-                    isValid = true;
+                    isValid = true; // Plain text match
+                } else {
+                    // Safe Bcrypt Check
+                    if (window.bcrypt && window.bcrypt.compareSync) {
+                        try {
+                            isValid = window.bcrypt.compareSync(pwd, storedHash);
+                        } catch (err) {
+                            console.log("Bcrypt error:", err);
+                        }
+                    } else {
+                        alert("Error: Security library failed to load. Please refresh.");
+                    }
                 }
 
                 if (isValid) {
-                    CURRENT_USER = data;
+                    currentUser = data;
+                    // Switch UI
                     document.getElementById('login-screen').style.display = 'none';
                     document.getElementById('app-interface').style.display = 'block';
+                    // Populate Profile
                     document.getElementById('user-display').innerText = data.emp_id;
                     document.getElementById('prof-name').innerText = data.full_name;
                     document.getElementById('prof-div').innerText = data.division || "DAR";
-                    loadMyStatus();
+                    loadStatus();
                 } else {
-                    msg.innerText = "Invalid Password";
+                    msg.innerText = "Incorrect Password.";
                 }
+
             } catch (err) {
-                msg.innerText = "Connection Error: " + err.message;
+                msg.innerText = "Network Error: " + err.message;
             }
-            toggleLoader(false);
+            document.getElementById('loader').style.display = 'none';
         }
 
-        function logout() {
-            location.reload();
-        }
-
-        // --- NAVIGATION ---
-        function nav(secId, el) {
+        // --- APP LOGIC ---
+        function nav(id, el) {
             document.querySelectorAll('.app-section').forEach(d => d.classList.remove('active'));
-            document.getElementById('sec-' + secId).classList.add('active');
-            
+            document.getElementById('sec-' + id).classList.add('active');
             document.querySelectorAll('.nav-item').forEach(d => d.classList.remove('active'));
             el.classList.add('active');
-
-            if(secId === 'monitor') loadMyStatus();
+            if(id === 'monitor') loadStatus();
         }
 
-        function toggleLoader(show) {
-            document.getElementById('loader').style.display = show ? 'flex' : 'none';
-        }
-
-        // --- POSTING: NEW TRAVEL ORDER ---
-        function addItinerary() {
-            const date = document.getElementById('itin-date').value;
+        function addItem() {
+            const d = document.getElementById('itin-date').value;
             const dest = document.getElementById('itin-dest').value;
-            const purp = document.getElementById('itin-purp').value;
-
-            if(!date || !dest || !purp) { alert("Fill all itinerary fields"); return; }
-
-            ITINERARY_CACHE.push({ date, dest, purp });
-            renderItinList();
+            const p = document.getElementById('itin-purp').value;
+            if(!d || !dest) return alert("Date and Destination required");
             
-            // Clear inputs
+            itineraryData.push({ date: d, dest: dest, purp: p });
+            renderItin();
             document.getElementById('itin-dest').value = "";
-            document.getElementById('itin-purp').value = "";
         }
 
-        function renderItinList() {
-            const list = document.getElementById('itin-list');
-            list.innerHTML = "";
-            ITINERARY_CACHE.forEach((item, index) => {
-                list.innerHTML += `
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div>
-                            <strong>${item.date}</strong><br>
-                            ${item.dest} - ${item.purp}
-                        </div>
-                        <span class="badge bg-danger rounded-pill" onclick="removeItem(${index})" style="cursor:pointer">X</span>
-                    </li>
-                `;
+        function renderItin() {
+            const l = document.getElementById('itin-list');
+            l.innerHTML = "";
+            itineraryData.forEach((i, idx) => {
+                l.innerHTML += `<li class="list-group-item d-flex justify-content-between">
+                    <div><b>${i.date}</b><br>${i.dest}</div>
+                    <span class="text-danger" onclick="remItem(${idx})" style="cursor:pointer">✕</span>
+                </li>`;
             });
         }
 
-        function removeItem(idx) {
-            ITINERARY_CACHE.splice(idx, 1);
-            renderItinList();
-        }
+        function remItem(i) { itineraryData.splice(i, 1); renderItin(); }
 
-        async function submitTravelOrder() {
-            if (ITINERARY_CACHE.length === 0) { alert("Please add at least one itinerary row."); return; }
-            if (!confirm("Submit this Official Travel Order?")) return;
-
-            toggleLoader(true);
+        async function submitTO() {
+            if(itineraryData.length === 0) return alert("Add itinerary details first.");
+            if(!confirm("Submit Travel Order?")) return;
+            
+            document.getElementById('loader').style.display = 'flex';
             try {
-                // 1. Generate TO Number
-                const divCode = (CURRENT_USER.division || "DAR").substring(0,4).toUpperCase();
+                // Generate ID
                 const year = new Date().getFullYear();
-                const prefix = `${year}-${divCode}-`;
+                const div = (currentUser.division || "DAR").substring(0,4).toUpperCase();
+                const { count } = await supabase.from('travel_orders').select('to_no', {count:'exact', head:true}).ilike('to_no', `${year}-${div}-%`);
+                const toNo = `${year}-${div}-${String((count||0)+1).padStart(4,'0')}`;
 
-                // Count existing to generate ID (Simulated logic from Python)
-                const { count } = await supabase.from('travel_orders')
-                    .select('to_no', { count: 'exact', head: true })
-                    .ilike('to_no', `${prefix}%`);
-                
-                const nextNum = (count || 0) + 1;
-                const toNo = `${prefix}${String(nextNum).padStart(4, '0')}`;
+                // Status Logic
+                let st = "PENDING_CHIEF";
+                const u = (currentUser.unit || "").toUpperCase();
+                if(u === "PARPO") st = "PENDING_PARPO";
+                else if(u && u !== "NONE") st = "PENDING_UNIT_HEAD";
 
-                // 2. Determine Status Logic
-                let status = "PENDING_CHIEF";
-                const unit = (CURRENT_USER.unit || "").toUpperCase();
-                if(unit === "PARPO") status = "PENDING_PARPO";
-                else if (unit && unit !== "NONE") status = "PENDING_UNIT_HEAD";
-
-                // 3. Prepare Payloads
-                const orderPayload = {
+                // Insert Header
+                const { error: e1 } = await supabase.from('travel_orders').insert([{
                     to_no: toNo,
-                    emp_id: CURRENT_USER.emp_id,
-                    emp_name: CURRENT_USER.full_name,
-                    unit: CURRENT_USER.unit,
-                    status: status,
-                    division: CURRENT_USER.division,
+                    emp_id: currentUser.emp_id,
+                    emp_name: currentUser.full_name,
+                    division: currentUser.division,
+                    unit: currentUser.unit,
+                    status: st,
                     transport: document.getElementById('inp-transport').value,
                     report_to: document.getElementById('inp-report').value
-                };
+                }]);
+                if(e1) throw e1;
 
-                const itinPayload = ITINERARY_CACHE.map(i => ({
+                // Insert Itinerary
+                const itinPayload = itineraryData.map(x => ({
                     to_no: toNo,
-                    travel_date: i.date,
-                    destination: i.dest,
-                    purpose: i.purp
+                    travel_date: x.date,
+                    destination: x.dest,
+                    purpose: x.purp
                 }));
+                const { error: e2 } = await supabase.from('itinerary').insert(itinPayload);
+                if(e2) throw e2;
 
-                // 4. Submit
-                const res1 = await supabase.from('travel_orders').insert([orderPayload]);
-                if(res1.error) throw res1.error;
-
-                const res2 = await supabase.from('itinerary').insert(itinPayload);
-                if(res2.error) throw res2.error;
-
-                alert("Success! TO # " + toNo + " Submitted.");
-                
-                // Reset
-                ITINERARY_CACHE = [];
-                renderItinList();
+                alert("Submitted: " + toNo);
+                itineraryData = [];
+                renderItin();
                 nav('monitor', document.querySelectorAll('.nav-item')[1]);
 
-            } catch (err) {
-                alert("Error submitting: " + err.message);
-            }
-            toggleLoader(false);
+            } catch(e) { alert("Error: " + e.message); }
+            document.getElementById('loader').style.display = 'none';
         }
 
-        // --- MONITORING ---
-        async function loadMyStatus() {
-            if(!CURRENT_USER) return;
-            const container = document.getElementById('status-container');
-            container.innerHTML = '<p class="text-center text-muted">Loading...</p>';
-
-            try {
-                // Fetch orders
-                const { data: orders } = await supabase.from('travel_orders')
-                    .select('*')
-                    .eq('emp_id', CURRENT_USER.emp_id)
-                    .order('created_at', { ascending: false });
-
-                // Fetch itinerary for details
-                const { data: itins } = await supabase.from('itinerary').select('*');
-
-                container.innerHTML = "";
+        async function loadStatus() {
+            const c = document.getElementById('status-container');
+            c.innerHTML = "Loading...";
+            const { data: ords } = await supabase.from('travel_orders').select('*').eq('emp_id', currentUser.emp_id).order('created_at', {ascending:false});
+            const { data: itins } = await supabase.from('itinerary').select('*');
+            
+            c.innerHTML = "";
+            if(!ords || ords.length===0) { c.innerHTML = "<p class='text-center text-muted'>No records.</p>"; return; }
+            
+            ords.forEach(o => {
+                const rel = itins.filter(x => x.to_no === o.to_no);
+                const dStr = rel.length > 0 ? rel[0].travel_date : "N/A";
+                const dest = rel.length > 0 ? rel[0].destination : "N/A";
+                const cls = o.status === 'APPROVED' ? 'st-approved' : 'st-pending';
                 
-                if(!orders || orders.length === 0) {
-                    container.innerHTML = '<p class="text-center text-muted mt-5">No applications found.</p>';
-                    return;
-                }
-
-                orders.forEach(ord => {
-                    // Filter itinerary for this order locally
-                    const relItin = itins.filter(i => i.to_no === ord.to_no);
-                    const dates = relItin.map(i => i.travel_date).sort();
-                    const dateStr = dates.length > 0 ? `${dates[0]}` : "No Dates";
-                    const destStr = relItin.length > 0 ? relItin[0].destination : "N/A";
-
-                    let badgeClass = 'st-pending';
-                    if(ord.status === 'APPROVED') badgeClass = 'st-approved';
-
-                    container.innerHTML += `
-                        <div class="card card-custom">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <h6 class="fw-bold text-dark mb-0">${ord.to_no}</h6>
-                                    <span class="status-badge ${badgeClass}">${ord.status}</span>
-                                </div>
-                                <div class="small text-muted mb-1">📅 ${dateStr}</div>
-                                <div class="small text-dark">📍 ${destStr}</div>
-                            </div>
-                        </div>
-                    `;
-                });
-
-            } catch (err) {
-                container.innerHTML = '<p class="text-danger">Failed to load data.</p>';
-            }
+                c.innerHTML += `<div class="card card-custom p-3">
+                    <div class="d-flex justify-content-between">
+                        <b>${o.to_no}</b>
+                        <span class="status-badge ${cls}">${o.status}</span>
+                    </div>
+                    <small class="text-muted">📅 ${dStr}</small>
+                    <small>📍 ${dest}</small>
+                </div>`;
+            });
         }
     </script>
 </body>
