@@ -2,269 +2,204 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DAR Mobile Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAR Mobile Simple</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
+
     <style>
-        body { background-color: #F3F4F6; font-family: sans-serif; }
-        #login-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #003811; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2000; }
-        .login-card { background: white; padding: 30px; border-radius: 12px; width: 85%; max-width: 350px; }
-        .app-section { display: none; padding: 80px 20px 80px 20px; }
-        .app-section.active { display: block; }
-        .nav-bottom { position: fixed; bottom: 0; width: 100%; background: white; border-top: 1px solid #eee; display: flex; height: 60px; z-index: 1000; }
-        .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 10px; color: #999; }
-        .nav-item.active { color: #003811; font-weight: bold; background: #f0fdf4; }
-        .loading-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:3000; display:none; align-items:center; justify-content:center; color:white; flex-direction:column;}
+        body { background-color: #f3f4f6; font-family: sans-serif; padding: 20px; }
+        .card { max-width: 400px; margin: 0 auto; border: none; shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .btn-dar { background-color: #003811; color: white; font-weight: bold; }
+        .hidden { display: none !important; }
+        #debug-log { font-size: 10px; color: #666; margin-top: 20px; text-align: center; }
     </style>
 </head>
 <body>
 
-    <div id="loader" class="loading-overlay">
-        <div class="spinner-border text-light mb-2" role="status"></div>
-        <span id="loader-text">Loading...</span>
-    </div>
-
-    <div id="login-screen">
-        <div class="login-card text-center">
-            <h3 style="color: #003811; font-weight: bold;">DAR TRAVEL</h3>
-            <p class="text-muted small mb-4">Mobile Portal</p>
+    <div id="view-login" class="container mt-5">
+        <div class="card p-4">
+            <h3 class="text-center" style="color:#003811; font-weight:bold">DAR TRAVEL</h3>
+            <p class="text-center text-muted small">Mobile Portal</p>
+            <hr>
             
-            <input type="text" id="uid" class="form-control mb-3" placeholder="Employee ID">
-            <input type="password" id="pwd" class="form-control mb-4" placeholder="Password">
-
-            <button onclick="startLogin()" class="btn btn-success w-100 py-2 fw-bold" style="background-color: #003811;">SECURE LOGIN</button>
+            <div class="mb-3">
+                <label class="form-label small fw-bold">ID Number</label>
+                <input type="text" id="inp-id" class="form-control" placeholder="Enter ID">
+            </div>
             
-            <p id="status-msg" class="text-danger small mt-3"></p>
+            <div class="mb-4">
+                <label class="form-label small fw-bold">Password</label>
+                <input type="password" id="inp-pass" class="form-control" placeholder="••••••">
+            </div>
+
+            <button id="btn-login" class="btn btn-dar w-100 py-2">LOGIN</button>
+            
+            <div id="debug-log">Initializing...</div>
         </div>
     </div>
 
-    <div id="main-app" style="display: none;">
-        <nav class="navbar fixed-top px-3" style="background-color: #003811; color: white;">
-            <span class="fw-bold">DAR Mobile</span>
-            <span id="user-display" class="small opacity-75">User</span>
+    <div id="view-app" class="hidden">
+        <nav class="navbar fixed-top" style="background:#003811; color:white">
+            <div class="container-fluid">
+                <span class="navbar-brand mb-0 h1 text-warning">DAR Mobile</span>
+                <button onclick="location.reload()" class="btn btn-sm btn-outline-light">Logout</button>
+            </div>
         </nav>
-
-        <div id="page-post" class="app-section active">
-            <h5>New Travel Order</h5>
-            <div class="card p-3 mb-3 border-0 shadow-sm">
-                <label class="small fw-bold text-muted">Transport</label>
-                <select id="inp-trans" class="form-select mb-2"><option>LAND</option><option>GOV'T VEHICLE</option><option>AIR</option></select>
-                <label class="small fw-bold text-muted">Report To</label>
-                <input type="text" id="inp-rep" class="form-control" placeholder="Name/Position">
+        <div style="margin-top: 80px" class="container">
+            <h5 class="mb-3">New Application</h5>
+            <div class="card p-3 mb-3">
+                <label class="small text-muted">Destination</label>
+                <input type="text" id="app-dest" class="form-control mb-2">
+                <label class="small text-muted">Date</label>
+                <input type="date" id="app-date" class="form-control mb-2">
+                <label class="small text-muted">Purpose</label>
+                <input type="text" id="app-purp" class="form-control mb-2">
+                <button onclick="submitApp()" class="btn btn-success mt-2">Submit</button>
             </div>
-            <div class="card p-3 mb-3 border-0 shadow-sm">
-                <h6>Itinerary</h6>
-                <div class="row g-1 mb-2">
-                    <div class="col-4"><input type="date" id="it-date" class="form-control form-control-sm"></div>
-                    <div class="col-8"><input type="text" id="it-dest" class="form-control form-control-sm" placeholder="Destination"></div>
-                    <div class="col-12"><input type="text" id="it-purp" class="form-control form-control-sm" placeholder="Purpose"></div>
-                </div>
-                <button onclick="addItin()" class="btn btn-outline-secondary btn-sm w-100">+ Add Row</button>
-                <ul id="itin-list" class="list-group mt-2 small"></ul>
-            </div>
-            <button onclick="submitOrder()" class="btn btn-success w-100 py-3 fw-bold" style="background-color: #003811;">SUBMIT</button>
-        </div>
-
-        <div id="page-monitor" class="app-section">
-            <div class="d-flex justify-content-between mb-3">
-                <h5>My History</h5>
-                <button onclick="loadHistory()" class="btn btn-sm btn-light text-primary">Refresh</button>
-            </div>
-            <div id="history-list"></div>
-        </div>
-
-        <div id="page-profile" class="app-section text-center">
-            <h2 id="prof-name">User</h2>
-            <p id="prof-div" class="text-muted">Division</p>
-            <button onclick="location.reload()" class="btn btn-danger mt-4">Sign Out</button>
-        </div>
-
-        <div class="nav-bottom">
-            <div class="nav-item active" onclick="nav('post', this)"><span>✏️</span><span>Post</span></div>
-            <div class="nav-item" onclick="nav('monitor', this)"><span>📋</span><span>Monitor</span></div>
-            <div class="nav-item" onclick="nav('profile', this)"><span>👤</span><span>Me</span></div>
+            
+            <h5 class="mb-3">My History</h5>
+            <button onclick="loadHistory()" class="btn btn-sm btn-secondary mb-2">Refresh List</button>
+            <div id="list-history">Loading...</div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://unpkg.com/bcryptjs@2.4.3/dist/bcrypt.min.js"></script>
 
     <script>
-        const SUPA_URL = "https://ytfpiyfapvybihlngxks.supabase.co";
-        const SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0ZnBpeWZhcHZ5YmlobG5neGtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxMDA2MTIsImV4cCI6MjA4NTY3NjYxMn0.7TRVjvFjxVtxkP_hL3wnlxPT6FXJd0y7aKHNzDHThAQ";
+        // CONFIG
+        const URL = "https://ytfpiyfapvybihlngxks.supabase.co";
+        const KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0ZnBpeWZhcHZ5YmlobG5neGtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxMDA2MTIsImV4cCI6MjA4NTY3NjYxMn0.7TRVjvFjxVtxkP_hL3wnlxPT6FXJd0y7aKHNzDHThAQ";
         
         let supabase = null;
         let currentUser = null;
-        let itinData = [];
+        const log = document.getElementById('debug-log');
 
-        // INIT SUPABASE SAFELY
-        window.addEventListener('load', () => {
+        // 1. INITIALIZE ON LOAD
+        window.onload = function() {
             try {
-                if(window.supabase) {
-                    supabase = window.supabase.createClient(SUPA_URL, SUPA_KEY);
-                    console.log("DB Ready");
+                if (window.supabase) {
+                    supabase = window.supabase.createClient(URL, KEY);
+                    log.innerText = "System Ready. Database Connected.";
+                    log.style.color = "green";
+                    
+                    // Bind Click Event
+                    document.getElementById('btn-login').addEventListener('click', doLogin);
                 } else {
-                    document.getElementById('status-msg').innerText = "Error: Database library failed to load.";
+                    log.innerText = "Error: Supabase Library failed to load.";
+                    log.style.color = "red";
                 }
-            } catch(e) { console.error(e); }
-        });
+            } catch (err) {
+                log.innerText = "Init Error: " + err.message;
+                log.style.color = "red";
+            }
+        };
 
-        // 1. LOGIN FUNCTION
-        async function startLogin() {
-            // DEBUG: If this alert doesn't show, HTML is broken.
-            // alert("Button Clicked!"); 
+        // 2. LOGIN LOGIC
+        async function doLogin() {
+            const btn = document.getElementById('btn-login');
+            const uid = document.getElementById('inp-id').value.trim();
+            const pwd = document.getElementById('inp-pass').value.trim();
 
-            const uid = document.getElementById('uid').value.trim();
-            const pwd = document.getElementById('pwd').value.trim();
-            const stat = document.getElementById('status-msg');
-            const loader = document.getElementById('loader');
+            if (!uid || !pwd) { alert("Please enter ID and Password"); return; }
 
-            if(!uid || !pwd) { stat.innerText = "Enter ID and Password"; return; }
-
-            stat.innerText = "";
-            loader.style.display = 'flex';
-            document.getElementById('loader-text').innerText = "Verifying...";
+            // Visual Feedback
+            btn.innerText = "Checking...";
+            btn.disabled = true;
 
             try {
-                if(!supabase) throw new Error("Database not connected. Reload page.");
-
-                // A. GET USER
+                // A. Get User
                 const { data, error } = await supabase.from('employees').select('*').eq('emp_id', uid).single();
                 
-                if(error || !data) throw new Error("User ID not found.");
-
-                // B. CHECK PASSWORD
-                const dbPass = data.pass;
-                let isValid = false;
-
-                // Simple check first (Legacy)
-                if(dbPass === pwd) isValid = true;
-                // Bcrypt check (Secure)
-                else if(window.bcrypt && window.bcrypt.compareSync) {
-                    isValid = window.bcrypt.compareSync(pwd, dbPass);
-                } else {
-                    // Fallback if library failed but pass doesn't match plain text
-                    throw new Error("Security check failed. Library missing.");
+                if (error || !data) {
+                    throw new Error("User ID not found.");
                 }
 
-                if(!isValid) throw new Error("Incorrect Password.");
+                // B. Check Password
+                let valid = false;
+                if (data.pass === pwd) {
+                    valid = true; // Plain text match
+                } else if (window.bcrypt && window.bcrypt.compareSync(pwd, data.pass)) {
+                    valid = true; // Encrypted match
+                }
 
-                // C. SUCCESS
-                currentUser = data;
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-app').style.display = 'block';
-                
-                // Populate Profile
-                document.getElementById('user-display').innerText = data.emp_id;
-                document.getElementById('prof-name').innerText = data.full_name;
-                document.getElementById('prof-div').innerText = data.division || "DAR";
-                
-                loadHistory();
+                if (valid) {
+                    currentUser = data;
+                    document.getElementById('view-login').classList.add('hidden');
+                    document.getElementById('view-app').classList.remove('hidden');
+                    loadHistory();
+                } else {
+                    alert("Incorrect Password");
+                    btn.innerText = "LOGIN";
+                    btn.disabled = false;
+                }
 
-            } catch(err) {
-                stat.innerText = err.message;
+            } catch (err) {
+                alert("Login Failed: " + err.message);
+                btn.innerText = "LOGIN";
+                btn.disabled = false;
             }
-            loader.style.display = 'none';
         }
 
-        // 2. NAV
-        function nav(page, el) {
-            document.querySelectorAll('.app-section').forEach(x => x.classList.remove('active'));
-            document.getElementById('page-' + page).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
-            el.classList.add('active');
-            if(page === 'monitor') loadHistory();
-        }
+        // 3. SUBMIT APP
+        async function submitApp() {
+            const dest = document.getElementById('app-dest').value;
+            const date = document.getElementById('app-date').value;
+            const purp = document.getElementById('app-purp').value;
 
-        // 3. POSTING
-        function addItin() {
-            const d = document.getElementById('it-date').value;
-            const dst = document.getElementById('it-dest').value;
-            const p = document.getElementById('it-purp').value;
-            if(!d || !dst) return alert("Date/Dest required");
-            itinData.push({date:d, dest:dst, purp:p});
-            renderItin();
-            document.getElementById('it-dest').value = "";
-        }
-
-        function renderItin() {
-            const l = document.getElementById('itin-list');
-            l.innerHTML = "";
-            itinData.forEach((i,x) => {
-                l.innerHTML += `<li class="list-group-item d-flex justify-content-between p-1">
-                    <div><b>${i.date}</b> ${i.dest}</div>
-                    <button onclick="remItin(${x})" class="btn btn-sm text-danger">x</button>
-                </li>`;
-            });
-        }
-        window.remItin = (i) => { itinData.splice(i,1); renderItin(); }
-
-        async function submitOrder() {
-            if(itinData.length === 0) return alert("Add Itinerary first");
+            if(!dest || !date) { alert("Fill all fields"); return; }
             if(!confirm("Submit Order?")) return;
 
-            const loader = document.getElementById('loader');
-            loader.style.display = 'flex';
-            document.getElementById('loader-text').innerText = "Submitting...";
-
             try {
-                // Generate ID
-                const yr = new Date().getFullYear();
+                // Generate TO Number
+                const yr = "2026";
                 const div = (currentUser.division || "DAR").substring(0,4).toUpperCase();
-                const { count } = await supabase.from('travel_orders').select('*', { count: 'exact', head: true }).ilike('to_no', `${yr}-${div}-%`);
+                const { count } = await supabase.from('travel_orders').select('*', {count:'exact', head:true}).ilike('to_no', `${yr}-${div}-%`);
                 const toNo = `${yr}-${div}-${String((count||0)+1).padStart(4,'0')}`;
 
-                let st = "PENDING_CHIEF";
-                const u = (currentUser.unit || "").toUpperCase();
-                if(u === "PARPO") st = "PENDING_PARPO";
-                else if(u && u!=="NONE") st = "PENDING_UNIT_HEAD";
-
-                // Insert
+                // Insert Order
                 await supabase.from('travel_orders').insert([{
                     to_no: toNo, emp_id: currentUser.emp_id, emp_name: currentUser.full_name,
-                    division: currentUser.division, unit: currentUser.unit, status: st,
-                    transport: document.getElementById('inp-trans').value,
-                    report_to: document.getElementById('inp-rep').value
+                    division: currentUser.division, unit: currentUser.unit, status: "PENDING_CHIEF",
+                    transport: "LAND", report_to: "Official"
                 }]);
 
-                const itinPayload = itinData.map(i => ({ to_no: toNo, travel_date: i.date, destination: i.dest, purpose: i.purp }));
-                await supabase.from('itinerary').insert(itinPayload);
+                // Insert Itinerary
+                await supabase.from('itinerary').insert([{
+                    to_no: toNo, travel_date: date, destination: dest, purpose: purp
+                }]);
 
                 alert("Success! TO#: " + toNo);
-                itinData = []; renderItin();
-                nav('monitor', document.querySelectorAll('.nav-item')[1]);
+                loadHistory();
+                // Clear inputs
+                document.getElementById('app-dest').value = "";
+                document.getElementById('app-purp').value = "";
 
-            } catch(e) { alert(e.message); }
-            loader.style.display = 'none';
+            } catch(e) { alert("Error: " + e.message); }
         }
 
-        // 4. HISTORY
+        // 4. LOAD HISTORY
         async function loadHistory() {
-            const div = document.getElementById('history-list');
-            div.innerHTML = "<p class='text-center mt-3 text-muted'>Loading...</p>";
+            const list = document.getElementById('list-history');
+            list.innerHTML = "Loading...";
             
-            const { data: ords } = await supabase.from('travel_orders').select('*').eq('emp_id', currentUser.emp_id).order('created_at', {ascending:false});
-            const { data: itins } = await supabase.from('itinerary').select('*');
+            const { data } = await supabase.from('travel_orders')
+                .select('*')
+                .eq('emp_id', currentUser.emp_id)
+                .order('created_at', {ascending:false})
+                .limit(10);
+                
+            list.innerHTML = "";
+            if(!data || data.length === 0) { list.innerHTML = "No records found."; return; }
 
-            div.innerHTML = "";
-            if(!ords || ords.length === 0) { div.innerHTML = "<p class='text-center mt-3 text-muted'>No Records</p>"; return; }
-
-            ords.forEach(o => {
-                const rel = itins.filter(x => x.to_no === o.to_no);
-                const dDate = rel.length ? rel[0].travel_date : "N/A";
-                const dDest = rel.length ? rel[0].destination : "";
-                const bg = o.status === 'APPROVED' ? '#d1fae5' : '#ffedd5';
-                const col = o.status === 'APPROVED' ? '#065f46' : '#9a3412';
-
-                div.innerHTML += `
-                    <div class="card p-3 mb-2 border-0 shadow-sm">
-                        <div class="d-flex justify-content-between mb-1">
-                            <span class="fw-bold">${o.to_no}</span>
-                            <span style="background:${bg}; color:${col}; padding:2px 8px; border-radius:4px; font-size:10px; font-weight:bold">${o.status}</span>
+            data.forEach(item => {
+                const color = item.status === 'APPROVED' ? 'green' : 'orange';
+                list.innerHTML += `
+                    <div class="card p-2 mb-2">
+                        <div class="d-flex justify-content-between">
+                            <strong>${item.to_no}</strong>
+                            <span style="color:${color}; font-weight:bold">${item.status}</span>
                         </div>
-                        <div class="small text-muted">${dDate}</div>
-                        <div class="small fw-bold">${dDest}</div>
                     </div>`;
             });
         }
