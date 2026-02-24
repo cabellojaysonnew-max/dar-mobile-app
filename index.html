@@ -35,7 +35,7 @@
             <ul class="space-y-6">
                 <li class="flex items-start">
                     <i data-lucide="flower-2" class="mr-3 text-pink-300 flex-shrink-0"></i>
-                    <div><span class="font-bold block">Topic 1</span> Lead with Strength: SWOT Analysis Training</div>
+                    <div><span class="font-bold block">Topic 1</span> Lead with Strength: SWOT Writing</div>
                 </li>
                 <li class="flex items-start">
                     <i data-lucide="bot" class="mr-3 text-blue-300 flex-shrink-0"></i>
@@ -52,26 +52,42 @@
             <h3 class="text-xl font-bold mb-6 flex items-center"><i data-lucide="sparkles" class="mr-2 text-blue-400"></i> BABAYLAN SANCTUARY</h3>
             <div class="space-y-4">
                 <div class="p-3 bg-purple-800 rounded-lg">
+                    <label class="block text-sm font-bold mb-1">Full Name:</label>
+                    <input type="text" id="full_name" placeholder="e.g. Juan Dela Cruz" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400">
+                </div>
+                <div class="p-3 bg-purple-800 rounded-lg">
+                    <label class="block text-sm font-bold mb-1">Select Date:</label>
+                    <input type="date" id="bookingDate" min="2026-03-01" max="2026-03-31" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400" required>
+                </div>
+                <div class="p-3 bg-purple-800 rounded-lg">
                     <label class="block text-sm font-bold mb-1">Select Service:</label>
-                    <select id="serviceType" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600">
-                        <option>Full-Body Massage</option>
-                        <option>Hair & Nail Care</option>
-                        <option>Meditation Room</option>
+                    <select id="serviceType" onchange="updateProviders()" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400">
+                        <option value="Massage">Full-Body Massage</option>
+                        <option value="Salon">Hair & Nail Care</option>
+                    </select>
+                </div>
+                <div class="p-3 bg-purple-800 rounded-lg">
+                    <label class="block text-sm font-bold mb-1">Select Provider & Room:</label>
+                    <select id="provider" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400">
                     </select>
                 </div>
                 <div class="p-3 bg-purple-800 rounded-lg">
                     <label class="block text-sm font-bold mb-1">Preferred Time Slot:</label>
-                    <select id="timeSlot" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600">
-                        <option>09:00 AM - 10:00 AM</option>
-                        <option>10:30 AM - 11:30 AM</option>
-                        <option>01:30 PM - 02:30 PM</option>
-                        <option>03:00 PM - 04:00 PM</option>
+                    <select id="timeSlot" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400">
+                        <option value="8:30-9:30">8:30 AM - 9:30 AM</option>
+                        <option value="9:45-10:45">9:45 AM - 10:45 AM</option>
+                        <option value="11:00-12:00">11:00 AM - 12:00 PM</option>
+                        <option value="12:30-1:30">12:30 PM - 1:30 PM</option>
+                        <option value="1:45-2:45">1:45 PM - 2:45 PM</option>
+                        <option value="3:00-4:00">3:00 PM - 4:00 PM</option>
+                        <option value="4:15-5:15">4:15 PM - 5:15 PM</option>
                     </select>
                 </div>
-                <button onclick="registerService()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg btn-hover shadow-lg">
-                    BOOK MY SLOT
+                
+                <button id="bookBtn" onclick="registerService()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg btn-hover shadow-lg flex items-center justify-center">
+                    <span>BOOK MY SLOT</span>
                 </button>
-                <p class="text-xs text-center text-blue-200 mt-2 italic">*Limited slots available per day.</p>
+                <div id="statusMsg" class="text-center font-bold text-sm hidden mt-2"></div>
             </div>
         </section>
 
@@ -117,18 +133,85 @@
     </footer>
 
     <script>
-        // Initialize Icons
         lucide.createIcons();
 
-        // Registration Interaction
-        function registerService() {
-            const service = document.getElementById('serviceType').value;
-            const time = document.getElementById('timeSlot').value;
+        const masseurs = [
+            "Masseur A (Female) - Conference", "Masseur B (Female) - Conference", "Masseur C (Female) - Conference", "Masseur D (Female) - Conference",
+            "Masseur E (Male) - PARPO I", "Masseur F (Male) - PARPO II", "Masseur G (Female) - LTSP", "Masseur H (Female) - LTSP",
+            "Masseur I (Female) - LEGAL", "Masseur J (Female) - STOD"
+        ];
+        
+        const beauticians = [
+            "Beautician 1", "Beautician 2", "Beautician 3", "Beautician 4", "Beautician 5", "Beautician 6"
+        ];
+
+        function updateProviders() {
+            const serviceType = document.getElementById('serviceType').value;
+            const providerSelect = document.getElementById('provider');
+            providerSelect.innerHTML = '';
             
-            // Interaction Feedback
-            alert(`Registration successful for: ${service} at ${time}.\n\nPlease ensure you have no pending Travel Orders on this date.`);
+            const options = serviceType === 'Massage' ? masseurs : beauticians;
+            options.forEach(opt => {
+                const el = document.createElement('option');
+                el.value = opt;
+                el.textContent = opt;
+                providerSelect.appendChild(el);
+            });
+        }
+
+        updateProviders();
+
+        async function registerService() {
+            const full_name = document.getElementById('full_name').value;
+            const date = document.getElementById('bookingDate').value;
+            
+            if (!full_name || !date) {
+                alert("Please provide your Full Name and select a Date.");
+                return;
+            }
+
+            const data = {
+                full_name: full_name,
+                date: date,
+                service: document.getElementById('serviceType').value,
+                provider: document.getElementById('provider').value,
+                time: document.getElementById('timeSlot').value
+            };
+
+            const btn = document.getElementById('bookBtn');
+            const msg = document.getElementById('statusMsg');
+            
+            btn.disabled = true;
+            btn.innerHTML = 'Processing...';
+            msg.className = 'text-center font-bold text-sm mt-2'; // Reset classes
+
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbwYb4Q_f-2G_91JjJAlBBuwboUhP7uLVoBqHrUZAiT70OItxepHc8KfdDBCdeKkOw6UTw/exec';
+
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    msg.classList.add('text-green-400');
+                    msg.textContent = "Success! Your slot is booked.";
+                    document.getElementById('full_name').value = '';
+                } else {
+                    msg.classList.add('text-red-400');
+                    msg.textContent = "Sorry, that slot is already taken. Please choose another provider or time.";
+                }
+            } catch (error) {
+                console.error('Error!', error.message);
+                msg.classList.add('text-red-400');
+                msg.textContent = "Network error. Please try again.";
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'BOOK MY SLOT';
+            }
         }
     </script>
 </body>
 </html>
-
