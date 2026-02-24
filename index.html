@@ -19,8 +19,8 @@
 
     <header class="text-center py-12 px-4">
         <div class="flex justify-center space-x-4 mb-6">
-            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center p-1"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Department_of_Agrarian_Reform_%28Philippines%29.svg" alt="DAR"></div>
-            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center p-1"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/GAD_Logo.png" alt="GAD" onerror="this.src='https://via.placeholder.com/60?text=GAD'"></div>
+            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center p-1"><img src="dar-logo.png" alt="DAR" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/4/4a/Department_of_Agrarian_Reform_%28Philippines%29.svg'"></div>
+            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center p-1"><img src="gad-logo.png" alt="GAD" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/e/e7/GAD_Logo.png'"></div>
         </div>
         <h2 class="text-2xl uppercase tracking-widest mb-2 font-bold">Women's Month</h2>
         <h1 class="text-6xl md:text-8xl font-black accent-yellow mb-4 leading-tight">Celebration</h1>
@@ -31,33 +31,42 @@
     <main class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8 py-10">
         
         <section class="glass-card p-6 rounded-2xl border-t-4 border-pink-400">
-            <h3 class="text-xl font-bold mb-6 flex items-center"><i data-lucide="graduation-cap" class="mr-2 text-pink-400"></i> EMPOWERED LEADER WORKSHOP</h3>
+            <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="graduation-cap" class="mr-2 text-pink-400"></i> EMPOWERED LEADER WORKSHOP</h3>
+            <div class="text-sm font-semibold text-pink-200 mb-6">
+                <p class="flex items-center mb-1"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i> March 30, 2026</p>
+                <a href="https://www.google.com/maps/search/Amesola+Spring+Valley" target="_blank" class="flex items-center text-blue-300 hover:text-blue-100 hover:underline">
+                    <i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> Amesola Spring Valley (View Map)
+                </a>
+            </div>
             <ul class="space-y-6">
                 <li class="flex items-start">
-                    <i data-lucide="flower-2" class="mr-3 text-pink-300 flex-shrink-0"></i>
-                    <div><span class="font-bold block">Topic 1</span> Lead with Strength: SWOT Writing</div>
+                    <i data-lucide="flower-2" class="mr-3 text-pink-300 flex-shrink-0 mt-1"></i>
+                    <div><span class="font-bold block text-pink-300">Topic 1</span> Lead with Strength: SWOT Analysis Training and Workshop</div>
                 </li>
                 <li class="flex items-start">
-                    <i data-lucide="bot" class="mr-3 text-blue-300 flex-shrink-0"></i>
+                    <i data-lucide="bot" class="mr-3 text-blue-300 flex-shrink-0 mt-1"></i>
                     <div><span class="font-bold block text-blue-300">Topic 2</span> The AI-Empowered Babaylan</div>
                 </li>
                 <li class="flex items-start">
-                    <i data-lucide="pencil-line" class="mr-3 text-yellow-300 flex-shrink-0"></i>
-                    <div><span class="font-bold block">Topic 3</span> Technical Writing</div>
+                    <i data-lucide="pencil-line" class="mr-3 text-yellow-300 flex-shrink-0 mt-1"></i>
+                    <div><span class="font-bold block text-yellow-300">Topic 3</span> Technical Writing</div>
                 </li>
             </ul>
         </section>
 
         <section class="glass-card p-6 rounded-2xl border-t-4 border-blue-400">
-            <h3 class="text-xl font-bold mb-6 flex items-center"><i data-lucide="sparkles" class="mr-2 text-blue-400"></i> BABAYLAN SANCTUARY</h3>
+            <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="sparkles" class="mr-2 text-blue-400"></i> SERBISYO PARA KAY JUANA</h3>
+            <div class="text-sm font-semibold text-blue-200 mb-6">
+                <p class="flex items-center"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i> March 31, 2026</p>
+            </div>
             <div class="space-y-4">
                 <div class="p-3 bg-purple-800 rounded-lg">
                     <label class="block text-sm font-bold mb-1">Full Name:</label>
                     <input type="text" id="full_name" placeholder="e.g. Juan Dela Cruz" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400">
                 </div>
-                <div class="p-3 bg-purple-800 rounded-lg">
+                <div class="p-3 bg-purple-800 rounded-lg hidden">
                     <label class="block text-sm font-bold mb-1">Select Date:</label>
-                    <input type="date" id="bookingDate" min="2026-03-01" max="2026-03-31" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400" required>
+                    <input type="date" id="bookingDate" value="2026-03-31" min="2026-03-31" max="2026-03-31" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400" required readonly>
                 </div>
                 <div class="p-3 bg-purple-800 rounded-lg">
                     <label class="block text-sm font-bold mb-1">Select Service:</label>
@@ -92,9 +101,15 @@
         </section>
 
         <section class="glass-card p-6 rounded-2xl border-t-4 border-yellow-400">
-            <h3 class="text-xl font-bold mb-6 flex items-center"><i data-lucide="shopping-bag" class="mr-2 text-yellow-400"></i> AGRARYO MERKADO</h3>
+            <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="shopping-bag" class="mr-2 text-yellow-400"></i> AGRARYO MERKADO</h3>
+            <div class="text-sm font-semibold text-yellow-200 mb-6">
+                <p class="flex items-center"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i> March 30, 2026</p>
+            </div>
             <div class="space-y-4">
                 <p class="text-sm">Visit the DARPO at DARMO to support our local women entrepreneurs and ARBOs.</p>
+                <a href="https://www.facebook.com/profile.php?id=61587180002234" target="_blank" class="inline-flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors mb-2 shadow-md">
+                    <i data-lucide="facebook" class="w-4 h-4 mr-2"></i> Visit Official FB Page
+                </a>
                 <div class="flex items-center space-x-2 text-yellow-200">
                     <i data-lucide="award"></i> <span>Awarding Ceremony</span>
                 </div>
@@ -183,7 +198,7 @@
             
             btn.disabled = true;
             btn.innerHTML = 'Processing...';
-            msg.className = 'text-center font-bold text-sm mt-2'; // Reset classes
+            msg.className = 'text-center font-bold text-sm mt-2'; 
 
             const scriptURL = 'https://script.google.com/macros/s/AKfycbwYb4Q_f-2G_91JjJAlBBuwboUhP7uLVoBqHrUZAiT70OItxepHc8KfdDBCdeKkOw6UTw/exec';
 
