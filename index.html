@@ -3,179 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAR Quick Travel</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>Women's Month Celebration 2026 | DAR Camarines Sur 1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        body { font-family: sans-serif; background: #f4f4f5; padding: 20px; }
-        .container { max-width: 400px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        button { width: 100%; padding: 12px; background: #003811; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
-        button:disabled { background: #ccc; }
-        .hidden { display: none; }
-        #error-msg { color: red; font-size: 12px; margin-top: 10px; text-align: center; }
-        .status-box { background: #e6fffa; color: #003811; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center; font-size: 12px; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #3b2164; color: white; }
+        .accent-yellow { color: #f9e18b; }
+        .bg-accent-yellow { background-color: #f9e18b; }
+        .glass-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
+        .btn-hover:hover { transform: translateY(-2px); transition: all 0.2s; }
     </style>
 </head>
-<body>
+<body class="overflow-x-hidden">
 
-    <div id="view-login" class="container">
-        <h3 style="text-align:center; color:#003811;">DAR TRAVEL</h3>
-        <p style="text-align:center; font-size:12px; color:#666;">Direct Connect</p>
-        
-        <input type="text" id="uid" placeholder="Employee ID">
-        <input type="password" id="pwd" placeholder="Password">
-        
-        <button onclick="login()" id="btn-login">CONNECT</button>
-        <div id="error-msg"></div>
-    </div>
-
-    <div id="view-app" class="container hidden">
-        <div class="status-box">
-            Logged in as: <strong id="u-name">User</strong><br>
-            Division: <strong id="u-div">---</strong> | Unit: <strong id="u-unit">---</strong>
+    <header class="text-center py-12 px-4">
+        <div class="flex justify-center space-x-4 mb-6">
+            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center p-1"><img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Department_of_Agrarian_Reform_%28Philippines%29.svg" alt="DAR"></div>
+            <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center p-1"><img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/GAD_Logo.png" alt="GAD" onerror="this.src='https://via.placeholder.com/60?text=GAD'"></div>
         </div>
+        <h2 class="text-2xl uppercase tracking-widest mb-2 font-bold">Women's Month</h2>
+        <h1 class="text-6xl md:text-8xl font-black accent-yellow mb-4 leading-tight">Celebration</h1>
+        <p class="text-xl md:text-2xl italic mb-4">Department of Agrarian Reform Camarines Sur 1</p>
+        <p class="text-lg bg-accent-yellow text-purple-900 font-bold inline-block px-4 py-1 rounded-full">March 1-31, 2026</p>
+    </header>
 
-        <label style="font-size:12px; font-weight:bold;">DESTINATION</label>
-        <input type="text" id="p-dest">
+    <main class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8 py-10">
+        
+        <section class="glass-card p-6 rounded-2xl border-t-4 border-pink-400">
+            <h3 class="text-xl font-bold mb-6 flex items-center"><i data-lucide="graduation-cap" class="mr-2 text-pink-400"></i> EMPOWERED LEADER WORKSHOP</h3>
+            <ul class="space-y-6">
+                <li class="flex items-start">
+                    <i data-lucide="flower-2" class="mr-3 text-pink-300 flex-shrink-0"></i>
+                    <div><span class="font-bold block">Topic 1</span> Lead with Strength: SWOT Writing</div>
+                </li>
+                <li class="flex items-start">
+                    <i data-lucide="bot" class="mr-3 text-blue-300 flex-shrink-0"></i>
+                    <div><span class="font-bold block text-blue-300">Topic 2</span> The AI-Empowered Babaylan</div>
+                </li>
+                <li class="flex items-start">
+                    <i data-lucide="pencil-line" class="mr-3 text-yellow-300 flex-shrink-0"></i>
+                    <div><span class="font-bold block">Topic 3</span> Technical Writing</div>
+                </li>
+            </ul>
+        </section>
 
-        <label style="font-size:12px; font-weight:bold;">DATE</label>
-        <input type="date" id="p-date">
+        <section class="glass-card p-6 rounded-2xl border-t-4 border-blue-400">
+            <h3 class="text-xl font-bold mb-6 flex items-center"><i data-lucide="sparkles" class="mr-2 text-blue-400"></i> BABAYLAN SANCTUARY</h3>
+            <div class="space-y-4">
+                <div class="p-3 bg-purple-800 rounded-lg">
+                    <label class="block text-sm font-bold mb-1">Select Service:</label>
+                    <select id="serviceType" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600">
+                        <option>Full-Body Massage</option>
+                        <option>Hair & Nail Care</option>
+                        <option>Meditation Room</option>
+                    </select>
+                </div>
+                <div class="p-3 bg-purple-800 rounded-lg">
+                    <label class="block text-sm font-bold mb-1">Preferred Time Slot:</label>
+                    <select id="timeSlot" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600">
+                        <option>09:00 AM - 10:00 AM</option>
+                        <option>10:30 AM - 11:30 AM</option>
+                        <option>01:30 PM - 02:30 PM</option>
+                        <option>03:00 PM - 04:00 PM</option>
+                    </select>
+                </div>
+                <button onclick="registerService()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg btn-hover shadow-lg">
+                    BOOK MY SLOT
+                </button>
+                <p class="text-xs text-center text-blue-200 mt-2 italic">*Limited slots available per day.</p>
+            </div>
+        </section>
 
-        <label style="font-size:12px; font-weight:bold;">PURPOSE</label>
-        <input type="text" id="p-purp">
+        <section class="glass-card p-6 rounded-2xl border-t-4 border-yellow-400">
+            <h3 class="text-xl font-bold mb-6 flex items-center"><i data-lucide="shopping-bag" class="mr-2 text-yellow-400"></i> AGRARYO MERKADO</h3>
+            <div class="space-y-4">
+                <p class="text-sm">Visit the DARPO at DARMO to support our local women entrepreneurs and ARBOs.</p>
+                <div class="flex items-center space-x-2 text-yellow-200">
+                    <i data-lucide="award"></i> <span>Awarding Ceremony</span>
+                </div>
+                <div class="flex items-center space-x-2 text-pink-300">
+                    <i data-lucide="heart"></i> <span>Grand Launching</span>
+                </div>
+                <div class="flex items-center space-x-2 text-blue-300">
+                    <i data-lucide="map"></i> <span>ARBO 360 Tour</span>
+                </div>
+            </div>
+        </section>
+    </main>
 
-        <button onclick="submitOrder()" id="btn-submit">SUBMIT TRAVEL ORDER</button>
-        <button onclick="location.reload()" style="background:white; color:#333; border:1px solid #ccc; margin-top:10px;">Logout</button>
-    </div>
+    <section class="max-w-4xl mx-auto px-6 pb-20">
+        <div class="bg-accent-yellow text-purple-900 p-8 rounded-3xl text-center shadow-2xl">
+            <h2 class="text-3xl font-black mb-2 uppercase tracking-tighter">Post Evaluation Survey</h2>
+            <p class="mb-6 font-medium">Your feedback helps us make next year's celebration even better!</p>
+            <a href="https://forms.cloud.microsoft/Pages/DesignPageV2.aspx?id=hslj_ewKNkSKenSo5u9h5HSub3xMQjNDoEYFXqzwNNBUNkY0NkhNRTY3UTNZV1NKNkVSUTFNUVRMMS4u" 
+               target="_blank" 
+               class="inline-block bg-purple-900 text-white font-black py-4 px-10 rounded-full btn-hover shadow-xl">
+                START SURVEY NOW
+            </a>
+        </div>
+    </section>
+
+    <footer class="relative mt-20">
+        <div class="flex justify-center">
+            <div class="text-center">
+                <div class="inline-block relative">
+                    <i data-lucide="ship" class="w-32 h-32 text-purple-200 mx-auto opacity-50"></i>
+                    <p class="mt-4 font-bold text-xl uppercase tracking-widest">#WEcanbeEquALL</p>
+                </div>
+            </div>
+        </div>
+        <div class="h-10 bg-blue-400 opacity-30 mt-10 rounded-t-full"></div>
+    </footer>
 
     <script>
-        // CONFIG
-        const DB_URL = "https://ytfpiyfapvybihlngxks.supabase.co";
-        const DB_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl0ZnBpeWZhcHZ5YmlobG5neGtzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAxMDA2MTIsImV4cCI6MjA4NTY3NjYxMn0.7TRVjvFjxVtxkP_hL3wnlxPT6FXJd0y7aKHNzDHThAQ";
-        
-        let supabase = null;
-        let currentUser = null;
+        // Initialize Icons
+        lucide.createIcons();
 
-        // INIT
-        window.onload = () => {
-            if(window.supabase) supabase = window.supabase.createClient(DB_URL, DB_KEY);
-            else alert("Error: Library not loaded. Check internet.");
-        };
-
-        // --- 1. CONNECT & AUTH ---
-        async function login() {
-            const uid = document.getElementById('uid').value.trim();
-            const pwd = document.getElementById('pwd').value.trim();
-            const btn = document.getElementById('btn-login');
-            const err = document.getElementById('error-msg');
-
-            if(!uid || !pwd) return;
-
-            btn.innerText = "CONNECTING...";
-            btn.disabled = true;
-            err.innerText = "";
-
-            try {
-                // Fetch User
-                const { data, error } = await supabase.from('employees').select('*').eq('emp_id', uid).single();
-                
-                if(error) throw error;
-                if(!data) throw new Error("User not found");
-
-                // Check Password (Exact Match for Simplicity)
-                if(data.pass !== pwd) throw new Error("Wrong Password");
-
-                // Success
-                currentUser = data;
-                document.getElementById('view-login').classList.add('hidden');
-                document.getElementById('view-app').classList.remove('hidden');
-                
-                document.getElementById('u-name').innerText = data.full_name;
-                document.getElementById('u-div').innerText = data.division || "DAR";
-                document.getElementById('u-unit').innerText = data.unit || "NONE";
-
-            } catch(e) {
-                console.error(e);
-                if(e.message.includes("fetch")) {
-                    err.innerHTML = "⚠️ <b>CONNECTION BLOCKED</b><br>You MUST add your GitHub URL to Supabase:<br>Authentication > URL Configuration";
-                } else {
-                    err.innerText = e.message;
-                }
-                btn.innerText = "CONNECT";
-                btn.disabled = false;
-            }
-        }
-
-        // --- 2. LOGIC: ID & STATUS ---
-        async function submitOrder() {
-            const dest = document.getElementById('p-dest').value;
-            const date = document.getElementById('p-date').value;
-            const purp = document.getElementById('p-purp').value;
-
-            if(!dest || !date) return alert("Missing Info");
-
-            const btn = document.getElementById('btn-submit');
-            btn.innerText = "PROCESSING...";
-            btn.disabled = true;
-
-            try {
-                // A. DETERMINE STATUS
-                let status = "PENDING_DIVISION_CHIEF"; // Default
-                const unit = (currentUser.unit || "").toUpperCase();
-                
-                if (unit === "PARPO") {
-                    status = "PENDING_PARPO";
-                } else if (unit && unit !== "NONE") {
-                    status = "PENDING_UNIT_HEAD";
-                }
-
-                // B. GENERATE ID (YYYY-DIV-XXXXX)
-                const yr = "2026";
-                // Get first 4 letters of Division (e.g. STOD)
-                const divCode = (currentUser.division || "DAR").substring(0,4).toUpperCase();
-                
-                // Count how many orders exist for this Division in 2026 to verify next number
-                const { count } = await supabase
-                    .from('travel_orders')
-                    .select('*', { count: 'exact', head: true })
-                    .ilike('to_no', `${yr}-${divCode}-%`);
-                
-                // Format: 2026-STOD-00001
-                const nextNum = (count || 0) + 1;
-                const toNo = `${yr}-${divCode}-${String(nextNum).padStart(5, '0')}`;
-
-                // C. SAVE TO DATABASE
-                // 1. Order Header
-                const { error: e1 } = await supabase.from('travel_orders').insert({
-                    to_no: toNo,
-                    emp_id: currentUser.emp_id,
-                    emp_name: currentUser.full_name,
-                    division: currentUser.division,
-                    unit: currentUser.unit,
-                    status: status,
-                    transport: "LAND", // Default
-                    report_to: "Official" // Default
-                });
-                if(e1) throw e1;
-
-                // 2. Itinerary Detail
-                const { error: e2 } = await supabase.from('itinerary').insert({
-                    to_no: toNo,
-                    travel_date: date,
-                    destination: dest,
-                    purpose: purp
-                });
-                if(e2) throw e2;
-
-                // D. SUCCESS
-                alert(`SUCCESS!\n\nOrder #: ${toNo}\nStatus: ${status}`);
-                location.reload(); // Refresh to clear
-
-            } catch(e) {
-                alert("Error: " + e.message);
-                btn.innerText = "SUBMIT TRAVEL ORDER";
-                btn.disabled = false;
-            }
+        // Registration Interaction
+        function registerService() {
+            const service = document.getElementById('serviceType').value;
+            const time = document.getElementById('timeSlot').value;
+            
+            // Interaction Feedback
+            alert(`Registration successful for: ${service} at ${time}.\n\nPlease ensure you have no pending Travel Orders on this date.`);
         }
     </script>
 </body>
