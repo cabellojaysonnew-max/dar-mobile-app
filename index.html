@@ -334,5 +334,37 @@
             }
         }
     </script>
+
+    // 2. Fetch Messages Function
+        async function fetchMessages() {
+            const grid = document.getElementById('messagesGrid');
+            try {
+                // We added { redirect: 'follow' } which Google sometimes requires
+                const response = await fetch(scriptURL, { method: 'GET', redirect: 'follow' });
+                const messages = await response.json();
+                
+                grid.innerHTML = ''; // Clear loading text
+
+                if (messages.length === 0) {
+                    grid.innerHTML = '<div class="col-span-full text-center text-purple-300 py-4">No messages yet. Be the first to post!</div>';
+                    return;
+                }
+
+                messages.forEach(msg => {
+                    const date = new Date(msg.timestamp).toLocaleDateString();
+                    const card = `
+                        <div class="message-card p-4 rounded-lg shadow break-words">
+                            <p class="text-white mb-2 italic">"${msg.text}"</p>
+                            <p class="text-xs text-yellow-200 font-bold">- ${msg.name} <span class="text-purple-300 font-normal ml-2">${date}</span></p>
+                        </div>
+                    `;
+                    grid.innerHTML += card;
+                });
+            } catch (error) {
+                console.error("Fetch Error:", error);
+                grid.innerHTML = '<div class="col-span-full text-center text-red-300 py-4">Could not load messages. Please ensure your Google Apps Script is deployed as a "New Version".</div>';
+            }
+        }
 </body>
 </html>
+
