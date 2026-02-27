@@ -112,7 +112,10 @@
                     </select>
                 </div>
                 <div class="p-3 bg-purple-800 rounded-lg">
-                    <label class="block text-sm font-bold mb-1">Preferred Time Slot:</label>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="block text-sm font-bold">Preferred Time Slot:</label>
+                        <button onclick="checkAvailability()" type="button" class="text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded shadow">Check Availability</button>
+                    </div>
                     <select id="timeSlot" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400">
                         <option value="8:30-9:30">8:30 AM - 9:30 AM</option>
                         <option value="9:45-10:45">9:45 AM - 10:45 AM</option>
@@ -122,11 +125,17 @@
                         <option value="3:00-4:00">3:00 PM - 4:00 PM</option>
                         <option value="4:15-5:15">4:15 PM - 5:15 PM</option>
                     </select>
+                    <div id="availabilityMsg" class="text-xs text-yellow-300 mt-2 hidden"></div>
                 </div>
                 
-                <button id="bookBtn" onclick="registerService()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg btn-hover shadow-lg flex items-center justify-center">
-                    <span>BOOK MY SLOT</span>
-                </button>
+                <div class="space-y-2 mt-2">
+                    <button id="bookBtn" onclick="registerService()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg btn-hover shadow-lg flex items-center justify-center">
+                        <span>BOOK MY SLOT</span>
+                    </button>
+                    <button id="cancelBtn" onclick="cancelBooking()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg btn-hover shadow-lg flex items-center justify-center">
+                        <span>CANCEL BOOKING</span>
+                    </button>
+                </div>
                 <div id="statusMsg" class="text-center font-bold text-sm hidden mt-2"></div>
             </div>
         </section>
@@ -173,7 +182,7 @@
             
             <div class="flickr-embed-wrapper w-full rounded-xl overflow-hidden shadow-lg border-2 border-green-500 bg-black/50 relative aspect-video">
                 
-                <a data-flickr-embed="true" href="https://www.flickr.com/photos/204272375@N03/albums/72177720332196566" title="DAR Camarines Sur 1 Women&#x27;s Month Celebration "><img src="https://live.staticflickr.com/65535/55114587266_3dc48bee9c_h.jpg" width="1600" height="1200" alt="DAR Camarines Sur 1 Women&#x27;s Month Celebration "/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
+                <a data-flickr-embed="true" href="https://www.flickr.com/photos/204272375@N03/albums/72177720332196566" title="DAR Camarines Sur 1 Women's Month Celebration "><img src="https://live.staticflickr.com/65535/55114587266_3dc48bee9c_h.jpg" width="1600" height="1200" alt="DAR Camarines Sur 1 Women's Month Celebration "/></a><script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
                 
             </div>
         </div>
@@ -244,6 +253,16 @@
             "Beautician 1", "Beautician 2", "Beautician 3", "Beautician 4", "Beautician 5", "Beautician 6"
         ];
 
+        const defaultTimeSlots = [
+            { value: "8:30-9:30", text: "8:30 AM - 9:30 AM" },
+            { value: "9:45-10:45", text: "9:45 AM - 10:45 AM" },
+            { value: "11:00-12:00", text: "11:00 AM - 12:00 PM" },
+            { value: "12:30-1:30", text: "12:30 PM - 1:30 PM" },
+            { value: "1:45-2:45", text: "1:45 PM - 2:45 PM" },
+            { value: "3:00-4:00", text: "3:00 PM - 4:00 PM" },
+            { value: "4:15-5:15", text: "4:15 PM - 5:15 PM" }
+        ];
+
         function updateProviders() {
             const serviceType = document.getElementById('serviceType').value;
             const providerSelect = document.getElementById('provider');
@@ -256,9 +275,69 @@
                 el.textContent = opt;
                 providerSelect.appendChild(el);
             });
+            
+            // Reset slots on provider change
+            resetTimeSlots();
+            document.getElementById('availabilityMsg').classList.add('hidden');
+        }
+
+        function resetTimeSlots(bookedSlots = []) {
+            const timeSelect = document.getElementById('timeSlot');
+            timeSelect.innerHTML = '';
+            defaultTimeSlots.forEach(slot => {
+                const opt = document.createElement('option');
+                opt.value = slot.value;
+                opt.textContent = slot.text;
+                if (bookedSlots.includes(slot.value)) {
+                    opt.disabled = true;
+                    opt.textContent += ' (Booked)';
+                }
+                timeSelect.appendChild(opt);
+            });
         }
 
         updateProviders();
+
+        // Check Availability Function
+        async function checkAvailability() {
+            const date = document.getElementById('bookingDate').value;
+            const provider = document.getElementById('provider').value;
+            const msg = document.getElementById('availabilityMsg');
+
+            if (!date || !provider) return;
+
+            msg.classList.remove('hidden');
+            msg.className = 'text-xs text-yellow-300 mt-2';
+            msg.textContent = 'Checking available slots...';
+
+            const data = {
+                action: 'check_availability',
+                date: date,
+                provider: provider
+            };
+
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+
+                if (result.status === 'success') {
+                    // Expecting result.booked_slots to be an array of booked time strings
+                    const booked = result.booked_slots || [];
+                    resetTimeSlots(booked);
+                    msg.className = 'text-xs text-green-400 mt-2';
+                    msg.textContent = 'Slot availability updated successfully.';
+                } else {
+                    msg.className = 'text-xs text-red-400 mt-2';
+                    msg.textContent = 'Could not check availability. Try again.';
+                }
+            } catch (error) {
+                msg.className = 'text-xs text-red-400 mt-2';
+                msg.textContent = 'Network error while checking slots.';
+            }
+        }
 
         // 1. Service Booking Function
         async function registerService() {
@@ -284,7 +363,7 @@
             
             btn.disabled = true;
             btn.innerHTML = 'Processing...';
-            msg.className = 'text-center font-bold text-sm mt-2'; 
+            msg.className = 'text-center font-bold text-sm mt-2 hidden'; 
 
             try {
                 const response = await fetch(scriptURL, {
@@ -294,21 +373,83 @@
                 
                 const result = await response.json();
                 
+                msg.classList.remove('hidden');
                 if (result.status === 'success') {
-                    msg.classList.add('text-green-400');
+                    msg.className = 'text-center font-bold text-sm mt-2 text-green-400';
                     msg.textContent = "Success! Your slot is booked.";
                     document.getElementById('full_name').value = '';
                 } else {
-                    msg.classList.add('text-red-400');
+                    msg.className = 'text-center font-bold text-sm mt-2 text-red-400';
                     msg.textContent = "Sorry, that slot is already taken. Please choose another provider or time.";
                 }
             } catch (error) {
                 console.error('Error!', error.message);
-                msg.classList.add('text-red-400');
+                msg.classList.remove('hidden');
+                msg.className = 'text-center font-bold text-sm mt-2 text-red-400';
                 msg.textContent = "Network error. Please try again.";
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = 'BOOK MY SLOT';
+                btn.innerHTML = '<span>BOOK MY SLOT</span>';
+            }
+        }
+
+        // Cancel Booking Function
+        async function cancelBooking() {
+            const full_name = document.getElementById('full_name').value;
+            const date = document.getElementById('bookingDate').value;
+            const provider = document.getElementById('provider').value;
+            const time = document.getElementById('timeSlot').value;
+            
+            if (!full_name) {
+                alert("Please enter your Full Name exactly as booked to cancel.");
+                return;
+            }
+
+            if (!confirm(`Are you sure you want to cancel your booking for ${provider} at ${time}?`)) {
+                return;
+            }
+
+            const data = {
+                action: 'cancel',
+                full_name: full_name,
+                date: date,
+                service: document.getElementById('serviceType').value,
+                provider: provider,
+                time: time
+            };
+
+            const btn = document.getElementById('cancelBtn');
+            const msg = document.getElementById('statusMsg');
+            
+            btn.disabled = true;
+            btn.innerHTML = 'Cancelling...';
+            msg.className = 'text-center font-bold text-sm mt-2 hidden'; 
+
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                msg.classList.remove('hidden');
+                if (result.status === 'success') {
+                    msg.className = 'text-center font-bold text-sm mt-2 text-green-400';
+                    msg.textContent = "Your booking has been successfully cancelled.";
+                    document.getElementById('full_name').value = '';
+                } else {
+                    msg.className = 'text-center font-bold text-sm mt-2 text-red-400';
+                    msg.textContent = result.message || "Could not find your booking. Please check your details.";
+                }
+            } catch (error) {
+                console.error('Error!', error.message);
+                msg.classList.remove('hidden');
+                msg.className = 'text-center font-bold text-sm mt-2 text-red-400';
+                msg.textContent = "Network error. Please try again.";
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<span>CANCEL BOOKING</span>';
             }
         }
 
