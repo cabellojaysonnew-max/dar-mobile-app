@@ -317,14 +317,23 @@
             };
 
             try {
+                // Added text/plain header to prevent Google Apps Script CORS preflight issues
                 const response = await fetch(scriptURL, {
                     method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(data)
                 });
-                const result = await response.json();
+                
+                const text = await response.text();
+                let result;
+                
+                try {
+                    result = JSON.parse(text);
+                } catch (e) {
+                    throw new Error("Backend did not return valid JSON. Please update and redeploy your Google Apps Script.");
+                }
 
                 if (result.status === 'success') {
-                    // Expecting result.booked_slots to be an array of booked time strings
                     const booked = result.booked_slots || [];
                     resetTimeSlots(booked);
                     msg.className = 'text-xs text-green-400 mt-2';
@@ -334,8 +343,9 @@
                     msg.textContent = 'Could not check availability. Try again.';
                 }
             } catch (error) {
+                console.error("Availability Check Error:", error);
                 msg.className = 'text-xs text-red-400 mt-2';
-                msg.textContent = 'Network error while checking slots.';
+                msg.textContent = error.message;
             }
         }
 
