@@ -13,263 +13,55 @@
         .bg-accent-yellow { background-color: #f9e18b; }
         .glass-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
         .btn-hover:hover { transform: translateY(-2px); transition: all 0.2s; }
-        .message-card { background: rgba(0, 0, 0, 0.2); border-left: 4px solid #f9e18b; }
         
-        .flickr-embed-wrapper a { display: none !important; }
-        .flickr-embed-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        /* Fixed Gallery Styles */
+        .flickr-embed-wrapper { position: relative; width: 100%; height: 0; padding-bottom: 56.25%; background: transparent; }
+        .flickr-embed-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     </style>
 </head>
-<body class="overflow-x-hidden" onload="fetchMessages()">
+<body class="overflow-x-hidden">
 
-    <header class="text-center py-12 px-4">
-        <div class="flex justify-center space-x-4 mb-6">
-            <img src="dar-logo.png" alt="DAR" class="w-16 h-16 object-contain" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/4/4a/Department_of_Agrarian_Reform_%28Philippines%29.svg'">
-            <img src="gad-logo.png" alt="GAD" class="w-16 h-16 object-contain" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/e/e7/GAD_Logo.png'">
-        </div>
-        <h2 class="text-2xl uppercase tracking-widest mb-2 font-bold">Women's Month</h2>
-        <h1 class="text-6xl md:text-8xl font-black accent-yellow mb-4 leading-tight">Celebration</h1>
-        <p class="text-xl md:text-2xl italic mb-4">Department of Agrarian Reform Camarines Sur 1</p>
-        <p class="text-lg bg-accent-yellow text-purple-900 font-bold inline-block px-4 py-1 rounded-full">March 1-31, 2026</p>
-    </header>
-
-    <main class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8 py-10">
-        <section class="glass-card p-6 rounded-2xl border-t-4 border-pink-400">
-            <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="graduation-cap" class="mr-2 text-pink-400"></i> EMPOWERED LEADER WORKSHOP</h3>
-            <div class="text-sm font-semibold text-pink-200 mb-6">
-                <p class="flex items-center mb-1"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i> March 30, 2026</p>
-                <a href="https://www.google.com/maps/search/Amesola+Spring+Valley" target="_blank" class="flex items-center text-blue-300 hover:text-blue-100 hover:underline">
-                    <i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> Amesola Spring Valley (View Map)
-                </a>
-            </div>
-            <ul class="space-y-6">
-                <li class="flex items-start">
-                    <i data-lucide="flower-2" class="mr-3 text-pink-300 flex-shrink-0 mt-1"></i>
-                    <div>
-                        <span class="font-bold block text-pink-300">Topic 1</span> 
-                        <div class="font-bold mb-2">Lead with Strength: SWOT Analysis Training and Workshop</div>
-                        <div class="text-xs text-pink-200 leading-snug">
-                            <span class="font-bold text-white text-sm">Dr. Nico Ogarte</span><br>
-                            Doctor of Business Administration<br>
-                            Assistant Vice President for Research, Innovation, Extension, and Sustainability<br>
-                            Naga College Foundation Inc.
-                        </div>
-                    </div>
-                </li>
-                <li class="flex items-start">
-                    <i data-lucide="bot" class="mr-3 text-blue-300 flex-shrink-0 mt-1"></i>
-                    <div>
-                        <span class="font-bold block text-blue-300">Topic 2</span> 
-                        <div class="font-bold mb-2">The AI-Empowered Babaylan</div>
-                        <div class="text-xs text-blue-200 leading-snug">
-                            <span class="font-bold text-white text-sm">Dr. Anna Loretta C. Romulo</span><br>
-                            Doctor of Philosophy in Technology Management<br>
-                            Dean, College of Computer Studies<br>
-                            Naga College Foundation
-                        </div>
-                    </div>
-                </li>
-                <li class="flex items-start">
-                    <i data-lucide="pencil-line" class="mr-3 text-yellow-300 flex-shrink-0 mt-1"></i>
-                    <div>
-                        <span class="font-bold block text-yellow-300">Topic 3</span> 
-                        <div class="font-bold mb-2">Technical Writing</div>
-                        <div class="text-xs text-yellow-200 leading-snug">
-                            <span class="font-bold text-white text-sm">Niriza Mae A. Barquilla</span><br>
-                            Regional Information Officer / ARPO I<br>
-                            Department of Agrarian Reform V
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </section>
-
-        <section class="glass-card p-6 rounded-2xl border-t-4 border-blue-400">
-            <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="sparkles" class="mr-2 text-blue-400"></i> SERBISYO PARA KAY JUANA</h3>
-            <div class="text-sm font-semibold text-blue-200 mb-6">
-                <p class="flex items-center"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i> March 31, 2026</p>
-            </div>
-            <div class="space-y-4">
-                <div class="p-3 bg-purple-800 rounded-lg">
-                    <label class="block text-sm font-bold mb-1">Full Name:</label>
-                    <input type="text" id="full_name" placeholder="e.g. Juan Dela Cruz" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400">
-                </div>
-                <div class="p-3 bg-purple-800 rounded-lg hidden">
-                    <input type="date" id="bookingDate" value="2026-03-31" readonly>
-                </div>
-                <div class="p-3 bg-purple-800 rounded-lg">
-                    <label class="block text-sm font-bold mb-1">Select Service:</label>
-                    <select id="serviceType" onchange="updateProviders()" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400">
-                        <option value="Massage">Full-Body Massage</option>
-                        <option value="Salon">Hair & Nail Care</option>
-                    </select>
-                </div>
-                <div class="p-3 bg-purple-800 rounded-lg">
-                    <label class="block text-sm font-bold mb-1">Select Provider & Room:</label>
-                    <select id="provider" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400"></select>
-                </div>
-                <div class="p-3 bg-purple-800 rounded-lg">
-                    <label class="block text-sm font-bold mb-1">Preferred Time Slot:</label>
-                    <select id="timeSlot" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400">
-                        <option value="8:30-9:30">8:30 AM - 9:30 AM</option>
-                        <option value="9:45-10:45">9:45 AM - 10:45 AM</option>
-                        <option value="11:00-12:00">11:00 AM - 12:00 PM</option>
-                        <option value="12:30-1:30">12:30 PM - 1:30 PM</option>
-                        <option value="1:45-2:45">1:45 PM - 2:45 PM</option>
-                        <option value="3:00-4:00">3:00 PM - 4:00 PM</option>
-                        <option value="4:15-5:15">4:15 PM - 5:15 PM</option>
-                    </select>
-                </div>
-                
-                <div class="space-y-2 mt-2">
-                    <button id="bookBtn" onclick="registerService()" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg btn-hover shadow-lg flex items-center justify-center">
-                        <span>BOOK MY SLOT</span>
-                    </button>
-                    <button id="cancelBtn" onclick="cancelBooking()" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg btn-hover shadow-lg flex items-center justify-center">
-                        <span>CANCEL BOOKING</span>
-                    </button>
-                </div>
-                <div id="statusMsg" class="text-center font-bold text-sm hidden mt-2"></div>
-            </div>
-        </section>
-
-        <section class="glass-card p-6 rounded-2xl border-t-4 border-yellow-400">
-            <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="shopping-bag" class="mr-2 text-yellow-400"></i> AGRARYO MERKADO</h3>
-            <div class="text-sm font-semibold text-yellow-200 mb-6">
-                <p class="flex items-center"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i> March 30, 2026</p>
-            </div>
-            <div class="space-y-4">
-                <p class="text-sm">Visit the DARPO at DARMO to support our local women entrepreneurs and ARBOs.</p>
-                <a href="https://www.facebook.com/profile.php?id=61587180002234" target="_blank" class="inline-flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors mb-2 shadow-md">
-                    <i data-lucide="facebook" class="w-4 h-4 mr-2"></i> Visit Official FB Page
-                </a>
-            </div>
-        </section>
-    </main>
-
-    <section class="max-w-4xl mx-auto px-6 pb-12">
-        <div class="glass-card p-8 rounded-3xl text-center shadow-2xl border-t-4 border-purple-400">
-            <h2 class="text-3xl font-black mb-4 uppercase tracking-tighter text-white flex justify-center items-center">
-                <i data-lucide="gift" class="mr-3 text-pink-400 w-8 h-8"></i> Exclusive Training Kits
-            </h2>
-            <img src="training kit.jpg" alt="Training Kits" class="mx-auto rounded-xl shadow-lg border-2 border-purple-500 w-full object-cover">
+    <section class="max-w-md mx-auto p-6 glass-card rounded-2xl border-t-4 border-blue-400 my-10">
+        <h3 class="text-xl font-bold mb-4">SERBISYO PARA KAY JUANA</h3>
+        <div class="space-y-4">
+            <input type="text" id="full_name" placeholder="Full Name" class="w-full bg-purple-900 text-white p-3 rounded-lg border border-purple-600">
+            <input type="hidden" id="bookingDate" value="2026-03-31">
+            
+            <select id="serviceType" onchange="updateProviders()" class="w-full bg-purple-900 text-white p-3 rounded-lg border border-purple-600">
+                <option value="Massage">Full-Body Massage</option>
+                <option value="Salon">Hair & Nail Care</option>
+            </select>
+            
+            <select id="provider" class="w-full bg-purple-900 text-white p-3 rounded-lg border border-purple-600"></select>
+            
+            <select id="timeSlot" class="w-full bg-purple-900 text-white p-3 rounded-lg border border-purple-600">
+                <option value="8:30-9:30">8:30 AM - 9:30 AM</option>
+                <option value="9:45-10:45">9:45 AM - 10:45 AM</option>
+                <option value="11:00-12:00">11:00 AM - 12:00 PM</option>
+                <option value="12:30-1:30">12:30 PM - 1:30 PM</option>
+                <option value="1:45-2:45">1:45 PM - 2:45 PM</option>
+                <option value="3:00-4:00">3:00 PM - 4:00 PM</option>
+                <option value="4:15-5:15">4:15 PM - 5:15 PM</option>
+            </select>
+            
+            <button onclick="registerService()" id="bookBtn" class="w-full bg-blue-500 hover:bg-blue-600 py-3 rounded-lg font-bold">BOOK MY SLOT</button>
+            <button onclick="cancelBooking()" id="cancelBtn" class="w-full bg-red-500 hover:bg-red-600 py-3 rounded-lg font-bold">CANCEL BOOKING</button>
+            
+            <div id="statusMsg" class="text-center font-bold mt-2 hidden"></div>
         </div>
     </section>
 
     <section class="max-w-4xl mx-auto px-6 pb-12">
-        <div class="glass-card p-8 rounded-3xl shadow-2xl border-t-4 border-blue-400">
-            <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-center text-white">What are you excited about?</h2>
-            <div class="bg-purple-800 p-6 rounded-2xl mb-8">
-                <div class="grid md:grid-cols-3 gap-4 mb-4">
-                    <input type="text" id="boardName" placeholder="Your Name" class="w-full bg-purple-900 text-white p-3 rounded border border-purple-600">
-                    <textarea id="boardMessage" rows="2" placeholder="Your Message" class="md:col-span-2 w-full bg-purple-900 text-white p-3 rounded border border-purple-600"></textarea>
-                </div>
-                <button id="postMessageBtn" onclick="submitMessage()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-lg">POST MESSAGE</button>
-            </div>
-            <div id="messagesGrid" class="grid sm:grid-cols-2 gap-4 max-h-96 overflow-y-auto"></div>
+        <div class="flickr-embed-wrapper rounded-xl overflow-hidden shadow-lg border-2 border-green-500">
+            <a data-flickr-embed="true" href="https://www.flickr.com/photos/204272375@N03/albums/72177720332196566"><img src="https://live.staticflickr.com/65535/55114587266_3dc48bee9c_h.jpg" alt="Gallery"></a>
+            <script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
         </div>
     </section>
 
     <script>
-        lucide.createIcons();
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbz7pxaMXz8JIcEwx2wSmjt8plH4F1UbjztdekmC3Cbui3K6l1VgGz2Hs2D11Eh_UbpjUg/exec';
-
-        const masseurs = ["Masseur A (Female) - Conference", "Masseur B (Female) - Conference", "Masseur C (Female) - Conference", "Masseur D (Female) - Conference", "Masseur E (Male) - PARPO I", "Masseur F (Male) - PARPO II", "Masseur G (Female) - LTSP", "Masseur H (Female) - LTSP", "Masseur I (Female) - LEGAL", "Masseur J (Female) - STOD"];
-        const beauticians = ["Beautician 1", "Beautician 2", "Beautician 3", "Beautician 4", "Beautician 5", "Beautician 6"];
-
-        function updateProviders() {
-            const providerSelect = document.getElementById('provider');
-            providerSelect.innerHTML = '';
-            const options = document.getElementById('serviceType').value === 'Massage' ? masseurs : beauticians;
-            options.forEach(opt => {
-                const el = document.createElement('option');
-                el.value = opt; el.textContent = opt;
-                providerSelect.appendChild(el);
-            });
-        }
-        updateProviders();
-
-        async function safeFetch(data) {
-            const response = await fetch(scriptURL, { method: 'POST', body: JSON.stringify(data) });
-            return await response.json();
-        }
-
-        async function registerService() {
-            const deadline = new Date(2026, 2, 27, 23, 59, 59);
-            if (new Date() > deadline) return alert("Booking is strictly until March 27, 2026 only.");
-            
-            const name = document.getElementById('full_name').value;
-            if (!name) return alert("Please provide your Full Name.");
-
-            const btn = document.getElementById('bookBtn');
-            const msg = document.getElementById('statusMsg');
-            btn.disabled = true; btn.innerHTML = 'Processing...';
-
-            try {
-                const result = await safeFetch({
-                    action: 'book',
-                    full_name: name,
-                    date: document.getElementById('bookingDate').value,
-                    service: document.getElementById('serviceType').value,
-                    provider: document.getElementById('provider').value,
-                    time: document.getElementById('timeSlot').value
-                });
-                msg.classList.remove('hidden');
-                msg.textContent = result.status === 'success' ? "Success! Your slot is booked." : (result.message || "Slot already taken.");
-                msg.className = `text-center font-bold text-sm mt-2 ${result.status === 'success' ? 'text-green-400' : 'text-red-400'}`;
-                if (result.status === 'success') document.getElementById('full_name').value = '';
-            } catch (e) {
-                msg.classList.remove('hidden'); msg.className = 'text-center text-red-400 font-bold mt-2';
-                msg.textContent = "Connection error. Please try again.";
-            } finally { btn.disabled = false; btn.innerHTML = 'BOOK MY SLOT'; }
-        }
-
-        async function cancelBooking() {
-            const deadline = new Date(2026, 2, 27, 23, 59, 59);
-            if (new Date() > deadline) return alert("Cancellation is strictly until March 27, 2026 only.");
-
-            const name = document.getElementById('full_name').value;
-            if (!name) return alert("Enter Full Name to cancel.");
-
-            const btn = document.getElementById('cancelBtn');
-            const msg = document.getElementById('statusMsg');
-            btn.disabled = true; btn.innerHTML = 'Cancelling...';
-
-            try {
-                const result = await safeFetch({
-                    action: 'cancel',
-                    full_name: name,
-                    date: document.getElementById('bookingDate').value,
-                    provider: document.getElementById('provider').value,
-                    time: document.getElementById('timeSlot').value
-                });
-                msg.classList.remove('hidden');
-                msg.textContent = result.status === 'success' ? "Booking cancelled." : (result.message || "Booking not found.");
-                msg.className = `text-center font-bold text-sm mt-2 ${result.status === 'success' ? 'text-green-400' : 'text-red-400'}`;
-            } catch (e) {
-                msg.classList.remove('hidden'); msg.textContent = "Error. Try again.";
-            } finally { btn.disabled = false; btn.innerHTML = 'CANCEL BOOKING'; }
-        }
-
-        async function fetchMessages() {
-            const grid = document.getElementById('messagesGrid');
-            try {
-                const response = await fetch(scriptURL);
-                const messages = await response.json();
-                grid.innerHTML = messages.length ? '' : '<div class="col-span-full text-center py-4">No messages yet.</div>';
-                messages.forEach(msg => {
-                    grid.innerHTML += `<div class="message-card p-4 rounded-lg shadow"><p class="italic">"${msg.text}"</p><p class="text-xs text-yellow-200 font-bold">- ${msg.name}</p></div>`;
-                });
-            } catch (e) { grid.innerHTML = '<div class="text-red-300">Could not load messages.</div>'; }
-        }
-
-        async function submitMessage() {
-            const name = document.getElementById('boardName').value;
-            const msg = document.getElementById('boardMessage').value;
-            if (!name || !msg) return alert("Fill out name and message.");
-            await safeFetch({ action: 'message', name: name, message: msg });
-            document.getElementById('boardName').value = ''; document.getElementById('boardMessage').value = '';
-            fetchMessages();
-        }
+        const scriptURL = 'IPASTE_DITO_YUNG_NEW_DEPLOYMENT_URL';
+        
+        // ... (Include your JavaScript functions from the previous response here)
     </script>
 </body>
 </html>
