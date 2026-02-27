@@ -37,109 +37,90 @@
             <div class="text-sm font-semibold text-pink-200 mb-6">
                 <p class="flex items-center mb-1"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i> March 30, 2026</p>
                 <a href="https://www.google.com/maps/search/Amesola+Spring+Valley" target="_blank" class="flex items-center text-blue-300 hover:text-blue-100 hover:underline">
-                    <i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> Amesola Spring Valley (View Map)
+                    <i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> Amesola Spring Valley
                 </a>
             </div>
-            <ul class="space-y-6">
-                <li class="flex items-start">
-                    <i data-lucide="flower-2" class="mr-3 text-pink-300 flex-shrink-0 mt-1"></i>
-                    <div><span class="font-bold block text-pink-300">Topic 1</span><div class="font-bold mb-2">SWOT Analysis Training</div></div>
-                </li>
-                <li class="flex items-start">
-                    <i data-lucide="bot" class="mr-3 text-blue-300 flex-shrink-0 mt-1"></i>
-                    <div><span class="font-bold block text-blue-300">Topic 2</span><div class="font-bold mb-2">The AI-Empowered Babaylan</div></div>
-                </li>
-                <li class="flex items-start">
-                    <i data-lucide="pencil-line" class="mr-3 text-yellow-300 flex-shrink-0 mt-1"></i>
-                    <div><span class="font-bold block text-yellow-300">Topic 3</span><div class="font-bold mb-2">Technical Writing</div></div>
-                </li>
+            <ul class="space-y-4 text-sm">
+                <li><span class="font-bold text-pink-300">Topic 1:</span> Lead with Strength: SWOT Analysis</li>
+                <li><span class="font-bold text-blue-300">Topic 2:</span> The AI-Empowered Babaylan</li>
+                <li><span class="font-bold text-yellow-300">Topic 3:</span> Technical Writing</li>
             </ul>
         </section>
 
         <section class="glass-card p-6 rounded-2xl border-t-4 border-blue-400">
-            <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="sparkles" class="mr-2 text-blue-400"></i> SERBISYO PARA KAY JUANA</h3>
-            <div class="text-sm font-semibold text-blue-200 mb-6">
-                <p class="flex items-center"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i> March 31, 2026</p>
-            </div>
+            <h3 class="text-xl font-bold flex items-center mb-4"><i data-lucide="sparkles" class="mr-2 text-blue-400"></i> SERBISYO PARA KAY JUANA</h3>
             <div class="space-y-4">
-                <div class="p-3 bg-purple-800 rounded-lg">
-                    <label class="block text-sm font-bold mb-1">Full Name:</label>
-                    <input type="text" id="full_name" placeholder="e.g. Juan Dela Cruz" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400">
-                </div>
+                <input type="text" id="full_name" placeholder="Full Name" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400">
                 <input type="hidden" id="bookingDate" value="2026-03-31">
-                <div class="p-3 bg-purple-800 rounded-lg">
-                    <label class="block text-sm font-bold mb-1">Select Service:</label>
-                    <select id="serviceType" onchange="updateProviders()" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600">
-                        <option value="Massage">Full-Body Massage</option>
-                        <option value="Salon">Hair & Nail Care</option>
-                    </select>
-                </div>
-                <div class="p-3 bg-purple-800 rounded-lg">
-                    <label class="block text-sm font-bold mb-1">Select Provider:</label>
-                    <select id="provider" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600"></select>
-                </div>
-                <div class="p-3 bg-purple-800 rounded-lg">
-                    <label class="block text-sm font-bold mb-1">Time Slot:</label>
-                    <select id="timeSlot" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600">
-                        <option value="8:30-9:30">8:30 AM - 9:30 AM</option>
-                        <option value="9:45-10:45">9:45 AM - 10:45 AM</option>
-                        <option value="11:00-12:00">11:00 AM - 12:00 PM</option>
-                        <option value="12:30-1:30">12:30 PM - 1:30 PM</option>
-                        <option value="1:45-2:45">1:45 PM - 2:45 PM</option>
-                        <option value="3:00-4:00">3:00 PM - 4:00 PM</option>
-                        <option value="4:15-5:15">4:15 PM - 5:15 PM</option>
-                    </select>
-                </div>
-                <div class="space-y-2 mt-2">
-                    <button id="bookBtn" onclick="registerService()" class="w-full bg-blue-500 py-3 rounded-lg font-bold btn-hover">BOOK MY SLOT</button>
-                    <button id="cancelBtn" onclick="cancelBooking()" class="w-full bg-red-500 py-3 rounded-lg font-bold btn-hover">CANCEL BOOKING</button>
-                </div>
+                <select id="serviceType" onchange="updateProviders()" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600">
+                    <option value="Massage">Full-Body Massage</option>
+                    <option value="Salon">Hair & Nail Care</option>
+                </select>
+                <select id="provider" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600"></select>
+                <select id="timeSlot" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600">
+                    <option value="8:30-9:30">8:30 AM - 9:30 AM</option>
+                    <option value="9:45-10:45">9:45 AM - 10:45 AM</option>
+                    <option value="11:00-12:00">11:00 AM - 12:00 PM</option>
+                    <option value="12:30-1:30">12:30 PM - 1:30 PM</option>
+                    <option value="1:45-2:45">1:45 PM - 2:45 PM</option>
+                    <option value="3:00-4:00">3:00 PM - 4:00 PM</option>
+                    <option value="4:15-5:15">4:15 PM - 5:15 PM</option>
+                </select>
+                <button onclick="handleAction('book')" id="bookBtn" class="w-full bg-blue-500 hover:bg-blue-600 py-3 rounded-lg font-bold shadow-lg transition-all">BOOK MY SLOT</button>
+                <button onclick="handleAction('cancel')" id="cancelBtn" class="w-full bg-red-500 hover:bg-red-600 py-3 rounded-lg font-bold shadow-lg transition-all">CANCEL BOOKING</button>
                 <div id="statusMsg" class="text-center font-bold text-sm hidden mt-2"></div>
             </div>
         </section>
 
         <section class="glass-card p-6 rounded-2xl border-t-4 border-yellow-400">
             <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="shopping-bag" class="mr-2 text-yellow-400"></i> AGRARYO MERKADO</h3>
-            <div class="text-sm font-semibold text-yellow-200 mb-6">
-                <p class="flex items-center"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i> March 30, 2026</p>
-            </div>
-            <div class="space-y-4">
-                <p class="text-sm">Visit the DARPO at DARMO to support local women entrepreneurs.</p>
-                <a href="https://www.facebook.com/profile.php?id=61587180002234" target="_blank" class="inline-flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded shadow-md">
-                    <i data-lucide="facebook" class="w-4 h-4 mr-2"></i> Visit Official FB Page
-                </a>
-            </div>
+            <p class="text-sm mb-4">Visit the DARPO at DARMO to support our local women entrepreneurs and ARBOs.</p>
+            <a href="https://www.facebook.com/profile.php?id=61587180002234" target="_blank" class="inline-flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded shadow-md">
+                <i data-lucide="facebook" class="w-4 h-4 mr-2"></i> Visit Official FB Page
+            </a>
         </section>
     </main>
 
     <section class="max-w-4xl mx-auto px-6 pb-12">
         <div class="glass-card p-8 rounded-3xl text-center shadow-2xl border-t-4 border-purple-400 mb-10">
-            <h2 class="text-3xl font-black mb-4 uppercase tracking-tighter text-white">Exclusive Training Kits</h2>
-            <img src="training kit.jpg" class="mx-auto rounded-xl w-full object-cover">
+            <h2 class="text-3xl font-black mb-4 uppercase text-white flex justify-center items-center">
+                <i data-lucide="gift" class="mr-3 text-pink-400 w-8 h-8"></i> Exclusive Training Kits
+            </h2>
+            <img src="training kit.jpg" alt="Training Kits" class="mx-auto rounded-xl w-full object-cover">
         </div>
-        <div class="flickr-embed-wrapper rounded-xl border-2 border-green-500 overflow-hidden">
-            <a data-flickr-embed="true" href="https://www.flickr.com/photos/204272375@N03/albums/72177720332196566"><img src="https://live.staticflickr.com/65535/55114587266_3dc48bee9c_h.jpg"></a>
+        <div class="flickr-embed-wrapper rounded-xl border-2 border-green-500 overflow-hidden shadow-lg">
+            <a data-flickr-embed="true" href="https://www.flickr.com/photos/204272375@N03/albums/72177720332196566"><img src="https://live.staticflickr.com/65535/55114587266_3dc48bee9c_h.jpg" alt="Gallery"></a>
             <script async src="//embedr.flickr.com/assets/client-code.js"></script>
         </div>
     </section>
 
     <section class="max-w-4xl mx-auto px-6 pb-12">
         <div class="glass-card p-8 rounded-3xl shadow-2xl border-t-4 border-blue-400">
-            <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-center text-white">What are you excited about?</h2>
+            <h2 class="text-3xl font-black mb-6 uppercase text-center text-white">What are you excited about?</h2>
             <div class="bg-purple-800 p-6 rounded-2xl mb-8">
                 <div class="grid md:grid-cols-3 gap-4 mb-4">
                     <input type="text" id="boardName" placeholder="Your Name" class="w-full bg-purple-900 text-white p-3 rounded border border-purple-600">
                     <textarea id="boardMessage" rows="2" placeholder="Your Message" class="md:col-span-2 w-full bg-purple-900 text-white p-3 rounded border border-purple-600"></textarea>
                 </div>
-                <button onclick="submitMessage()" class="w-full bg-pink-500 py-3 rounded-lg font-bold btn-hover">POST MESSAGE</button>
+                <button id="postMessageBtn" onclick="submitMessage()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-lg shadow-lg">POST MESSAGE</button>
             </div>
-            <div id="messagesGrid" class="grid sm:grid-cols-2 gap-4 max-h-96 overflow-y-auto"></div>
+            <div id="messagesGrid" class="grid sm:grid-cols-2 gap-4 max-h-96 overflow-y-auto pr-2">
+                <div class="col-span-full text-center text-purple-300 italic py-4">Loading messages...</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-6 pb-20">
+        <div class="bg-accent-yellow text-purple-900 p-8 rounded-3xl text-center shadow-2xl">
+            <h2 class="text-3xl font-black mb-2 uppercase tracking-tighter">Post Evaluation Survey</h2>
+            <p class="mb-6 font-medium">Your feedback helps us make next year's celebration even better!</p>
+            <a href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=hslj_ewKNkSKenSo5u9h5HSub3xMQjNDoEYFXqzwNNBUNkY0NkhNRTY3UTNZV1NKNkVSUTFNUVRMMS4u" target="_blank" class="inline-block bg-purple-900 text-white font-black py-4 px-10 rounded-full btn-hover shadow-xl">START SURVEY NOW</a>
         </div>
     </section>
 
     <script>
         lucide.createIcons();
-        const scriptURL = 'PASTE_YOUR_NEW_DEPLOYMENT_URL_HERE';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbw7xqjXxIFzTMR3kU9VvxeIEWBeDhjQPqnIH2bkOKbblu3x4REc_2878fki9Xq-kuEX_g/exec';
 
         const masseurs = ["Masseur A (Female) - Conference", "Masseur B (Female) - Conference", "Masseur C (Female) - Conference", "Masseur D (Female) - Conference", "Masseur E (Male) - PARPO I", "Masseur F (Male) - PARPO II", "Masseur G (Female) - LTSP", "Masseur H (Female) - LTSP", "Masseur I (Female) - LEGAL", "Masseur J (Female) - STOD"];
         const beauticians = ["Beautician 1", "Beautician 2", "Beautician 3", "Beautician 4", "Beautician 5", "Beautician 6"];
@@ -152,21 +133,21 @@
         }
         updateProviders();
 
-        async function registerService() {
-            const deadline = new Date(2026, 1, 27, 23, 59, 59); // Feb 27
-            if (new Date() > deadline) return alert("Booking is strictly until March 27, 2026 only.");
+        async function handleAction(action) {
+            const deadline = new Date(2026, 2, 27, 23, 59, 59); // March 27, 2026 [cite: 2026-02-12]
+            if (new Date() > deadline) return alert("Transactions are only allowed until March 27, 2026.");
             const name = document.getElementById('full_name').value;
-            if (!name) return alert("Name required.");
-
-            const btn = document.getElementById('bookBtn');
+            if (!name) return alert("Name is required.");
+            
+            const btn = document.getElementById(action === 'book' ? 'bookBtn' : 'cancelBtn');
             const msg = document.getElementById('statusMsg');
-            btn.disabled = true; btn.innerHTML = 'Processing...';
+            btn.disabled = true; btn.innerText = 'Processing...';
 
             try {
                 const response = await fetch(scriptURL, {
                     method: 'POST',
                     body: JSON.stringify({
-                        action: 'book', full_name: name, date: "2026-03-31",
+                        action: action, full_name: name, date: "2026-03-31",
                         service: document.getElementById('serviceType').value,
                         provider: document.getElementById('provider').value,
                         time: document.getElementById('timeSlot').value
@@ -174,35 +155,11 @@
                 });
                 const res = await response.json();
                 msg.classList.remove('hidden');
-                msg.textContent = res.message || (res.status === 'success' ? 'Success! Your slot is booked.' : 'Already taken.');
+                msg.textContent = res.message || (res.status === 'success' ? 'Successful!' : 'Error.');
                 msg.className = `text-center font-bold text-sm mt-2 ${res.status === 'success' ? 'text-green-400' : 'text-red-400'}`;
-                if (res.status === 'success') document.getElementById('full_name').value = '';
-            } catch (e) { alert("Connection Error."); }
-            finally { btn.disabled = false; btn.innerHTML = 'BOOK MY SLOT'; }
-        }
-
-        async function cancelBooking() {
-            const name = document.getElementById('full_name').value;
-            if (!name) return alert("Name required.");
-            const btn = document.getElementById('cancelBtn');
-            const msg = document.getElementById('statusMsg');
-            btn.disabled = true; btn.innerHTML = 'Processing...';
-
-            try {
-                const response = await fetch(scriptURL, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        action: 'cancel', full_name: name,
-                        provider: document.getElementById('provider').value,
-                        time: document.getElementById('timeSlot').value
-                    })
-                });
-                const res = await response.json();
-                msg.classList.remove('hidden');
-                msg.textContent = res.message || 'Error occurred.';
-                msg.className = `text-center font-bold text-sm mt-2 ${res.status === 'success' ? 'text-green-400' : 'text-red-400'}`;
-            } catch (e) { alert("Error."); }
-            finally { btn.disabled = false; btn.innerHTML = 'CANCEL BOOKING'; }
+                if (res.status === 'success' && action === 'book') document.getElementById('full_name').value = '';
+            } catch (e) { alert("Connection error."); }
+            finally { btn.disabled = false; btn.innerText = action === 'book' ? 'BOOK MY SLOT' : 'CANCEL BOOKING'; }
         }
 
         async function fetchMessages() {
@@ -210,17 +167,20 @@
                 const r = await fetch(scriptURL);
                 const ms = await r.json();
                 const g = document.getElementById('messagesGrid');
-                g.innerHTML = ms.length ? '' : 'No messages yet.';
-                ms.forEach(m => { g.innerHTML += `<div class="message-card p-4 rounded-lg"><p class="italic">"${m.text}"</p><p class="text-xs font-bold">- ${m.name}</p></div>`; });
-            } catch (e) {}
+                g.innerHTML = ms.length ? '' : '<div class="col-span-full text-center py-4 italic">No messages yet.</div>';
+                ms.forEach(m => { g.innerHTML += `<div class="message-card p-4 rounded-lg"><p class="italic">"${m.text}"</p><p class="text-xs font-bold text-yellow-200 mt-2">- ${m.name}</p></div>`; });
+            } catch (e) { document.getElementById('messagesGrid').innerHTML = "Failed to load messages."; }
         }
 
         async function submitMessage() {
             const n = document.getElementById('boardName').value;
             const m = document.getElementById('boardMessage').value;
-            if (!n || !m) return alert("Fill all fields.");
+            if (!n || !m) return alert("Fill out both name and message.");
+            const btn = document.getElementById('postMessageBtn');
+            btn.disabled = true; btn.innerText = 'POSTING...';
             await fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'message', name: n, message: m }) });
             document.getElementById('boardName').value = ''; document.getElementById('boardMessage').value = '';
+            btn.disabled = false; btn.innerText = 'POST MESSAGE';
             fetchMessages();
         }
     </script>
