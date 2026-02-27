@@ -108,24 +108,30 @@
                 </div>
                 <div class="p-3 bg-purple-800 rounded-lg">
                     <label class="block text-sm font-bold mb-1">Select Provider & Room:</label>
-                    <select id="provider" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400">
+                    <select id="provider" onchange="updateProviders()" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400">
                     </select>
                 </div>
                 <div class="p-3 bg-purple-800 rounded-lg">
-                    <div class="flex justify-between items-center mb-1">
+                    <div class="flex justify-between items-center mb-2">
                         <label class="block text-sm font-bold">Preferred Time Slot:</label>
-                        <button onclick="checkAvailability()" type="button" class="text-xs bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded shadow">Check Availability</button>
+                        <button onclick="checkAvailability()" type="button" class="text-xs bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded shadow">Check Availability</button>
                     </div>
-                    <select id="timeSlot" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400">
-                        <option value="8:30-9:30">8:30 AM - 9:30 AM</option>
-                        <option value="9:45-10:45">9:45 AM - 10:45 AM</option>
-                        <option value="11:00-12:00">11:00 AM - 12:00 PM</option>
-                        <option value="12:30-1:30">12:30 PM - 1:30 PM</option>
-                        <option value="1:45-2:45">1:45 PM - 2:45 PM</option>
-                        <option value="3:00-4:00">3:00 PM - 4:00 PM</option>
-                        <option value="4:15-5:15">4:15 PM - 5:15 PM</option>
-                    </select>
-                    <div id="availabilityMsg" class="text-xs text-yellow-300 mt-2 hidden"></div>
+                    
+                    <div id="timeTableContainer" class="hidden overflow-hidden rounded border border-purple-600 mb-2">
+                        <table class="w-full text-left bg-purple-900 text-sm">
+                            <thead class="bg-purple-800">
+                                <tr>
+                                    <th class="py-2 px-3 font-semibold">Time</th>
+                                    <th class="py-2 px-3 font-semibold text-center">Status</th>
+                                    <th class="py-2 px-3 font-semibold text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="timeTableBody">
+                                </tbody>
+                        </table>
+                    </div>
+                    <input type="hidden" id="selectedTimeSlot" value="">
+                    <div id="availabilityMsg" class="text-xs text-yellow-300 mt-2 block">Click "Check Availability" to load slots for this provider.</div>
                 </div>
                 
                 <div class="space-y-2 mt-2">
@@ -263,51 +269,105 @@
             { value: "4:15-5:15", text: "4:15 PM - 5:15 PM" }
         ];
 
+        // Ensure updateProviders handles the table resets correctly
         function updateProviders() {
-            const serviceType = document.getElementById('serviceType').value;
-            const providerSelect = document.getElementById('provider');
-            providerSelect.innerHTML = '';
+            // Check if triggered by the provider dropdown itself, if so just reset the table
+            const isProviderChange = event && event.target && event.target.id === 'provider';
             
-            const options = serviceType === 'Massage' ? masseurs : beauticians;
-            options.forEach(opt => {
-                const el = document.createElement('option');
-                el.value = opt;
-                el.textContent = opt;
-                providerSelect.appendChild(el);
-            });
+            if (!isProviderChange) {
+                const serviceType = document.getElementById('serviceType').value;
+                const providerSelect = document.getElementById('provider');
+                providerSelect.innerHTML = '';
+                
+                const options = serviceType === 'Massage' ? masseurs : beauticians;
+                options.forEach(opt => {
+                    const el = document.createElement('option');
+                    el.value = opt;
+                    el.textContent = opt;
+                    providerSelect.appendChild(el);
+                });
+            }
             
-            // Reset slots on provider change
-            resetTimeSlots();
-            document.getElementById('availabilityMsg').classList.add('hidden');
+            // Hide table on provider or service change to force checking availability again
+            document.getElementById('timeTableContainer').classList.add('hidden');
+            document.getElementById('availabilityMsg').classList.remove('hidden');
+            document.getElementById('availabilityMsg').className = 'text-xs text-yellow-300 mt-2 block';
+            document.getElementById('availabilityMsg').textContent = 'Click "Check Availability" to load slots for this provider.';
+            document.getElementById('selectedTimeSlot').value = '';
         }
 
         function resetTimeSlots(bookedSlots = []) {
-            const timeSelect = document.getElementById('timeSlot');
-            timeSelect.innerHTML = '';
+            const tbody = document.getElementById('timeTableBody');
+            tbody.innerHTML = '';
+            
+            document.getElementById('timeTableContainer').classList.remove('hidden');
+            document.getElementById('selectedTimeSlot').value = ""; // reset selection
+
             defaultTimeSlots.forEach(slot => {
-                const opt = document.createElement('option');
-                opt.value = slot.value;
-                opt.textContent = slot.text;
-                if (bookedSlots.includes(slot.value)) {
-                    opt.disabled = true;
-                    opt.textContent += ' (Booked)';
+                const isBooked = bookedSlots.includes(slot.value);
+                const tr = document.createElement('tr');
+                tr.className = 'border-t border-purple-700/50 hover:bg-purple-800/50 transition-colors';
+                
+                const tdTime = document.createElement('td');
+                tdTime.className = 'py-2 px-3 text-white';
+                tdTime.textContent = slot.text;
+                
+                const tdStatus = document.createElement('td');
+                tdStatus.className = 'py-2 px-3 text-center';
+                tdStatus.innerHTML = isBooked 
+                    ? '<span class="text-red-400 font-bold text-xs">BOOKED</span>' 
+                    : '<span class="text-green-400 font-bold text-xs">AVAILABLE</span>';
+                
+                const tdAction = document.createElement('td');
+                tdAction.className = 'py-2 px-3 text-right';
+                
+                if (!isBooked) {
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.className = 'text-xs bg-purple-600 hover:bg-pink-500 text-white px-3 py-1 rounded transition-colors';
+                    btn.textContent = 'Select';
+                    btn.onclick = () => {
+                        // Reset all buttons and rows
+                        const allBtns = tbody.querySelectorAll('button');
+                        allBtns.forEach(b => {
+                            b.textContent = 'Select';
+                            b.className = 'text-xs bg-purple-600 hover:bg-pink-500 text-white px-3 py-1 rounded transition-colors';
+                        });
+                        const allRows = tbody.querySelectorAll('tr');
+                        allRows.forEach(r => r.classList.remove('bg-purple-700'));
+                        
+                        // Select current
+                        btn.textContent = 'Selected';
+                        btn.className = 'text-xs bg-pink-500 text-white font-bold px-3 py-1 rounded shadow';
+                        tr.classList.add('bg-purple-700');
+                        document.getElementById('selectedTimeSlot').value = slot.value;
+                    };
+                    tdAction.appendChild(btn);
+                } else {
+                    tdAction.innerHTML = '<span class="text-gray-500 text-xs">-</span>';
                 }
-                timeSelect.appendChild(opt);
+
+                tr.appendChild(tdTime);
+                tr.appendChild(tdStatus);
+                tr.appendChild(tdAction);
+                tbody.appendChild(tr);
             });
         }
 
-        updateProviders();
+        updateProviders(); // Initial load
 
         // Check Availability Function
         async function checkAvailability() {
             const date = document.getElementById('bookingDate').value;
             const provider = document.getElementById('provider').value;
             const msg = document.getElementById('availabilityMsg');
+            const tableContainer = document.getElementById('timeTableContainer');
 
             if (!date || !provider) return;
 
             msg.classList.remove('hidden');
-            msg.className = 'text-xs text-yellow-300 mt-2';
+            tableContainer.classList.add('hidden');
+            msg.className = 'text-xs text-yellow-300 mt-2 block';
             msg.textContent = 'Checking available slots...';
 
             const data = {
@@ -330,22 +390,21 @@
                 try {
                     result = JSON.parse(text);
                 } catch (e) {
-                    throw new Error("Backend did not return valid JSON. Please update and redeploy your Google Apps Script.");
+                    throw new Error("Failed to fetch slots. Server returned invalid format.");
                 }
 
                 if (result.status === 'success') {
                     const booked = result.booked_slots || [];
                     resetTimeSlots(booked);
-                    msg.className = 'text-xs text-green-400 mt-2';
-                    msg.textContent = 'Slot availability updated successfully.';
+                    msg.classList.add('hidden'); // Hide message when table shows
                 } else {
-                    msg.className = 'text-xs text-red-400 mt-2';
+                    msg.className = 'text-xs text-red-400 mt-2 block';
                     msg.textContent = 'Could not check availability. Try again.';
                 }
             } catch (error) {
                 console.error("Availability Check Error:", error);
-                msg.className = 'text-xs text-red-400 mt-2';
-                msg.textContent = error.message;
+                msg.className = 'text-xs text-red-400 mt-2 block';
+                msg.textContent = error.message + " (Check if your Google Apps Script is deployed and accessible).";
             }
         }
 
@@ -353,9 +412,14 @@
         async function registerService() {
             const full_name = document.getElementById('full_name').value;
             const date = document.getElementById('bookingDate').value;
+            const selectedTimeSlot = document.getElementById('selectedTimeSlot').value;
             
             if (!full_name || !date) {
                 alert("Please provide your Full Name and select a Date.");
+                return;
+            }
+            if (!selectedTimeSlot) {
+                alert("Please click 'Check Availability' and select an available time slot from the table.");
                 return;
             }
 
@@ -365,7 +429,7 @@
                 date: date,
                 service: document.getElementById('serviceType').value,
                 provider: document.getElementById('provider').value,
-                time: document.getElementById('timeSlot').value
+                time: selectedTimeSlot
             };
 
             const btn = document.getElementById('bookBtn');
@@ -388,9 +452,11 @@
                     msg.className = 'text-center font-bold text-sm mt-2 text-green-400';
                     msg.textContent = "Success! Your slot is booked.";
                     document.getElementById('full_name').value = '';
+                    checkAvailability(); // Refresh table automatically to show it as booked
                 } else {
                     msg.className = 'text-center font-bold text-sm mt-2 text-red-400';
                     msg.textContent = "Sorry, that slot is already taken. Please choose another provider or time.";
+                    checkAvailability(); // Refresh table
                 }
             } catch (error) {
                 console.error('Error!', error.message);
@@ -408,14 +474,18 @@
             const full_name = document.getElementById('full_name').value;
             const date = document.getElementById('bookingDate').value;
             const provider = document.getElementById('provider').value;
-            const time = document.getElementById('timeSlot').value;
+            const selectedTimeSlot = document.getElementById('selectedTimeSlot').value;
             
             if (!full_name) {
                 alert("Please enter your Full Name exactly as booked to cancel.");
                 return;
             }
+            if (!selectedTimeSlot) {
+                alert("Please select the specific time slot from the table you wish to cancel.");
+                return;
+            }
 
-            if (!confirm(`Are you sure you want to cancel your booking for ${provider} at ${time}?`)) {
+            if (!confirm(`Are you sure you want to cancel your booking for ${provider} at ${selectedTimeSlot}?`)) {
                 return;
             }
 
@@ -425,7 +495,7 @@
                 date: date,
                 service: document.getElementById('serviceType').value,
                 provider: provider,
-                time: time
+                time: selectedTimeSlot
             };
 
             const btn = document.getElementById('cancelBtn');
@@ -448,6 +518,7 @@
                     msg.className = 'text-center font-bold text-sm mt-2 text-green-400';
                     msg.textContent = "Your booking has been successfully cancelled.";
                     document.getElementById('full_name').value = '';
+                    checkAvailability(); // Refresh table automatically to show it as available again
                 } else {
                     msg.className = 'text-center font-bold text-sm mt-2 text-red-400';
                     msg.textContent = result.message || "Could not find your booking. Please check your details.";
