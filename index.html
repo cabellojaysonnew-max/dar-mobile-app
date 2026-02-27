@@ -241,7 +241,7 @@
     <script>
         lucide.createIcons();
 
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwYb4Q_f-2G_91JjJAlBBuwboUhP7uLVoBqHrUZAiT70OItxepHc8KfdDBCdeKkOw6UTw/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbz8ttZncqOqaVnK4-nzBmSgBtRGIJDe7OTQ9UwcgJPjw1O5e7rFiCgrYNnK1ji5A3Z4vQ/exec';
 
         const masseurs = [
             "Masseur A (Female) - Conference", "Masseur B (Female) - Conference", "Masseur C (Female) - Conference", "Masseur D (Female) - Conference",
@@ -297,6 +297,16 @@
 
         updateProviders();
 
+        // Safe Fetch Wrapper to handle Google Apps Script errors cleanly
+        async function safeFetch(data) {
+            const response = await fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+            if (!response.ok) throw new Error("Network response was not ok");
+            return await response.json();
+        }
+
         // Check Availability Function
         async function checkAvailability() {
             const date = document.getElementById('bookingDate').value;
@@ -309,27 +319,12 @@
             msg.className = 'text-xs text-yellow-300 mt-2';
             msg.textContent = 'Checking available slots...';
 
-            const data = {
-                action: 'check_availability',
-                date: date,
-                provider: provider
-            };
-
             try {
-                const response = await fetch(scriptURL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(data)
+                const result = await safeFetch({
+                    action: 'check_availability',
+                    date: date,
+                    provider: provider
                 });
-                
-                const text = await response.text();
-                let result;
-                
-                try {
-                    result = JSON.parse(text);
-                } catch (e) {
-                    throw new Error("Backend did not return valid JSON. Please update and redeploy your Google Apps Script.");
-                }
 
                 if (result.status === 'success') {
                     const booked = result.booked_slots || [];
@@ -343,11 +338,11 @@
             } catch (error) {
                 console.error("Availability Check Error:", error);
                 msg.className = 'text-xs text-red-400 mt-2';
-                msg.textContent = error.message;
+                msg.textContent = 'Backend connection failed. Please check script deployment.';
             }
         }
 
-        // 1. Service Booking Function
+        // Service Booking Function
         async function registerService() {
             const full_name = document.getElementById('full_name').value;
             const date = document.getElementById('bookingDate').value;
@@ -357,15 +352,6 @@
                 return;
             }
 
-            const data = {
-                action: 'book',
-                full_name: full_name,
-                date: date,
-                service: document.getElementById('serviceType').value,
-                provider: document.getElementById('provider').value,
-                time: document.getElementById('timeSlot').value
-            };
-
             const btn = document.getElementById('bookBtn');
             const msg = document.getElementById('statusMsg');
             
@@ -374,14 +360,14 @@
             msg.className = 'text-center font-bold text-sm mt-2 hidden'; 
 
             try {
-                const response = await fetch(scriptURL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(data)
+                const result = await safeFetch({
+                    action: 'book',
+                    full_name: full_name,
+                    date: date,
+                    service: document.getElementById('serviceType').value,
+                    provider: document.getElementById('provider').value,
+                    time: document.getElementById('timeSlot').value
                 });
-                
-                const text = await response.text();
-                const result = JSON.parse(text);
                 
                 msg.classList.remove('hidden');
                 if (result.status === 'success') {
@@ -390,13 +376,12 @@
                     document.getElementById('full_name').value = '';
                 } else {
                     msg.className = 'text-center font-bold text-sm mt-2 text-red-400';
-                    msg.textContent = result.message || "Sorry, that slot is already taken. Please choose another provider or time.";
+                    msg.textContent = result.message || "Sorry, that slot is already taken.";
                 }
             } catch (error) {
-                console.error('Error!', error.message);
                 msg.classList.remove('hidden');
                 msg.className = 'text-center font-bold text-sm mt-2 text-red-400';
-                msg.textContent = "Network error. Please try again.";
+                msg.textContent = "Network error. Make sure your Google Apps Script is deployed to 'Anyone'.";
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = '<span>BOOK MY SLOT</span>';
@@ -415,18 +400,7 @@
                 return;
             }
 
-            if (!confirm(`Are you sure you want to cancel your booking for ${provider} at ${time}?`)) {
-                return;
-            }
-
-            const data = {
-                action: 'cancel',
-                full_name: full_name,
-                date: date,
-                service: document.getElementById('serviceType').value,
-                provider: provider,
-                time: time
-            };
+            if (!confirm(`Are you sure you want to cancel your booking for ${provider} at ${time}?`)) return;
 
             const btn = document.getElementById('cancelBtn');
             const msg = document.getElementById('statusMsg');
@@ -436,14 +410,14 @@
             msg.className = 'text-center font-bold text-sm mt-2 hidden'; 
 
             try {
-                const response = await fetch(scriptURL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(data)
+                const result = await safeFetch({
+                    action: 'cancel',
+                    full_name: full_name,
+                    date: date,
+                    service: document.getElementById('serviceType').value,
+                    provider: provider,
+                    time: time
                 });
-                
-                const text = await response.text();
-                const result = JSON.parse(text);
                 
                 msg.classList.remove('hidden');
                 if (result.status === 'success') {
@@ -455,21 +429,21 @@
                     msg.textContent = result.message || "Could not find your booking. Please check your details.";
                 }
             } catch (error) {
-                console.error('Error!', error.message);
                 msg.classList.remove('hidden');
                 msg.className = 'text-center font-bold text-sm mt-2 text-red-400';
-                msg.textContent = "Network error. Please try again.";
+                msg.textContent = "Network error. Make sure your Google Apps Script is deployed to 'Anyone'.";
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = '<span>CANCEL BOOKING</span>';
             }
         }
 
-        // 2. Fetch Messages Function
+        // Fetch Messages Function
         async function fetchMessages() {
             const grid = document.getElementById('messagesGrid');
             try {
-                const response = await fetch(scriptURL, { method: 'GET', redirect: 'follow' });
+                const response = await fetch(scriptURL);
+                if (!response.ok) throw new Error("Network response was not ok");
                 const messages = await response.json();
                 
                 grid.innerHTML = ''; 
@@ -490,12 +464,11 @@
                     grid.innerHTML += card;
                 });
             } catch (error) {
-                console.error("Fetch Error:", error);
-                grid.innerHTML = '<div class="col-span-full text-center text-red-300 py-4">Could not load messages. Please ensure your Google Apps Script is deployed as a "New Version".</div>';
+                grid.innerHTML = '<div class="col-span-full text-center text-red-300 py-4">Could not load messages. Please ensure your Google Apps Script is deployed correctly.</div>';
             }
         }
 
-        // 3. Post Message Function
+        // Post Message Function
         async function submitMessage() {
             const name = document.getElementById('boardName').value;
             const message = document.getElementById('boardMessage').value;
@@ -509,17 +482,11 @@
             btn.disabled = true;
             btn.innerHTML = 'POSTING...';
 
-            const data = {
-                action: 'message',
-                name: name,
-                message: message
-            };
-
             try {
-                await fetch(scriptURL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(data)
+                await safeFetch({
+                    action: 'message',
+                    name: name,
+                    message: message
                 });
                 
                 document.getElementById('boardName').value = '';
