@@ -13,24 +13,58 @@
         .bg-accent-yellow { background-color: #f9e18b; }
         .glass-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
         .btn-hover:hover { transform: translateY(-2px); transition: all 0.2s; }
+        .message-card { background: rgba(0, 0, 0, 0.2); border-left: 4px solid #f9e18b; }
+        .flickr-embed-wrapper { position: relative; width: 100%; height: 0; padding-bottom: 56.25%; }
+        .flickr-embed-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body class="overflow-x-hidden" onload="fetchMessages()">
 
     <header class="text-center py-12 px-4">
-        <h2 class="text-2xl uppercase tracking-widest font-bold">Women's Month</h2>
-        <h1 class="text-6xl md:text-8xl font-black accent-yellow mb-4">Celebration</h1>
-        <p class="text-xl italic mb-4">Department of Agrarian Reform Camarines Sur 1</p>
+        <div class="flex justify-center space-x-4 mb-6">
+            <img src="dar-logo.png" alt="DAR" class="w-16 h-16 object-contain" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/4/4a/Department_of_Agrarian_Reform_%28Philippines%29.svg'">
+            <img src="gad-logo.png" alt="GAD" class="w-16 h-16 object-contain" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/e/e7/GAD_Logo.png'">
+        </div>
+        <h2 class="text-2xl uppercase tracking-widest mb-2 font-bold">Women's Month</h2>
+        <h1 class="text-6xl md:text-8xl font-black accent-yellow mb-4 leading-tight">Celebration</h1>
+        <p class="text-xl md:text-2xl italic mb-4">Department of Agrarian Reform Camarines Sur 1</p>
         <p class="text-lg bg-accent-yellow text-purple-900 font-bold inline-block px-4 py-1 rounded-full">March 1-31, 2026</p>
     </header>
 
     <main class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8 py-10">
-        <section class="glass-card p-6 rounded-2xl border-t-4 border-blue-400 md:col-start-2">
-            <h3 class="text-xl font-bold flex items-center mb-6"><i data-lucide="sparkles" class="mr-2 text-blue-400"></i> SERBISYO PARA KAY JUANA</h3>
+        <section class="glass-card p-6 rounded-2xl border-t-4 border-pink-400">
+            <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="graduation-cap" class="mr-2 text-pink-400"></i> EMPOWERED LEADER WORKSHOP</h3>
+            <div class="text-sm font-semibold text-pink-200 mb-6">
+                <p class="flex items-center mb-1"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i> March 30, 2026</p>
+                <a href="https://www.google.com/maps/search/Amesola+Spring+Valley" target="_blank" class="flex items-center text-blue-300 hover:text-blue-100 hover:underline">
+                    <i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> Amesola Spring Valley (View Map)
+                </a>
+            </div>
+            <ul class="space-y-6">
+                <li class="flex items-start">
+                    <i data-lucide="flower-2" class="mr-3 text-pink-300 flex-shrink-0 mt-1"></i>
+                    <div><span class="font-bold block text-pink-300">Topic 1</span><div class="font-bold mb-2">SWOT Analysis Training</div></div>
+                </li>
+                <li class="flex items-start">
+                    <i data-lucide="bot" class="mr-3 text-blue-300 flex-shrink-0 mt-1"></i>
+                    <div><span class="font-bold block text-blue-300">Topic 2</span><div class="font-bold mb-2">The AI-Empowered Babaylan</div></div>
+                </li>
+                <li class="flex items-start">
+                    <i data-lucide="pencil-line" class="mr-3 text-yellow-300 flex-shrink-0 mt-1"></i>
+                    <div><span class="font-bold block text-yellow-300">Topic 3</span><div class="font-bold mb-2">Technical Writing</div></div>
+                </li>
+            </ul>
+        </section>
+
+        <section class="glass-card p-6 rounded-2xl border-t-4 border-blue-400">
+            <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="sparkles" class="mr-2 text-blue-400"></i> SERBISYO PARA KAY JUANA</h3>
+            <div class="text-sm font-semibold text-blue-200 mb-6">
+                <p class="flex items-center"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i> March 31, 2026</p>
+            </div>
             <div class="space-y-4">
                 <div class="p-3 bg-purple-800 rounded-lg">
                     <label class="block text-sm font-bold mb-1">Full Name:</label>
-                    <input type="text" id="full_name" placeholder="e.g. Juan Dela Cruz" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600">
+                    <input type="text" id="full_name" placeholder="e.g. Juan Dela Cruz" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none focus:border-blue-400">
                 </div>
                 <input type="hidden" id="bookingDate" value="2026-03-31">
                 <div class="p-3 bg-purple-800 rounded-lg">
@@ -56,82 +90,138 @@
                         <option value="4:15-5:15">4:15 PM - 5:15 PM</option>
                     </select>
                 </div>
-                <div class="space-y-2 mt-4">
-                    <button id="bookBtn" onclick="handleAction('book')" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg btn-hover shadow-lg">BOOK MY SLOT</button>
-                    <button id="cancelBtn" onclick="handleAction('cancel')" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg btn-hover shadow-lg">CANCEL BOOKING</button>
+                <div class="space-y-2 mt-2">
+                    <button id="bookBtn" onclick="registerService()" class="w-full bg-blue-500 py-3 rounded-lg font-bold btn-hover">BOOK MY SLOT</button>
+                    <button id="cancelBtn" onclick="cancelBooking()" class="w-full bg-red-500 py-3 rounded-lg font-bold btn-hover">CANCEL BOOKING</button>
                 </div>
                 <div id="statusMsg" class="text-center font-bold text-sm hidden mt-2"></div>
             </div>
         </section>
+
+        <section class="glass-card p-6 rounded-2xl border-t-4 border-yellow-400">
+            <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="shopping-bag" class="mr-2 text-yellow-400"></i> AGRARYO MERKADO</h3>
+            <div class="text-sm font-semibold text-yellow-200 mb-6">
+                <p class="flex items-center"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i> March 30, 2026</p>
+            </div>
+            <div class="space-y-4">
+                <p class="text-sm">Visit the DARPO at DARMO to support local women entrepreneurs.</p>
+                <a href="https://www.facebook.com/profile.php?id=61587180002234" target="_blank" class="inline-flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded shadow-md">
+                    <i data-lucide="facebook" class="w-4 h-4 mr-2"></i> Visit Official FB Page
+                </a>
+            </div>
+        </section>
     </main>
+
+    <section class="max-w-4xl mx-auto px-6 pb-12">
+        <div class="glass-card p-8 rounded-3xl text-center shadow-2xl border-t-4 border-purple-400 mb-10">
+            <h2 class="text-3xl font-black mb-4 uppercase tracking-tighter text-white">Exclusive Training Kits</h2>
+            <img src="training kit.jpg" class="mx-auto rounded-xl w-full object-cover">
+        </div>
+        <div class="flickr-embed-wrapper rounded-xl border-2 border-green-500 overflow-hidden">
+            <a data-flickr-embed="true" href="https://www.flickr.com/photos/204272375@N03/albums/72177720332196566"><img src="https://live.staticflickr.com/65535/55114587266_3dc48bee9c_h.jpg"></a>
+            <script async src="//embedr.flickr.com/assets/client-code.js"></script>
+        </div>
+    </section>
+
+    <section class="max-w-4xl mx-auto px-6 pb-12">
+        <div class="glass-card p-8 rounded-3xl shadow-2xl border-t-4 border-blue-400">
+            <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-center text-white">What are you excited about?</h2>
+            <div class="bg-purple-800 p-6 rounded-2xl mb-8">
+                <div class="grid md:grid-cols-3 gap-4 mb-4">
+                    <input type="text" id="boardName" placeholder="Your Name" class="w-full bg-purple-900 text-white p-3 rounded border border-purple-600">
+                    <textarea id="boardMessage" rows="2" placeholder="Your Message" class="md:col-span-2 w-full bg-purple-900 text-white p-3 rounded border border-purple-600"></textarea>
+                </div>
+                <button onclick="submitMessage()" class="w-full bg-pink-500 py-3 rounded-lg font-bold btn-hover">POST MESSAGE</button>
+            </div>
+            <div id="messagesGrid" class="grid sm:grid-cols-2 gap-4 max-h-96 overflow-y-auto"></div>
+        </div>
+    </section>
 
     <script>
         lucide.createIcons();
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbw7xqjXxIFzTMR3kU9VvxeIEWBeDhjQPqnIH2bkOKbblu3x4REc_2878fki9Xq-kuEX_g/exec';
+        const scriptURL = 'PASTE_YOUR_NEW_DEPLOYMENT_URL_HERE';
 
         const masseurs = ["Masseur A (Female) - Conference", "Masseur B (Female) - Conference", "Masseur C (Female) - Conference", "Masseur D (Female) - Conference", "Masseur E (Male) - PARPO I", "Masseur F (Male) - PARPO II", "Masseur G (Female) - LTSP", "Masseur H (Female) - LTSP", "Masseur I (Female) - LEGAL", "Masseur J (Female) - STOD"];
         const beauticians = ["Beautician 1", "Beautician 2", "Beautician 3", "Beautician 4", "Beautician 5", "Beautician 6"];
 
         function updateProviders() {
-            const providerSelect = document.getElementById('provider');
-            providerSelect.innerHTML = '';
-            const options = document.getElementById('serviceType').value === 'Massage' ? masseurs : beauticians;
-            options.forEach(opt => {
-                const el = document.createElement('option');
-                el.value = opt; el.textContent = opt;
-                providerSelect.appendChild(el);
-            });
+            const sel = document.getElementById('provider');
+            sel.innerHTML = '';
+            const opts = document.getElementById('serviceType').value === 'Massage' ? masseurs : beauticians;
+            opts.forEach(o => { const el = document.createElement('option'); el.value = o; el.textContent = o; sel.appendChild(el); });
         }
         updateProviders();
 
-        async function handleAction(action) {
-            const deadline = new Date(2026, 2, 27, 23, 59, 59); // March 27, 2026
-            if (new Date() > deadline) return alert("Transactions are only allowed until March 27, 2026.");
-            
+        async function registerService() {
+            const deadline = new Date(2026, 1, 27, 23, 59, 59); // Feb 27
+            if (new Date() > deadline) return alert("Booking is strictly until March 27, 2026 only.");
             const name = document.getElementById('full_name').value;
-            if (!name) return alert("Please enter your Full Name.");
+            if (!name) return alert("Name required.");
 
-            const btn = document.getElementById(action === 'book' ? 'bookBtn' : 'cancelBtn');
+            const btn = document.getElementById('bookBtn');
             const msg = document.getElementById('statusMsg');
-            const oldText = btn.innerText;
-
-            btn.disabled = true; btn.innerText = 'Processing...';
-            msg.className = 'hidden';
+            btn.disabled = true; btn.innerHTML = 'Processing...';
 
             try {
                 const response = await fetch(scriptURL, {
                     method: 'POST',
                     body: JSON.stringify({
-                        action: action,
-                        full_name: name,
-                        date: document.getElementById('bookingDate').value,
+                        action: 'book', full_name: name, date: "2026-03-31",
                         service: document.getElementById('serviceType').value,
                         provider: document.getElementById('provider').value,
                         time: document.getElementById('timeSlot').value
                     })
                 });
-                const result = await response.json();
+                const res = await response.json();
                 msg.classList.remove('hidden');
-                msg.textContent = result.message || (result.status === 'success' ? 'Successful!' : 'Error.');
-                msg.className = `text-center font-bold text-sm mt-2 ${result.status === 'success' ? 'text-green-400' : 'text-red-400'}`;
-                if (result.status === 'success' && action === 'book') document.getElementById('full_name').value = '';
-            } catch (e) {
-                alert("Connection Error.");
-            } finally { btn.disabled = false; btn.innerText = oldText; }
+                msg.textContent = res.message || (res.status === 'success' ? 'Success! Your slot is booked.' : 'Already taken.');
+                msg.className = `text-center font-bold text-sm mt-2 ${res.status === 'success' ? 'text-green-400' : 'text-red-400'}`;
+                if (res.status === 'success') document.getElementById('full_name').value = '';
+            } catch (e) { alert("Connection Error."); }
+            finally { btn.disabled = false; btn.innerHTML = 'BOOK MY SLOT'; }
+        }
+
+        async function cancelBooking() {
+            const name = document.getElementById('full_name').value;
+            if (!name) return alert("Name required.");
+            const btn = document.getElementById('cancelBtn');
+            const msg = document.getElementById('statusMsg');
+            btn.disabled = true; btn.innerHTML = 'Processing...';
+
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'cancel', full_name: name,
+                        provider: document.getElementById('provider').value,
+                        time: document.getElementById('timeSlot').value
+                    })
+                });
+                const res = await response.json();
+                msg.classList.remove('hidden');
+                msg.textContent = res.message || 'Error occurred.';
+                msg.className = `text-center font-bold text-sm mt-2 ${res.status === 'success' ? 'text-green-400' : 'text-red-400'}`;
+            } catch (e) { alert("Error."); }
+            finally { btn.disabled = false; btn.innerHTML = 'CANCEL BOOKING'; }
         }
 
         async function fetchMessages() {
-            const grid = document.getElementById('messagesGrid');
             try {
-                const response = await fetch(scriptURL);
-                const messages = await response.json();
-                if (grid) {
-                    grid.innerHTML = messages.length ? '' : '<div class="col-span-full text-center">No messages yet.</div>';
-                    messages.forEach(msg => {
-                        grid.innerHTML += `<div class="message-card p-4 rounded-lg shadow"><p class="italic">"${msg.text}"</p><p class="text-xs text-yellow-200 font-bold">- ${msg.name}</p></div>`;
-                    });
-                }
-            } catch (e) { console.log("Load failed."); }
+                const r = await fetch(scriptURL);
+                const ms = await r.json();
+                const g = document.getElementById('messagesGrid');
+                g.innerHTML = ms.length ? '' : 'No messages yet.';
+                ms.forEach(m => { g.innerHTML += `<div class="message-card p-4 rounded-lg"><p class="italic">"${m.text}"</p><p class="text-xs font-bold">- ${m.name}</p></div>`; });
+            } catch (e) {}
+        }
+
+        async function submitMessage() {
+            const n = document.getElementById('boardName').value;
+            const m = document.getElementById('boardMessage').value;
+            if (!n || !m) return alert("Fill all fields.");
+            await fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'message', name: n, message: m }) });
+            document.getElementById('boardName').value = ''; document.getElementById('boardMessage').value = '';
+            fetchMessages();
         }
     </script>
 </body>
