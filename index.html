@@ -14,7 +14,7 @@
         .glass-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
         .btn-hover:hover { transform: translateY(-2px); transition: all 0.2s; }
         .message-card { background: rgba(0, 0, 0, 0.2); border-left: 4px solid #f9e18b; }
-        .progress-bg { background: rgba(0,0,0,0.3); height: 10px; border-radius: 5px; overflow: hidden; }
+        .progress-bg { background: rgba(0,0,0,0.3); height: 12px; border-radius: 6px; overflow: hidden; }
         .progress-fill { background: #f9e18b; height: 100%; transition: width 1s ease-in-out; }
         .flickr-embed-wrapper { position: relative; width: 100%; height: 0; padding-bottom: 56.25%; }
         .flickr-embed-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
@@ -29,15 +29,15 @@
         </div>
         <h2 class="text-2xl uppercase tracking-widest mb-2 font-bold">Women's Month</h2>
         <h1 class="text-6xl md:text-8xl font-black accent-yellow mb-4 leading-tight">Celebration</h1>
-        <p class="text-xl md:text-2xl italic mb-4">Department of Agrarian Reform Camarines Sur 1</p>
+        <p class="text-xl md:text-2xl italic mb-4 text-center">Department of Agrarian Reform Camarines Sur 1</p>
         <p class="text-lg bg-accent-yellow text-purple-900 font-bold inline-block px-4 py-1 rounded-full">March 1-31, 2026</p>
     </header>
 
     <section class="max-w-6xl mx-auto px-6 mb-12">
         <div class="glass-card p-8 rounded-[2rem] border-t-4 border-yellow-400 shadow-2xl">
             <div class="flex flex-col items-center mb-8">
-                <img src="JuanaHELP.png" alt="JuanaHELP" class="h-16 mb-2">
-                <p class="text-[10px] uppercase tracking-[0.3em] font-bold text-pink-300">Outreach activity for 16 children in crisis</p>
+                <img src="JuanaHELP.png" alt="JuanaHELP" class="h-16 mb-2" onerror="this.style.display='none'">
+                <p class="text-[10px] uppercase tracking-[0.3em] font-bold text-pink-300">Outreach activity: Women helping 16 children in crisis</p>
             </div>
 
             <div class="grid lg:grid-cols-2 gap-12">
@@ -46,7 +46,7 @@
                         <i data-lucide="activity" class="mr-2 w-4 h-4 text-yellow-400"></i> Pledge Monitor
                     </h3>
                     <div id="pledgeList" class="space-y-4">
-                        <div class="text-center py-10 opacity-50 italic text-xs animate-pulse">Syncing records...</div>
+                        <div class="text-center py-10 opacity-50 italic text-xs animate-pulse">Syncing DARPO records...</div>
                     </div>
                 </div>
                 <div>
@@ -88,33 +88,37 @@
                 <li class="flex items-start">
                     <i data-lucide="flower-2" class="mr-3 text-pink-300 flex-shrink-0 mt-1"></i>
                     <div>
-                        <span class="font-bold block text-pink-300 text-xs">Topic 1</span> 
-                        <div class="font-bold mb-2">Lead with Strength: SWOT Analysis Training</div>
-                        <div class="text-[11px] text-pink-200 leading-snug">
+                        <span class="font-bold block text-pink-300">Topic 1</span> 
+                        <div class="font-bold mb-2">Lead with Strength: SWOT Analysis Training and Workshop</div>
+                        <div class="text-xs text-pink-200 leading-snug">
                             <span class="font-bold text-white text-sm">Dr. Nico Ogarte</span><br>
-                            DBA | AVP for Research | NCF Inc.
+                            Doctor of Business Administration<br>
+                            AVP for Research, Innovation, Extension, and Sustainability<br>
+                            Naga College Foundation Inc.
                         </div>
                     </div>
                 </li>
                 <li class="flex items-start">
                     <i data-lucide="bot" class="mr-3 text-blue-300 flex-shrink-0 mt-1"></i>
                     <div>
-                        <span class="font-bold block text-blue-300 text-xs">Topic 2</span> 
+                        <span class="font-bold block text-blue-300">Topic 2</span> 
                         <div class="font-bold mb-2">The AI-Empowered Babaylan</div>
-                        <div class="text-[11px] text-blue-200 leading-snug">
+                        <div class="text-xs text-blue-200 leading-snug">
                             <span class="font-bold text-white text-sm">Dr. Anna Loretta C. Romulo</span><br>
-                            PhD | Dean, College of Computer Studies | NCF
+                            Doctor of Philosophy in Technology Management<br>
+                            Dean, College of Computer Studies, Naga College Foundation
                         </div>
                     </div>
                 </li>
                 <li class="flex items-start">
                     <i data-lucide="pencil-line" class="mr-3 text-yellow-300 flex-shrink-0 mt-1"></i>
                     <div>
-                        <span class="font-bold block text-yellow-300 text-xs">Topic 3</span> 
+                        <span class="font-bold block text-yellow-300">Topic 3</span> 
                         <div class="font-bold mb-2">Technical Writing</div>
-                        <div class="text-[11px] text-yellow-200 leading-snug">
+                        <div class="text-xs text-yellow-200 leading-snug">
                             <span class="font-bold text-white text-sm">Niriza Mae A. Barquilla</span><br>
-                            Regional Info Officer | DAR V
+                            Regional Information Officer / ARPO I<br>
+                            Department of Agrarian Reform V
                         </div>
                     </div>
                 </li>
@@ -128,22 +132,23 @@
             </div>
             <div class="space-y-4">
                 <div class="p-3 bg-purple-800 rounded-lg">
-                    <label class="block text-xs font-bold mb-1">Full Name:</label>
-                    <input type="text" id="full_name" placeholder="Full Name" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none text-sm">
+                    <label class="block text-sm font-bold mb-1">Full Name:</label>
+                    <input type="text" id="full_name" placeholder="e.g. Juan Dela Cruz" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none text-sm">
                 </div>
+                <input type="hidden" id="bookingDate" value="2026-03-31">
                 <div class="p-3 bg-purple-800 rounded-lg">
-                    <label class="block text-xs font-bold mb-1">Select Service:</label>
+                    <label class="block text-sm font-bold mb-1">Select Service:</label>
                     <select id="serviceType" onchange="updateProviders()" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 text-sm">
                         <option value="Massage">Full-Body Massage</option>
                         <option value="Salon">Hair & Nail Care</option>
                     </select>
                 </div>
                 <div class="p-3 bg-purple-800 rounded-lg">
-                    <label class="block text-xs font-bold mb-1">Select Provider & Room:</label>
+                    <label class="block text-sm font-bold mb-1">Select Provider & Room:</label>
                     <select id="provider" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 text-sm"></select>
                 </div>
                 <div class="p-3 bg-purple-800 rounded-lg">
-                    <label class="block text-xs font-bold mb-1">Time Slot:</label>
+                    <label class="block text-sm font-bold mb-1">Time Slot:</label>
                     <select id="timeSlot" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 text-sm">
                         <option value="8:30-9:30">08:30 AM - 09:30 AM</option>
                         <option value="9:45-10:45">09:45 AM - 10:45 AM</option>
@@ -156,20 +161,22 @@
                 </div>
                 <div class="space-y-2 mt-2">
                     <button id="bookBtn" onclick="handleAction('book')" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg btn-hover shadow-lg text-sm uppercase">BOOK MY SLOT</button>
-                    <button id="cancelBtn" onclick="handleAction('cancel')" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 rounded-lg btn-hover shadow-lg text-xs">CANCEL BOOKING</button>
+                    <button id="cancelBtn" onclick="handleAction('cancel')" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg btn-hover shadow-lg text-xs">CANCEL BOOKING</button>
                 </div>
-                <div id="statusMsg" class="text-center font-bold text-xs hidden mt-2"></div>
+                <div id="statusMsg" class="text-center font-bold text-sm hidden mt-2"></div>
             </div>
         </section>
 
         <section class="glass-card p-6 rounded-2xl border-t-4 border-yellow-400 flex flex-col justify-between">
             <div>
                 <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="shopping-bag" class="mr-2 text-yellow-400"></i> AGRARYO MERKADO</h3>
-                <div class="text-sm font-semibold text-yellow-200 mb-6"><p class="flex items-center"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i> March 30, 2026</p></div>
-                <p class="text-sm leading-relaxed mb-4">Visit the DARPO at DARMO to support local women entrepreneurs and ARBOs.</p>
+                <div class="text-sm font-semibold text-yellow-200 mb-6 italic"><p class="flex items-center"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i> March 30, 2026</p></div>
+                <p class="text-sm leading-relaxed mb-4">Visit the DARPO at DARMO to support our local women entrepreneurs and ARBOs.</p>
             </div>
             <div class="space-y-4">
-                <a href="https://www.facebook.com/profile.php?id=61587180002234" target="_blank" class="flex items-center justify-center w-full bg-blue-600 py-3 rounded-xl font-bold shadow-md hover:bg-blue-700 transition-all text-xs uppercase italic">Visit Official FB</a>
+                <a href="https://www.facebook.com/profile.php?id=61587180002234" target="_blank" class="flex items-center justify-center w-full bg-blue-600 py-3 rounded-xl font-bold shadow-md hover:bg-blue-700 transition-all text-xs uppercase italic">
+                    <i data-lucide="facebook" class="w-4 h-4 mr-2"></i> Visit Official FB Page
+                </a>
                 <div class="flex items-center space-x-2 text-yellow-200 text-xs"><i data-lucide="award" class="w-4 h-4"></i> <span>Awarding Ceremony</span></div>
                 <div class="flex items-center space-x-2 text-pink-300 text-xs"><i data-lucide="heart" class="w-4 h-4"></i> <span>Grand Launching</span></div>
                 <div class="flex items-center space-x-2 text-blue-300 text-xs"><i data-lucide="map" class="w-4 h-4"></i> <span>ARBO 360 Tour</span></div>
@@ -186,7 +193,9 @@
 
     <section class="max-w-4xl mx-auto px-6 pb-12">
         <div class="glass-card p-8 rounded-3xl text-center shadow-2xl border-t-4 border-green-400">
-            <h2 class="text-3xl font-black mb-4 uppercase flex justify-center items-center"><i data-lucide="images" class="mr-3 text-green-400 w-8 h-8"></i> Activity Gallery</h2>
+            <h2 class="text-3xl font-black mb-4 uppercase tracking-widest flex justify-center items-center">
+                <i data-lucide="images" class="mr-3 text-green-400 w-8 h-8"></i> Activity Gallery
+            </h2>
             <div class="flickr-embed-wrapper rounded-xl border-2 border-green-500 overflow-hidden shadow-lg">
                 <a data-flickr-embed="true" href="https://www.flickr.com/photos/204272375@N03/albums/72177720332196566"><img src="https://live.staticflickr.com/65535/55114587266_3dc48bee9c_h.jpg"></a>
                 <script async src="//embedr.flickr.com/assets/client-code.js"></script>
@@ -199,18 +208,18 @@
             <h2 class="text-2xl font-black mb-6 uppercase text-center">FREEDOM WALL: WHAT ARE YOU EXCITED ABOUT?</h2>
             <div class="bg-purple-900/30 p-6 rounded-2xl mb-8">
                 <div class="grid md:grid-cols-3 gap-4 mb-4">
-                    <input type="text" id="boardName" placeholder="Name" class="w-full bg-purple-900 text-white p-3 rounded border border-purple-600 text-sm outline-none">
-                    <textarea id="boardMessage" rows="1" placeholder="Post a message..." class="md:col-span-2 w-full bg-purple-900 text-white p-3 rounded border border-purple-600 text-sm outline-none"></textarea>
+                    <input type="text" id="boardName" placeholder="Your Name" class="w-full bg-purple-900 text-white p-3 rounded border border-purple-600 text-sm outline-none">
+                    <textarea id="boardMessage" rows="1" placeholder="Your Message..." class="md:col-span-2 w-full bg-purple-900 text-white p-3 rounded border border-purple-600 text-sm outline-none"></textarea>
                 </div>
                 <button onclick="submitMessage()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-lg btn-hover shadow-lg text-sm uppercase">POST MESSAGE</button>
             </div>
-            <div id="messagesGrid" class="grid sm:grid-cols-2 gap-4 max-h-64 overflow-y-auto"></div>
+            <div id="messagesGrid" class="grid sm:grid-cols-2 gap-4 max-h-64 overflow-y-auto pr-2"></div>
         </div>
     </section>
 
     <section class="max-w-4xl mx-auto px-6 pb-20">
         <div class="bg-accent-yellow text-purple-900 p-8 rounded-3xl text-center shadow-2xl">
-            <h2 class="text-2xl font-black mb-2 uppercase italic tracking-tighter">Post Evaluation Survey</h2>
+            <h2 class="text-2xl font-black mb-2 uppercase italic tracking-tighter text-3xl">Post Evaluation Survey</h2>
             <p class="mb-6 font-medium text-sm">Your feedback helps us make next year's celebration even better!</p>
             <a href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=hslj_ewKNkSKenSo5u9h5HSub3xMQjNDoEYFXqzwNNBUNkY0NkhNRTY3UTNZV1NKNkVSUTFNUVRMMS4u" target="_blank" class="inline-block bg-purple-900 text-white font-black py-4 px-10 rounded-full btn-hover shadow-xl text-xs uppercase tracking-widest">START SURVEY NOW</a>
         </div>
@@ -221,7 +230,7 @@
         lucide.createIcons();
         const scriptURL = 'https://script.google.com/macros/s/AKfycbz8U5hJODnVJL_OlcWuAYmG__S9ndPk9OfPrkS3IjF2j75DJXhctfhxzAl9C6tjnovDrA/exec';
 
-        // TARGETS FOR 16 CHILDREN
+        // PLEDGE CONFIG FOR 16 CHILDREN
         const pledgeConfig = [
             { id: 'rice', label: 'Rice', goal: 20, unit: 'kg' },           // 20 kg goal
             { id: 'hygiene', label: 'Hygiene Kits', goal: 16, unit: 'sets' }, // 1 per child
@@ -233,12 +242,7 @@
             { id: 'soap', label: 'Laundry Soap', goal: 16, unit: 'pcs' }      // 1 each
         ];
 
-        function initAll() { 
-            updateProviders(); 
-            fetchPledges(); 
-            fetchMessages(); 
-            setInterval(fetchPledges, 60000); 
-        }
+        function initAll() { updateProviders(); fetchPledges(); fetchMessages(); setInterval(fetchPledges, 60000); }
 
         async function fetchPledges() {
             try {
@@ -251,25 +255,25 @@
                     const percent = Math.min((current / item.goal) * 100, 100);
                     list.innerHTML += `<div><div class="flex justify-between text-[10px] font-black uppercase mb-1"><span>${item.label}</span><span class="accent-yellow">${current}/${item.goal} ${item.unit}</span></div><div class="progress-bg"><div class="progress-fill" style="width: ${percent}%"></div></div></div>`;
                 });
-            } catch (e) { console.warn("Sync failed"); }
+            } catch (e) { console.warn("Pledge sync error"); }
         }
 
         async function submitPledge() {
-            const name = document.getElementById('pledgeName').value;
-            const item = document.getElementById('pledgeItem').value;
-            const qty = document.getElementById('pledgeQty').value;
-            if(!name || !qty) return alert("Paki-fill out lahat.");
+            const n = document.getElementById('pledgeName').value;
+            const i = document.getElementById('pledgeItem').value;
+            const q = document.getElementById('pledgeQty').value;
+            if(!n || !q) return alert("Paki-fill out lahat.");
             const btn = document.getElementById('pledgeBtn');
             btn.disabled = true; btn.innerText = "WAIT...";
             try {
-                await fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'pledge', name: name, item_id: item, quantity: qty }) });
+                await fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'pledge', name: n, item_id: i, quantity: q }) });
                 document.getElementById('pledgeQty').value = '';
                 alert("Salamat!"); fetchPledges();
-            } catch (e) { alert("Error!"); }
+            } catch (e) { alert("Connection Error!"); }
             finally { btn.disabled = false; btn.innerText = "CONFIRM PLEDGE"; }
         }
 
-        const masseurs = ["Masseur A (F)", "Masseur B (F)", "Masseur E (M)", "Masseur G (F)", "Masseur I (F)"];
+        const masseurs = ["Masseur A (Female) - Conference", "Masseur B (Female) - Conference", "Masseur E (Male) - PARPO I", "Masseur G (Female) - LTSP", "Masseur I (Female) - LEGAL"];
         const beauticians = ["Beautician 1", "Beautician 2", "Beautician 3"];
         function updateProviders() {
             const sel = document.getElementById('provider');
@@ -280,16 +284,16 @@
 
         async function handleAction(action) {
             const name = document.getElementById('full_name').value;
-            if(!name) return alert("Pangalan paki-input.");
-            const btn = document.getElementById('bookBtn');
+            if(!name) return alert("Name is required.");
+            const btn = document.getElementById(action === 'book' ? 'bookBtn' : 'cancelBtn');
             btn.disabled = true;
             try {
-                const r = await fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: action, full_name: name, service: document.getElementById('serviceType').value, provider: document.getElementById('provider').value, time: document.getElementById('timeSlot').value }) });
-                const res = await r.json();
+                const response = await fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: action, full_name: name, date: "2026-03-31", service: document.getElementById('serviceType').value, provider: document.getElementById('provider').value, time: document.getElementById('timeSlot').value }) });
+                const res = await response.json();
                 const msg = document.getElementById('statusMsg');
-                msg.classList.remove('hidden');
-                msg.textContent = res.message || "Done!";
-                msg.className = `text-center font-bold text-[10px] mt-2 ${res.status === 'success' ? 'text-green-400' : 'text-red-400'}`;
+                msg.classList.remove('hidden'); msg.textContent = res.message || "Done!";
+                msg.className = `text-center font-bold text-xs mt-2 ${res.status === 'success' ? 'text-green-400' : 'text-red-400'}`;
+                if (res.status === 'success' && action === 'book') document.getElementById('full_name').value = '';
             } catch (e) { alert("Error!"); }
             finally { btn.disabled = false; }
         }
