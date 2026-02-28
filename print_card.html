@@ -9,10 +9,10 @@
 <style>
 :root{
     --purple:#5a2ca0;
-    --deep-purple:#2e1461;
-    --light-purple:#f6f0ff;
-    --gold:#f4c542;
-    --pink:#ff8fcf;
+    --deep-purple:#2b0f63;
+    --pink:#ff6ec7;
+    --gold:#ffd54f;
+    --lavender:#d9c6ff;
 }
 
 /* BODY */
@@ -35,7 +35,6 @@ button{
     border:none;
     padding:12px 26px;
     font-weight:700;
-    border-radius:6px;
     cursor:pointer;
 }
 
@@ -68,10 +67,13 @@ button{
 .card{
     width:85.6mm;
     height:54mm;
-    border-radius:10px;
-    border:1px solid var(--deep-purple);
+    border:1.5px solid var(--deep-purple);
+    border-radius:0; /* SQUARE CORNER */
     background:
-        linear-gradient(135deg,var(--light-purple),#ffffff);
+        linear-gradient(135deg,
+            var(--lavender),
+            #f3e8ff,
+            #ffd6f2);
     display:flex;
     position:relative;
     overflow:hidden;
@@ -81,47 +83,46 @@ button{
     print-color-adjust:exact;
 }
 
-/* COLORFUL LEFT STRIPE */
+/* COLORFUL STRIPE */
 .card::before{
     content:"";
     position:absolute;
     left:0;
     top:0;
     bottom:0;
-    width:12mm;
+    width:13mm;
     background:linear-gradient(
         180deg,
         var(--deep-purple),
         var(--purple),
         var(--pink)
     );
-
-    -webkit-print-color-adjust:exact;
 }
 
 /* WM WATERMARK */
 .card::after{
     content:"";
     position:absolute;
-    right:5mm;
-    bottom:5mm;
-    width:30mm;
-    height:30mm;
+    right:4mm;
+    bottom:4mm;
+    width:32mm;
+    height:32mm;
     background:url('wm_logo.png') no-repeat center;
     background-size:contain;
-    opacity:0.15;
-
-    -webkit-print-color-adjust:exact;
+    opacity:0.18;
 }
 
-/* YEAR BADGE */
+/* 2026 BADGE (FUN STYLE) */
 .year{
     position:absolute;
-    top:6px;
-    right:8px;
-    font-size:11px;
+    top:5px;
+    right:6px;
+    background:linear-gradient(45deg,var(--gold),#fff2a8);
+    color:var(--deep-purple);
     font-weight:900;
-    color:var(--gold);
+    font-size:12px;
+    padding:3px 8px;
+    border:1px solid var(--deep-purple);
 }
 
 /* LOGOS */
@@ -153,36 +154,38 @@ button{
 /* TEXT */
 .event-name{
     font-size:10px;
-    font-weight:700;
-    letter-spacing:1px;
-    color:var(--purple);
+    font-weight:800;
+    color:var(--deep-purple);
     text-transform:uppercase;
+    letter-spacing:1px;
 }
 
 .pass-title{
     font-size:16px;
     font-weight:900;
-    color:var(--gold);
+    color:var(--purple);
     margin:2px 0 3px;
 }
 
 .comm{
     font-size:9px;
-    color:#666;
+    color:#4b3c74;
     margin-bottom:4px;
 }
 
+/* NAME */
 .name{
     font-size:13px;
     font-weight:900;
     color:var(--deep-purple);
     text-transform:uppercase;
-    letter-spacing:.6px;
+    letter-spacing:.5px;
 }
 
+/* DETAILS */
 .detail{
     font-size:11px;
-    color:#333;
+    color:#2e2e2e;
 }
 </style>
 </head>
