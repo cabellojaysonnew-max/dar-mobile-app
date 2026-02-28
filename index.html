@@ -13,7 +13,6 @@
         .bg-accent-yellow { background-color: #f9e18b; }
         .glass-card { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); }
         .btn-hover:hover { transform: translateY(-2px); transition: all 0.2s; }
-        .message-card { background: rgba(0, 0, 0, 0.2); border-left: 4px solid #f9e18b; }
         .progress-bg { background: rgba(0,0,0,0.3); height: 10px; border-radius: 5px; overflow: hidden; }
         .progress-fill { background: #f9e18b; height: 100%; transition: width 1s ease-in-out; }
         .flickr-embed-wrapper { position: relative; width: 100%; height: 0; padding-bottom: 56.25%; }
@@ -27,182 +26,188 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Department_of_Agrarian_Reform_%28Philippines%29.svg" alt="DAR" class="w-20 h-20 object-contain">
             <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/GAD_Logo.png" alt="GAD" class="w-20 h-20 object-contain">
         </div>
-        <h2 class="text-2xl uppercase tracking-[0.3em] mb-2 font-bold opacity-80">National Women's Month</h2>
-        <div class="flex items-baseline space-x-2 mb-4">
+        <h2 class="text-xl uppercase tracking-[0.3em] mb-2 font-bold opacity-80 italic">National Women's Month</h2>
+        <div class="flex items-baseline justify-center space-x-2 mb-4">
              <h1 class="text-6xl md:text-8xl font-black accent-yellow leading-tight italic">Juana</h1>
              <span class="text-4xl md:text-6xl font-black bg-white text-purple-900 px-4 rounded-xl shadow-2xl">HELP</span>
         </div>
-        <p class="text-xl md:text-2xl italic mb-4">Department of Agrarian Reform Camarines Sur 1</p>
         <p class="text-lg bg-accent-yellow text-purple-900 font-bold inline-block px-6 py-2 rounded-full shadow-lg">March 1-31, 2026</p>
     </header>
 
-    <section class="max-w-2xl mx-auto px-6 mb-12">
-        <div class="glass-card p-8 rounded-[2rem] border-t-4 border-yellow-400 shadow-2xl">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-sm font-black uppercase tracking-widest accent-yellow flex items-center">
-                    <i data-lucide="activity" class="mr-2 w-5 h-5"></i> Real-Time Pledge Monitor
-                </h3>
-                <span id="liveStatus" class="text-[10px] font-bold opacity-50 uppercase tracking-tighter flex items-center">
-                    <span class="w-2 h-2 bg-green-500 rounded-full mr-1 animate-pulse"></span> Syncing
-                </span>
+    <section class="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-8 mb-12">
+        <div class="glass-card p-8 rounded-[2rem] border-t-4 border-yellow-400 shadow-xl">
+            <h3 class="text-sm font-black uppercase tracking-widest accent-yellow flex items-center mb-6">
+                <i data-lucide="activity" class="mr-2 w-5 h-5"></i> Real-Time Pledge Monitor
+            </h3>
+            <div id="pledgeList" class="space-y-5 text-sm">
+                <div class="text-center py-10 opacity-50 italic animate-pulse">Syncing with DARPO records...</div>
             </div>
-            <div id="pledgeList" class="grid sm:grid-cols-2 gap-x-8 gap-y-6">
-                <div class="col-span-full text-center py-4 italic opacity-50 text-sm">Loading DARPO records...</div>
+        </div>
+
+        <div class="glass-card p-8 rounded-[2rem] border-t-4 border-green-400 shadow-xl">
+            <h3 class="text-sm font-black uppercase tracking-widest text-green-400 flex items-center mb-6">
+                <i data-lucide="heart-handshake" class="mr-2 w-5 h-5"></i> Submit a Pledge
+            </h3>
+            <div class="space-y-4">
+                <input type="text" id="pledgeName" placeholder="Donor Full Name" class="w-full bg-purple-900 p-3 rounded-xl border border-purple-600 outline-none focus:ring-2 ring-green-400">
+                <div class="grid grid-cols-2 gap-4">
+                    <select id="pledgeItem" class="w-full bg-purple-900 p-3 rounded-xl border border-purple-600">
+                        <option value="rice">Rice (kg)</option>
+                        <option value="hygiene">Hygiene Kits (sets)</option>
+                        <option value="school">School Supplies (packs)</option>
+                        <option value="slippers">Slippers (pairs)</option>
+                        <option value="undergarments">Undergarments (pcs)</option>
+                        <option value="biscuits">Biscuits (packs)</option>
+                        <option value="milk">Milk (pcs)</option>
+                        <option value="soap">Laundry Soap (pcs)</option>
+                    </select>
+                    <input type="number" id="pledgeQty" placeholder="Quantity" class="w-full bg-purple-900 p-3 rounded-xl border border-purple-600 outline-none">
+                </div>
+                <button onclick="submitPledge()" id="pledgeBtn" class="w-full bg-green-500 hover:bg-green-600 py-3 rounded-xl font-black shadow-lg transition-all uppercase tracking-widest">Confirm Pledge</button>
             </div>
         </div>
     </section>
 
-    <main class="max-w-7xl mx-auto px-6 grid lg:grid-cols-3 gap-8 py-10">
-        
+    <main class="max-w-7xl mx-auto px-6 grid lg:grid-cols-3 gap-8 pb-12">
         <section class="glass-card p-6 rounded-2xl border-t-4 border-pink-400">
-            <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="graduation-cap" class="mr-2 text-pink-400"></i> EMPOWERED LEADER WORKSHOP</h3>
-            <div class="text-sm font-semibold text-pink-200 mb-6 italic">
-                <p class="flex items-center mb-1"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i> March 30, 2026</p>
-                <a href="#" class="flex items-center text-blue-300 hover:underline"><i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> Amesola Spring Valley</a>
+            <h3 class="font-bold mb-4 flex items-center text-pink-400 uppercase text-sm"><i data-lucide="graduation-cap" class="mr-2"></i> Workshop Topics</h3>
+            <div class="space-y-5">
+                <div class="border-l-2 border-pink-300 pl-3">
+                    <span class="text-[10px] font-bold text-pink-300 block uppercase">Topic 1</span>
+                    <p class="text-xs font-bold leading-tight">Lead with Strength: SWOT Analysis</p>
+                    <p class="text-[9px] opacity-70">Dr. Nico Ogarte (NCF)</p>
+                </div>
+                <div class="border-l-2 border-blue-300 pl-3">
+                    <span class="text-[10px] font-bold text-blue-300 block uppercase">Topic 2</span>
+                    <p class="text-xs font-bold leading-tight">The AI-Empowered Babaylan</p>
+                    <p class="text-[9px] opacity-70">Dr. Anna Loretta C. Romulo (NCF)</p>
+                </div>
+                <div class="border-l-2 border-yellow-300 pl-3">
+                    <span class="text-[10px] font-bold text-yellow-300 block uppercase">Topic 3</span>
+                    <p class="text-xs font-bold leading-tight">Technical Writing</p>
+                    <p class="text-[9px] opacity-70">Niriza Mae A. Barquilla (DAR V)</p>
+                </div>
             </div>
-            <ul class="space-y-6">
-                <li class="flex items-start">
-                    <i data-lucide="flower-2" class="mr-3 text-pink-300 flex-shrink-0 mt-1"></i>
-                    <div>
-                        <span class="font-bold block text-pink-300 text-xs uppercase">Topic 1</span> 
-                        <div class="font-bold mb-1">Lead with Strength: SWOT Analysis</div>
-                        <div class="text-[11px] text-pink-200 leading-snug">Dr. Nico Ogarte (Naga College Foundation)</div>
-                    </div>
-                </li>
-                <li class="flex items-start">
-                    <i data-lucide="bot" class="mr-3 text-blue-300 flex-shrink-0 mt-1"></i>
-                    <div>
-                        <span class="font-bold block text-blue-300 text-xs uppercase">Topic 2</span> 
-                        <div class="font-bold mb-1">The AI-Empowered Babaylan</div>
-                        <div class="text-[11px] text-blue-200 leading-snug">Dr. Anna Loretta C. Romulo (Naga College Foundation)</div>
-                    </div>
-                </li>
-                <li class="flex items-start">
-                    <i data-lucide="pencil-line" class="mr-3 text-yellow-300 flex-shrink-0 mt-1"></i>
-                    <div>
-                        <span class="font-bold block text-yellow-300 text-xs uppercase">Topic 3</span> 
-                        <div class="font-bold mb-1">Technical Writing</div>
-                        <div class="text-[11px] text-yellow-200 leading-snug">Niriza Mae A. Barquilla (DAR V)</div>
-                    </div>
-                </li>
-            </ul>
         </section>
 
         <section class="glass-card p-6 rounded-2xl border-t-4 border-blue-400">
-            <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="sparkles" class="mr-2 text-blue-400"></i> SERBISYO PARA KAY JUANA</h3>
-            <div class="text-xs font-semibold text-blue-200 mb-6 italic">March 31, 2026 (Free Massage & Salon)</div>
-            <div class="space-y-4">
-                <input type="text" id="full_name" placeholder="Full Name" class="w-full bg-purple-900/50 text-white p-3 rounded-lg border border-purple-600 focus:ring-2 ring-blue-400 outline-none">
-                <select id="serviceType" onchange="updateProviders()" class="w-full bg-purple-900 text-white p-3 rounded-lg border border-purple-600">
-                    <option value="Massage">Full-Body Massage</option>
-                    <option value="Salon">Hair & Nail Care</option>
+            <h3 class="font-bold mb-4 flex items-center text-blue-400 uppercase text-sm"><i data-lucide="sparkles" class="mr-2"></i> Serbisyo Booking</h3>
+            <div class="space-y-3">
+                <input type="text" id="full_name" placeholder="Full Name" class="w-full bg-purple-900 p-2 rounded-lg border border-purple-600 text-xs outline-none">
+                <select id="serviceType" onchange="updateProviders()" class="w-full bg-purple-900 p-2 rounded-lg border border-purple-600 text-xs">
+                    <option value="Massage">Massage</option>
+                    <option value="Salon">Salon</option>
                 </select>
-                <select id="provider" class="w-full bg-purple-900 text-white p-3 rounded-lg border border-purple-600"></select>
-                <select id="timeSlot" class="w-full bg-purple-900 text-white p-3 rounded-lg border border-purple-600">
-                    <option value="8:30-9:30">8:30 AM - 9:30 AM</option>
-                    <option value="9:45-10:45">9:45 AM - 10:45 AM</option>
-                    <option value="11:00-12:00">11:00 AM - 12:00 PM</option>
-                    <option value="1:00-2:00">1:00 PM - 2:00 PM</option>
-                    <option value="2:15-3:15">2:15 PM - 3:15 PM</option>
-                    <option value="3:30-4:30">3:30 PM - 4:30 PM</option>
+                <select id="provider" class="w-full bg-purple-900 p-2 rounded-lg border border-purple-600 text-xs"></select>
+                <select id="timeSlot" class="w-full bg-purple-900 p-2 rounded-lg border border-purple-600 text-xs">
+                    <option>08:30 AM - 09:30 AM</option>
+                    <option>09:45 AM - 10:45 AM</option>
+                    <option>11:00 AM - 12:00 PM</option>
+                    <option>01:00 PM - 02:00 PM</option>
+                    <option>02:15 PM - 03:15 PM</option>
+                    <option>03:30 PM - 04:30 PM</option>
                 </select>
-                <div class="flex flex-col gap-2 pt-2">
-                    <button id="bookBtn" onclick="handleAction('book')" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-black py-3 rounded-xl btn-hover shadow-lg">BOOK SLOT</button>
-                    <button id="cancelBtn" onclick="handleAction('cancel')" class="w-full bg-red-500/50 hover:bg-red-600 text-white font-bold py-2 rounded-xl text-xs transition-all">Cancel Existing Booking</button>
-                </div>
-                <div id="statusMsg" class="text-center font-bold text-xs hidden mt-2"></div>
+                <button onclick="handleAction('book')" id="bookBtn" class="w-full bg-blue-500 hover:bg-blue-600 py-2 rounded-lg font-black text-xs uppercase shadow-md">Book Slot</button>
+                <div id="statusMsg" class="text-center font-bold text-[10px] hidden mt-1"></div>
             </div>
         </section>
 
-        <section class="glass-card p-6 rounded-2xl border-t-4 border-yellow-400">
-            <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="shopping-bag" class="mr-2 text-yellow-400"></i> AGRARYO MERKADO</h3>
-            <p class="text-xs text-yellow-200 mb-6 italic">Support Local Women Entrepreneurs</p>
-            <div class="space-y-4">
-                <p class="text-sm leading-relaxed">Visit the DARPO grounds to explore products from our ARBOs and local women-led cooperatives.</p>
-                <a href="https://www.facebook.com/profile.php?id=61587180002234" target="_blank" class="flex items-center justify-center w-full bg-blue-700 hover:bg-blue-800 py-3 rounded-xl font-bold shadow-md">
-                    <i data-lucide="facebook" class="mr-2 w-4 h-4"></i> Official FB Page
-                </a>
-                <div class="space-y-3 pt-2 text-xs font-bold">
-                    <div class="flex items-center space-x-2 text-yellow-200"><i data-lucide="award" class="w-4 h-4"></i> <span>Awarding Ceremony</span></div>
-                    <div class="flex items-center space-x-2 text-pink-300"><i data-lucide="heart" class="w-4 h-4"></i> <span>Grand Launching</span></div>
-                    <div class="flex items-center space-x-2 text-blue-300"><i data-lucide="map" class="w-4 h-4"></i> <span>ARBO 360 Virtual Tour</span></div>
-                </div>
+        <section class="glass-card p-6 rounded-2xl border-t-4 border-yellow-400 flex flex-col justify-between">
+            <div>
+                <h3 class="font-bold mb-4 flex items-center text-yellow-400 uppercase text-sm"><i data-lucide="shopping-bag" class="mr-2"></i> Agraryo Merkado</h3>
+                <p class="text-[11px] opacity-80 leading-relaxed mb-4 italic">Visit DARPO Camarines Sur 1 grounds to support our local women entrepreneurs and ARBOs.</p>
             </div>
+            <a href="https://www.facebook.com/profile.php?id=61587180002234" target="_blank" class="block text-center bg-blue-700 py-3 rounded-xl font-black text-[10px] uppercase shadow-md hover:bg-blue-800 transition-all">Visit Official FB Page</a>
         </section>
     </main>
 
-    <section class="max-w-5xl mx-auto px-6 grid md:grid-cols-2 gap-8 pb-12">
-        <div class="glass-card p-6 rounded-3xl text-center border-t-4 border-purple-400">
-            <h2 class="text-2xl font-black mb-4 uppercase flex justify-center items-center">
-                <i data-lucide="gift" class="mr-3 text-pink-400"></i> Training Kits
+    <section class="max-w-6xl mx-auto px-6 pb-20 grid md:grid-cols-2 gap-8">
+        <div class="glass-card p-6 rounded-3xl">
+            <h2 class="text-center font-black uppercase mb-4 text-xs tracking-widest flex items-center justify-center">
+                <i data-lucide="images" class="mr-2 w-4 h-4"></i> Activity Gallery
             </h2>
-            <div class="bg-black/20 p-2 rounded-xl">
-                <img src="training kit.jpg" alt="Training Kits" class="rounded-lg shadow-lg w-full h-64 object-cover" onerror="this.src='https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800'">
-            </div>
-        </div>
-        <div class="glass-card p-6 rounded-3xl text-center border-t-4 border-green-400">
-            <h2 class="text-2xl font-black mb-4 uppercase flex justify-center items-center">
-                <i data-lucide="images" class="mr-3 text-green-400"></i> Gallery
-            </h2>
-            <div class="flickr-embed-wrapper rounded-xl border-2 border-green-500/30 overflow-hidden">
-                <a data-flickr-embed="true" href="https://www.flickr.com/photos/204272375@N03/albums/72177720332196566"><img src="https://live.staticflickr.com/65535/55114587266_3dc48bee9c_h.jpg" alt="Gallery"></a>
+            <div class="flickr-embed-wrapper rounded-xl overflow-hidden border border-white/10">
+                <a data-flickr-embed="true" href="https://www.flickr.com/photos/204272375@N03/albums/72177720332196566">
+                    <img src="https://live.staticflickr.com/65535/55114587266_3dc48bee9c_h.jpg" alt="Gallery">
+                </a>
                 <script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
             </div>
         </div>
-    </section>
 
-    <section class="max-w-4xl mx-auto px-6 pb-12">
-        <div class="glass-card p-8 rounded-3xl shadow-2xl border-t-4 border-blue-400">
-            <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-center">Freedom Wall: What are you excited about?</h2>
-            <div class="bg-purple-900/40 p-6 rounded-2xl mb-8">
-                <div class="grid md:grid-cols-3 gap-4 mb-4">
-                    <input type="text" id="boardName" placeholder="Your Name" class="w-full bg-purple-900 text-white p-3 rounded-lg border border-purple-600 outline-none">
-                    <textarea id="boardMessage" rows="1" placeholder="Your Message..." class="md:col-span-2 w-full bg-purple-900 text-white p-3 rounded-lg border border-purple-600 outline-none"></textarea>
-                </div>
-                <button onclick="submitMessage()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-black py-3 rounded-xl btn-hover shadow-lg uppercase tracking-widest">Post to Wall</button>
+        <div class="glass-card p-6 rounded-3xl flex flex-col">
+            <h2 class="text-center font-black uppercase mb-4 text-xs tracking-widest flex items-center justify-center">
+                <i data-lucide="message-square" class="mr-2 w-4 h-4"></i> Freedom Wall
+            </h2>
+            <div class="flex gap-2 mb-4">
+                <input type="text" id="boardName" placeholder="Name" class="bg-purple-900 p-2 rounded-lg border border-purple-600 outline-none w-1/3 text-xs">
+                <input type="text" id="boardMessage" placeholder="Your Message..." class="bg-purple-900 p-2 rounded-lg border border-purple-600 outline-none flex-1 text-xs">
+                <button onclick="submitMessage()" class="bg-pink-500 px-4 rounded-lg font-black text-[10px] uppercase hover:bg-pink-600">Post</button>
             </div>
-            <div id="messagesGrid" class="grid sm:grid-cols-2 gap-4 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
+            <div id="messagesGrid" class="flex-1 space-y-3 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
                 </div>
         </div>
     </section>
-
-    <footer class="max-w-4xl mx-auto px-6 pb-20">
-        <div class="bg-accent-yellow text-purple-900 p-8 rounded-3xl text-center shadow-2xl">
-            <h2 class="text-2xl font-black mb-2 uppercase italic tracking-tighter">Evaluation Survey</h2>
-            <p class="mb-6 font-medium text-sm">Help us improve next year's celebration! Click below to start.</p>
-            <a href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=hslj_ewKNkSKenSo5u9h5HSub3xMQjNDoEYFXqzwNNBUNkY0NkhNRTY3UTNZV1NKNkVSUTFNUVRMMS4u" target="_blank" class="inline-block bg-purple-900 text-white font-black py-4 px-12 rounded-full btn-hover shadow-xl tracking-widest uppercase">START SURVEY</a>
-        </div>
-        <p class="text-center mt-12 text-[10px] opacity-40 uppercase tracking-[0.5em] font-bold">DAR Camarines Sur 1 | 2026</p>
-    </footer>
 
     <script>
         lucide.createIcons();
         
-        const scriptURL = 'https://script.google.com/macros/s/11AKfycbyk1-ptlDiEk-SrVS5KHkPgRp7H-evRPajb6L1IJkJvLnznSH9YsWKvAuYbm5lbscXc1A/exec';
+        // UPDATED SCRIPT URL
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwps-SAwSlnavERtfQfPl4EzeTnpVqtVhiIAqiXGi6iP6bsp0rCC-KJabiJNuC9F99Bkw/exec';
 
-        // Config for Pledges
-        const pledgeConfig = [
+        const config = [
             { id: 'rice', label: 'Rice', goal: 500, unit: 'kg' },
             { id: 'hygiene', label: 'Hygiene Kits', goal: 100, unit: 'sets' },
-            { id: 'school', label: 'School Supplies', goal: 100, unit: 'packs' },
+            { id: 'school', label: 'School Supplies', goal: 150, unit: 'packs' },
             { id: 'slippers', label: 'Slippers', goal: 100, unit: 'pairs' },
-            { id: 'undergarments', label: 'Undergarments', goal: 150, unit: 'pcs' },
+            { id: 'undergarments', label: 'Undergarments', goal: 100, unit: 'pcs' },
             { id: 'biscuits', label: 'Biscuits', goal: 200, unit: 'packs' },
             { id: 'milk', label: 'Milk', goal: 200, unit: 'pcs' },
             { id: 'soap', label: 'Laundry Soap', goal: 100, unit: 'pcs' }
         ];
 
-        // Service Providers
-        const masseurs = ["Masseur A (Female) - Conf", "Masseur B (Female) - Conf", "Masseur C (Female)", "Masseur E (Male) - PARPO", "Masseur G (Female) - LTSP"];
-        const beauticians = ["Beautician 1", "Beautician 2", "Beautician 3", "Beautician 4"];
+        function initAll() { updateProviders(); fetchPledges(); fetchMessages(); setInterval(fetchPledges, 60000); }
 
-        function initAll() {
-            updateProviders();
-            fetchPledges();
-            fetchMessages();
-            setInterval(fetchPledges, 60000); // Sync pledges every minute
+        async function fetchPledges() {
+            try {
+                const r = await fetch(`${scriptURL}?action=getPledges`);
+                const data = await r.json();
+                const list = document.getElementById('pledgeList');
+                list.innerHTML = '';
+                config.forEach(item => {
+                    const current = data[item.id] || 0;
+                    const percent = Math.min((current / item.goal) * 100, 100);
+                    list.innerHTML += `
+                        <div>
+                            <div class="flex justify-between text-[10px] font-black uppercase mb-1">
+                                <span class="text-pink-300">${item.label}</span>
+                                <span>${current} / ${item.goal} ${item.unit}</span>
+                            </div>
+                            <div class="progress-bg"><div class="progress-fill" style="width: ${percent}%"></div></div>
+                        </div>`;
+                });
+            } catch (e) { console.error("Sync Error"); }
         }
 
+        async function submitPledge() {
+            const name = document.getElementById('pledgeName').value;
+            const item = document.getElementById('pledgeItem').value;
+            const qty = document.getElementById('pledgeQty').value;
+            if(!name || !qty) return alert("Paki-fill out lahat ng fields.");
+            
+            const btn = document.getElementById('pledgeBtn');
+            btn.disabled = true; btn.innerText = "PROCESSING...";
+            
+            try {
+                await fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'pledge', name: name, item_id: item, quantity: qty }) });
+                document.getElementById('pledgeQty').value = '';
+                alert("Salamat sa iyong pledge!");
+                fetchPledges();
+            } catch (e) { alert("Error connecting to database."); }
+            finally { btn.disabled = false; btn.innerText = "CONFIRM PLEDGE"; }
+        }
+
+        const masseurs = ["Masseur A (F)", "Masseur B (F)", "Masseur E (M)", "Masseur G (F)"];
+        const beauticians = ["Beautician 1", "Beautician 2", "Beautician 3"];
         function updateProviders() {
             const sel = document.getElementById('provider');
             sel.innerHTML = '';
@@ -210,72 +215,41 @@
             opts.forEach(o => { const el = document.createElement('option'); el.value = o; el.textContent = o; sel.appendChild(el); });
         }
 
-        async function fetchPledges() {
-            try {
-                const r = await fetch(scriptURL);
-                const data = await r.json();
-                renderPledges(data);
-            } catch (e) { console.warn("Pledge sync failed."); renderPledges({}); }
-        }
-
-        function renderPledges(data) {
-            const list = document.getElementById('pledgeList');
-            list.innerHTML = '';
-            pledgeConfig.forEach(item => {
-                const current = data[item.id] || 0;
-                const percent = Math.min((current / item.goal) * 100, 100);
-                list.innerHTML += `
-                    <div>
-                        <div class="flex justify-between text-[10px] font-black uppercase mb-1">
-                            <span class="text-pink-300">${item.label}</span>
-                            <span>${current} / ${item.goal} ${item.unit}</span>
-                        </div>
-                        <div class="progress-bg"><div class="progress-fill" style="width: ${percent}%"></div></div>
-                    </div>`;
-            });
-        }
-
         async function handleAction(action) {
             const name = document.getElementById('full_name').value;
-            if (!name) return alert("Please enter your name.");
-            const btn = document.getElementById(action === 'book' ? 'bookBtn' : 'cancelBtn');
-            btn.disabled = true; btn.innerText = 'WAIT...';
-            
+            if(!name) return alert("Paki-lagay ang iyong pangalan.");
+            const btn = document.getElementById('bookBtn');
+            btn.disabled = true;
             try {
-                const response = await fetch(scriptURL, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        action: action, full_name: name,
-                        service: document.getElementById('serviceType').value,
-                        provider: document.getElementById('provider').value,
-                        time: document.getElementById('timeSlot').value
-                    })
-                });
-                const res = await response.json();
-                const msg = document.getElementById('statusMsg');
-                msg.classList.remove('hidden');
-                msg.textContent = res.message || (res.status === 'success' ? 'Transaction Successful!' : 'Error processing.');
-                msg.className = `text-center font-bold text-xs mt-2 ${res.status === 'success' ? 'text-green-400' : 'text-red-400'}`;
-            } catch (e) { alert("Connection Error."); }
-            finally { btn.disabled = false; btn.innerText = action === 'book' ? 'BOOK SLOT' : 'CANCEL BOOKING'; }
+                await fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: action, full_name: name, service: document.getElementById('serviceType').value, provider: document.getElementById('provider').value, time: document.getElementById('timeSlot').value }) });
+                document.getElementById('statusMsg').classList.remove('hidden');
+                document.getElementById('statusMsg').innerText = "Booking Successful!";
+                document.getElementById('statusMsg').className = "text-center font-bold text-[10px] mt-1 text-green-400";
+            } catch (e) { alert("Error!"); }
+            finally { btn.disabled = false; }
         }
 
         async function fetchMessages() {
-            const g = document.getElementById('messagesGrid');
             try {
                 const r = await fetch(`${scriptURL}?action=getMessages`);
                 const ms = await r.json();
-                g.innerHTML = ms.length ? '' : '<div class="col-span-full italic opacity-50 text-sm text-center">Be the first to post!</div>';
-                ms.forEach(m => { g.innerHTML += `<div class="message-card p-4 rounded-xl"><p class="italic text-sm">"${m.text}"</p><p class="text-[10px] font-black text-yellow-200 mt-2 uppercase tracking-widest">- ${m.name}</p></div>`; });
-            } catch (e) { g.innerHTML = "Wall temporarily unavailable."; }
+                const g = document.getElementById('messagesGrid');
+                g.innerHTML = '';
+                ms.forEach(m => {
+                    g.innerHTML += `<div class="message-card p-3 rounded-xl border-l-4 border-yellow-400 bg-black/20">
+                        <p class="italic text-[10px] leading-tight">"${m.text}"</p>
+                        <p class="text-[9px] font-black text-yellow-200 mt-2 uppercase">- ${m.name}</p>
+                    </div>`;
+                });
+            } catch (e) {}
         }
 
         async function submitMessage() {
             const n = document.getElementById('boardName').value;
             const m = document.getElementById('boardMessage').value;
-            if (!n || !m) return alert("Name and Message required.");
+            if(!n || !m) return;
             await fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'message', name: n, message: m }) });
-            document.getElementById('boardName').value = ''; document.getElementById('boardMessage').value = '';
+            document.getElementById('boardMessage').value = '';
             fetchMessages();
         }
     </script>
