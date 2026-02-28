@@ -2,208 +2,130 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Service Availment Cards | Women's Month</title>
+    <title>Service Cards (1x2 inch)</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --purple: #3b2164;
-            --gold: #f9e18b;
-            --pink: #ec4899;
-        }
-        * { box-sizing: border-box; -webkit-print-color-adjust: exact; }
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background: #ccc; 
-            margin: 0; 
-            padding: 20px; 
+        :root { --purple: #3b2164; --gold: #f9e18b; }
+        body { font-family: 'Montserrat', sans-serif; margin: 0; background: #eee; }
+        
+        .controls { padding: 20px; text-align: center; background: white; margin-bottom: 20px; }
+        button { background: var(--purple); color: var(--gold); border: none; padding: 10px 20px; font-weight: bold; cursor: pointer; }
+
+        @media print {
+            body { background: none; margin: 0; }
+            .controls { display: none; }
+            @page { size: A4; margin: 10mm; }
         }
 
-        /* SCREEN ONLY CONTROLS */
-        .controls {
-            background: white; 
-            padding: 20px; 
-            max-width: 210mm; 
-            margin: 0 auto 20px auto; 
-            text-align: center;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        button {
-            background: var(--purple); color: var(--gold); border: none;
-            padding: 12px 25px; font-weight: bold; cursor: pointer;
-            font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
-            border-radius: 5px;
-        }
-        button:hover { opacity: 0.9; }
-
-        /* A4 PAGE LAYOUT */
         .page {
             width: 210mm;
-            height: 296mm; /* Adjusted to fit exactly on A4 without spill */
+            min-height: 297mm;
             background: white;
-            margin: 0 auto 10mm auto;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            gap: 2mm;
             padding: 10mm;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 Columns */
-            grid-template-rows: repeat(3, 1fr);    /* 3 Rows */
-            gap: 5mm;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            margin: 0 auto;
+            box-sizing: border-box;
             page-break-after: always;
         }
 
-        /* CARD DESIGN */
+        /* 1 inch height x 2 inches width */
         .card {
-            border: 2px dashed var(--purple);
-            border-radius: 10px;
+            width: 2in;
+            height: 1in;
+            background: var(--purple);
+            color: white;
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            box-sizing: border-box;
             position: relative;
             overflow: hidden;
+        }
+
+        .logo-area {
+            width: 30%;
             display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
+            justify-content: center;
+            align-items: center;
         }
+        .logo-area img { width: 40px; height: 40px; object-fit: contain; }
 
-        .header {
-            background: var(--purple);
-            color: var(--gold);
-            padding: 8px;
-            text-align: center;
-            border-bottom: 3px solid var(--gold);
-        }
-        .header h1 { margin: 0; font-size: 10px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; }
-        .header h2 { margin: 2px 0 0 0; font-size: 14px; font-weight: 900; color: white; text-transform: uppercase; }
-
-        .body {
-            padding: 10px;
-            flex-grow: 1;
+        .info-area {
+            width: 70%;
+            padding-left: 5px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            gap: 8px;
         }
 
-        .row { display: flex; flex-direction: column; }
-        .label { font-size: 8px; color: var(--pink); font-weight: bold; text-transform: uppercase; }
-        .value { 
-            font-size: 12px; 
-            font-weight: 700; 
-            color: #333; 
-            border-bottom: 1px solid #eee;
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis; 
-        }
-        .value.highlight { color: var(--purple); font-size: 14px; }
+        .event-name { font-size: 6px; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; }
+        .pass-title { font-size: 9px; font-weight: 900; line-height: 1; margin: 2px 0; }
+        .detail { font-size: 5px; color: #ddd; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .highlight { color: var(--gold); font-weight: bold; }
 
-        .footer {
-            background: #f8f8f8;
-            padding: 5px;
-            text-align: center;
-            font-size: 7px;
-            color: #666;
-            border-top: 1px solid #ddd;
-        }
-
-        /* PRINT SETTINGS */
-        @media print {
-            body { background: none; padding: 0; }
-            .controls { display: none; }
-            .page { 
-                margin: 0; 
-                box-shadow: none;
-                width: 210mm;
-                height: 296mm; 
-                page-break-after: always;
-            }
-            @page { size: A4 portrait; margin: 0; }
-        }
     </style>
 </head>
 <body onload="loadData()">
 
     <div class="controls">
-        <h1 style="margin: 0 0 10px 0; color: #3b2164;">Service Card Generator</h1>
-        <p id="status" style="font-size: 12px; margin-bottom: 15px;">Fetching data from Google Sheets...</p>
-        <button onclick="window.print()">Print Cards</button>
+        <button onclick="window.print()">PRINT CARDS</button>
+        <p id="status" style="font-size: 12px; margin-top: 5px;">Loading...</p>
     </div>
 
     <div id="container"></div>
 
     <script>
-        // UPDATED SCRIPT URL WITH NEW ID
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzMaqW7MGF6CMKDcmLEBzEUf7blueL-dQxZkddH-RucW5snP5KowB_dU06gQAf4-Mxgvg/exec';
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwIRpvQezzXayJ8N3S_gpvz6yZxtLTmZp6RXrN-u7w7M4UfzqVfvLz-DPIpqNTKedK17Q/exec';
 
         async function loadData() {
-            const status = document.getElementById('status');
-            const container = document.getElementById('container');
-            
             try {
-                // Fetch data using 'getBookings' action
-                const response = await fetch(`${scriptURL}?action=getBookings`);
-                const bookings = await response.json();
-
-                if (!bookings || bookings.length === 0) {
-                    status.innerText = "No bookings found in the database.";
-                    return;
-                }
-
-                status.innerText = `Loaded ${bookings.length} bookings. Ready to print.`;
-                renderPages(bookings);
-
+                const res = await fetch(`${scriptURL}?action=getBookings`);
+                const data = await res.json();
+                document.getElementById('status').innerText = `Loaded ${data.length} cards.`;
+                render(data);
             } catch (e) {
-                console.error(e);
-                status.innerText = "Error loading data. Please ensure the Apps Script is updated and deployed.";
+                document.getElementById('status').innerText = "Error loading data.";
             }
         }
 
-        function renderPages(data) {
+        function render(data) {
             const container = document.getElementById('container');
-            container.innerHTML = '';
-            
-            const itemsPerPage = 9; // 3x3 Grid
-            let currentPage = null;
+            let page = document.createElement('div');
+            page.className = 'page';
+            container.appendChild(page);
 
-            data.forEach((item, index) => {
-                // Create new page every 9 items
-                if (index % itemsPerPage === 0) {
-                    currentPage = document.createElement('div');
-                    currentPage.className = 'page';
-                    container.appendChild(currentPage);
+            // A4 fits approx 27 cards
+            let count = 0;
+            const perPage = 27; 
+
+            data.forEach(item => {
+                if (count >= perPage) {
+                    page = document.createElement('div');
+                    page.className = 'page';
+                    container.appendChild(page);
+                    count = 0;
                 }
 
-                // Create Card
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
-                    <div class="header">
-                        <h1>Women's Month 2026</h1>
-                        <h2>Service Pass</h2>
+                    <div class="logo-area">
+                        <img src="dar-logo.png" onerror="this.style.display='none'">
                     </div>
-                    <div class="body">
-                        <div class="row">
-                            <span class="label">Beneficiary Name</span>
-                            <span class="value highlight">${item.name}</span>
-                        </div>
-                        <div class="row">
-                            <span class="label">Service Availment</span>
-                            <span class="value">${item.service}</span>
-                        </div>
-                        <div class="row">
-                            <span class="label">Assigned Staff</span>
-                            <span class="value">${item.provider}</span>
-                        </div>
-                        <div class="row">
-                            <span class="label">Confirmed Time Slot</span>
-                            <span class="value highlight" style="color: #ec4899;">${item.time}</span>
-                        </div>
-                    </div>
-                    <div class="footer">
-                        VALID ONLY ON MARCH 31, 2026 • DAR CAMARINES SUR 1<br>
-                        Present this card at the registration area.
+                    <div class="info-area">
+                        <div class="event-name">Women's Month 2026</div>
+                        <div class="pass-title">SERVICE PASS</div>
+                        <div class="detail highlight">${item.name}</div>
+                        <div class="detail">${item.service}</div>
+                        <div class="detail">${item.time} | ${item.provider}</div>
                     </div>
                 `;
-                currentPage.appendChild(card);
+                page.appendChild(card);
+                count++;
             });
         }
     </script>
