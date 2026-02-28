@@ -104,7 +104,6 @@
                     <select id="provider" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 text-sm"></select>
                 </div>
                 <button id="bookBtn" onclick="handleAction('book')" class="w-full bg-blue-500 py-3 rounded-lg font-bold btn-hover text-sm">BOOK SLOT</button>
-                <button id="cancelBtn" onclick="handleAction('cancel')" class="w-full bg-red-500 py-3 rounded-lg font-bold btn-hover text-sm mt-2">CANCEL BOOKING</button>
                 <div id="statusMsg" class="text-center font-bold text-xs hidden mt-2"></div>
             </div>
         </section>
@@ -146,7 +145,7 @@
                         
                         <div class="mb-3">
                             <div class="flex justify-between text-xs font-bold mb-1">
-                                <span class="text-pink-200">Hygiene Kits</span>
+                                <span class="text-white">Hygiene Kits</span>
                                 <span class="text-white" id="stat-hygiene">12 / 50 Sets</span>
                             </div>
                             <div class="progress-bar-bg w-full">
@@ -156,7 +155,7 @@
 
                         <div class="mb-3">
                             <div class="flex justify-between text-xs font-bold mb-1">
-                                <span class="text-blue-200">School Supplies</span>
+                                <span class="text-white">School Supplies</span>
                                 <span class="text-white" id="stat-school">30 / 50 Packs</span>
                             </div>
                             <div class="progress-bar-bg w-full">
@@ -166,7 +165,7 @@
 
                         <div>
                             <div class="flex justify-between text-xs font-bold mb-1">
-                                <span class="text-yellow-200">Rice (Sacks)</span>
+                                <span class="text-white">Rice (Sacks)</span>
                                 <span class="text-white" id="stat-rice">5 / 20 Sacks</span>
                             </div>
                             <div class="progress-bar-bg w-full">
@@ -277,6 +276,7 @@
         function initPage() {
             updateProviders();
             fetchMessages();
+            // Optional: fetchPledgeStats() can be called here if the backend is ready
         }
 
         // --- BOOKING LOGIC ---
@@ -296,7 +296,7 @@
             const name = document.getElementById('full_name').value;
             if (!name) return alert("Full Name required.");
             
-            const btn = document.getElementById(action === 'book' ? 'bookBtn' : 'cancelBtn');
+            const btn = document.getElementById('bookBtn');
             const msg = document.getElementById('statusMsg');
             const originalText = btn.innerText;
             btn.disabled = true; btn.innerText = 'Processing...';
