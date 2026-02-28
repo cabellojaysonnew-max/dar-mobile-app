@@ -18,15 +18,17 @@
         .flickr-embed-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
         
         /* JuanaHELP Specific Styles */
-        .juana-bg { background: linear-gradient(135deg, #3b1e6e 0%, #d689a8 100%); }
+        .juana-bg { background: linear-gradient(135deg, #2e1065 0%, #4c1d95 100%); }
+        .progress-bar-bg { background-color: rgba(0, 0, 0, 0.3); border-radius: 9999px; height: 14px; overflow: hidden; }
+        .progress-bar-fill { height: 100%; border-radius: 9999px; transition: width 1s ease-in-out; }
     </style>
 </head>
-<body class="overflow-x-hidden" onload="fetchMessages()">
+<body class="overflow-x-hidden" onload="initPage()">
 
     <header class="text-center py-12 px-4">
         <div class="flex justify-center space-x-4 mb-6">
-            <img src="dar-logo.png" alt="DAR" class="w-16 h-16 object-contain" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/4/4a/Department_of_Agrarian_Reform_%28Philippines%29.svg'">
-            <img src="gad-logo.png" alt="GAD" class="w-16 h-16 object-contain" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/e/e7/GAD_Logo.png'">
+            <img src="dar-logo.png" alt="DAR" class="w-16 h-16 object-contain" onerror="this.style.display='none'">
+            <img src="gad-logo.png" alt="GAD" class="w-16 h-16 object-contain" onerror="this.style.display='none'">
         </div>
         <h2 class="text-2xl uppercase tracking-widest mb-2 font-bold">Women's Month</h2>
         <h1 class="text-6xl md:text-8xl font-black accent-yellow mb-4 leading-tight">Celebration</h1>
@@ -35,50 +37,35 @@
     </header>
 
     <main class="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8 py-10">
+        
         <section class="glass-card p-6 rounded-2xl border-t-4 border-pink-400">
             <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="graduation-cap" class="mr-2 text-pink-400"></i> EMPOWERED LEADER WORKSHOP</h3>
             <div class="text-sm font-semibold text-pink-200 mb-6">
                 <p class="flex items-center mb-1"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i> March 30, 2026</p>
                 <a href="https://www.google.com/maps/search/Amesola+Spring+Valley" target="_blank" class="flex items-center text-blue-300 hover:text-blue-100 hover:underline">
-                    <i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> Amesola Spring Valley (View Map)
+                    <i data-lucide="map-pin" class="w-4 h-4 mr-2"></i> Amesola Spring Valley
                 </a>
             </div>
             <ul class="space-y-6">
                 <li class="flex items-start">
                     <i data-lucide="flower-2" class="mr-3 text-pink-300 flex-shrink-0 mt-1"></i>
                     <div>
-                        <span class="font-bold block text-pink-300">Topic 1</span> 
-                        <div class="font-bold mb-2">Lead with Strength: SWOT Analysis Training and Workshop</div>
-                        <div class="text-xs text-pink-200 leading-snug">
-                            <span class="font-bold text-white text-sm">Dr. Nico Ogarte</span><br>
-                            Doctor of Business Administration<br>
-                            AVP for Research, Innovation, Extension, and Sustainability<br>
-                            Naga College Foundation Inc.
-                        </div>
+                        <div class="font-bold mb-1">Lead with Strength: SWOT Analysis</div>
+                        <div class="text-xs text-pink-200">Dr. Nico Ogarte, Naga College Foundation Inc.</div>
                     </div>
                 </li>
                 <li class="flex items-start">
                     <i data-lucide="bot" class="mr-3 text-blue-300 flex-shrink-0 mt-1"></i>
                     <div>
-                        <span class="font-bold block text-blue-300">Topic 2</span> 
-                        <div class="font-bold mb-2">The AI-Empowered Babaylan</div>
-                        <div class="text-xs text-blue-200 leading-snug">
-                            <span class="font-bold text-white text-sm">Dr. Anna Loretta C. Romulo</span><br>
-                            Doctor of Philosophy in Technology Management<br>
-                            Dean, College of Computer Studies, Naga College Foundation
-                        </div>
+                        <div class="font-bold mb-1">The AI-Empowered Babaylan</div>
+                        <div class="text-xs text-blue-200">Dr. Anna Loretta C. Romulo, NCF</div>
                     </div>
                 </li>
                 <li class="flex items-start">
                     <i data-lucide="pencil-line" class="mr-3 text-yellow-300 flex-shrink-0 mt-1"></i>
                     <div>
-                        <span class="font-bold block text-yellow-300">Topic 3</span> 
-                        <div class="font-bold mb-2">Technical Writing</div>
-                        <div class="text-xs text-yellow-200 leading-snug">
-                            <span class="font-bold text-white text-sm">Niriza Mae A. Barquilla</span><br>
-                            Regional Information Officer / ARPO I<br>
-                            Department of Agrarian Reform V
-                        </div>
+                        <div class="font-bold mb-1">Technical Writing</div>
+                        <div class="text-xs text-yellow-200">Niriza Mae A. Barquilla, RIO DAR V</div>
                     </div>
                 </li>
             </ul>
@@ -91,122 +78,167 @@
             </div>
             <div class="space-y-4">
                 <div class="p-3 bg-purple-800 rounded-lg">
-                    <label class="block text-sm font-bold mb-1">Full Name:</label>
-                    <input type="text" id="full_name" placeholder="e.g. Juan Dela Cruz" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none">
+                    <label class="block text-xs font-bold mb-1 text-blue-200">Full Name</label>
+                    <input type="text" id="full_name" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 focus:outline-none text-sm">
                 </div>
-                <input type="hidden" id="bookingDate" value="2026-03-31">
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="p-3 bg-purple-800 rounded-lg">
+                        <label class="block text-xs font-bold mb-1 text-blue-200">Service</label>
+                        <select id="serviceType" onchange="updateProviders()" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 text-sm">
+                            <option value="Massage">Massage</option>
+                            <option value="Salon">Salon</option>
+                        </select>
+                    </div>
+                    <div class="p-3 bg-purple-800 rounded-lg">
+                        <label class="block text-xs font-bold mb-1 text-blue-200">Time</label>
+                        <select id="timeSlot" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 text-sm">
+                            <option value="8:30-9:30">8:30 AM</option>
+                            <option value="9:45-10:45">9:45 AM</option>
+                            <option value="1:45-2:45">1:45 PM</option>
+                            <option value="3:00-4:00">3:00 PM</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="p-3 bg-purple-800 rounded-lg">
-                    <label class="block text-sm font-bold mb-1">Select Service:</label>
-                    <select id="serviceType" onchange="updateProviders()" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600">
-                        <option value="Massage">Full-Body Massage</option>
-                        <option value="Salon">Hair & Nail Care</option>
-                    </select>
+                    <label class="block text-xs font-bold mb-1 text-blue-200">Provider</label>
+                    <select id="provider" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 text-sm"></select>
                 </div>
-                <div class="p-3 bg-purple-800 rounded-lg">
-                    <label class="block text-sm font-bold mb-1">Select Provider:</label>
-                    <select id="provider" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600"></select>
-                </div>
-                <div class="p-3 bg-purple-800 rounded-lg">
-                    <label class="block text-sm font-bold mb-1">Time Slot:</label>
-                    <select id="timeSlot" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600">
-                        <option value="8:30-9:30">8:30 AM - 9:30 AM</option>
-                        <option value="9:45-10:45">9:45 AM - 10:45 AM</option>
-                        <option value="11:00-12:00">11:00 AM - 12:00 PM</option>
-                        <option value="12:30-1:30">12:30 PM - 1:30 PM</option>
-                        <option value="1:45-2:45">1:45 PM - 2:45 PM</option>
-                        <option value="3:00-4:00">3:00 PM - 4:00 PM</option>
-                        <option value="4:15-5:15">4:15 PM - 5:15 PM</option>
-                    </select>
-                </div>
-                <div class="space-y-2">
-                    <button id="bookBtn" onclick="handleAction('book')" class="w-full bg-blue-500 py-3 rounded-lg font-bold btn-hover">BOOK MY SLOT</button>
-                    <button id="cancelBtn" onclick="handleAction('cancel')" class="w-full bg-red-500 py-3 rounded-lg font-bold btn-hover">CANCEL BOOKING</button>
-                </div>
-                <div id="statusMsg" class="text-center font-bold text-sm hidden mt-2"></div>
+                <button id="bookBtn" onclick="handleAction('book')" class="w-full bg-blue-500 py-3 rounded-lg font-bold btn-hover text-sm">BOOK SLOT</button>
+                <div id="statusMsg" class="text-center font-bold text-xs hidden mt-2"></div>
             </div>
         </section>
 
-        <section class="glass-card p-6 rounded-2xl border-t-4 border-yellow-400">
-            <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="shopping-bag" class="mr-2 text-yellow-400"></i> AGRARYO MERKADO</h3>
-            <p class="text-sm mb-4 text-yellow-100">Visit the DARPO at DARMO to support our local women entrepreneurs and ARBOs.</p>
-            <a href="https://www.facebook.com/profile.php?id=61587180002234" target="_blank" class="inline-flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded shadow-md transition-colors">
-                <i data-lucide="facebook" class="w-4 h-4 mr-2"></i> Visit Official FB Page
+        <section class="glass-card p-6 rounded-2xl border-t-4 border-yellow-400 flex flex-col justify-between">
+            <div>
+                <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="shopping-bag" class="mr-2 text-yellow-400"></i> AGRARYO MERKADO</h3>
+                <p class="text-sm mb-4 text-white leading-relaxed">
+                    Support our local women entrepreneurs and ARBOs! <br><br>
+                    <span class="text-yellow-200 font-bold block border-l-2 border-yellow-400 pl-3">
+                        Located sa DARMO asin DARPO
+                    </span>
+                    <br>
+                    Available throughout the celebration month.
+                </p>
+            </div>
+            <a href="https://www.facebook.com/profile.php?id=61587180002234" target="_blank" class="inline-flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded shadow-md transition-colors btn-hover">
+                <i data-lucide="facebook" class="w-4 h-4 mr-2"></i> Visit FB Page
             </a>
         </section>
     </main>
 
     <section class="max-w-6xl mx-auto px-6 mb-12">
-        <div class="glass-card rounded-3xl overflow-hidden shadow-2xl border-2 border-purple-400 flex flex-col md:flex-row">
-            <div class="md:w-1/2 p-8 juana-bg flex flex-col justify-center items-center text-center">
-                <img src="JuanaHELP.png" alt="JuanaHELP Logo" class="w-64 mb-4 drop-shadow-lg" onerror="this.style.display='none'"> 
-                <h2 class="text-3xl font-black text-yellow-200 uppercase mb-2">JuanaHELP Outreach</h2>
-                <p class="text-sm font-bold text-pink-200 tracking-widest uppercase mb-6">Women Helping Children in Crisis</p>
+        <div class="glass-card rounded-3xl overflow-hidden shadow-2xl border border-purple-400 flex flex-col lg:flex-row">
+            
+            <div class="lg:w-5/12 p-8 juana-bg text-center lg:text-left relative overflow-hidden">
+                <div class="absolute top-0 right-0 -mr-10 -mt-10 w-40 h-40 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+                <div class="absolute bottom-0 left-0 -ml-10 -mb-10 w-40 h-40 bg-yellow-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
                 
-                <div class="bg-white/10 p-4 rounded-xl w-full text-left">
-                    <h4 class="font-bold text-yellow-300 mb-3 flex items-center"><i data-lucide="heart-handshake" class="mr-2"></i> Wishlist / Needs:</h4>
-                    <div class="grid grid-cols-2 gap-2 text-sm text-white">
-                        <div class="flex items-center"><i data-lucide="check-circle" class="w-3 h-3 text-pink-400 mr-2"></i> Personal Hygiene</div>
-                        <div class="flex items-center"><i data-lucide="check-circle" class="w-3 h-3 text-pink-400 mr-2"></i> School Supplies</div>
-                        <div class="flex items-center"><i data-lucide="check-circle" class="w-3 h-3 text-pink-400 mr-2"></i> Slippers</div>
-                        <div class="flex items-center"><i data-lucide="check-circle" class="w-3 h-3 text-pink-400 mr-2"></i> Undergarments</div>
-                        <div class="flex items-center"><i data-lucide="check-circle" class="w-3 h-3 text-pink-400 mr-2"></i> Biscuits</div>
-                        <div class="flex items-center"><i data-lucide="check-circle" class="w-3 h-3 text-pink-400 mr-2"></i> Rice</div>
-                        <div class="flex items-center"><i data-lucide="check-circle" class="w-3 h-3 text-pink-400 mr-2"></i> Milk</div>
-                        <div class="flex items-center"><i data-lucide="check-circle" class="w-3 h-3 text-pink-400 mr-2"></i> Laundry Soap</div>
+                <div class="relative z-10 flex flex-col h-full justify-center">
+                    <div class="mb-8 flex justify-center lg:justify-start">
+                        <img src="JuanaHELP.png" alt="JuanaHELP Logo" class="w-64 drop-shadow-2xl hover:scale-105 transition-transform duration-500">
+                    </div>
+                    
+                    <div class="bg-black/20 backdrop-blur-md rounded-xl p-5 border border-white/10">
+                        <h4 class="text-yellow-300 font-bold uppercase text-xs tracking-widest mb-4 flex items-center">
+                            <i data-lucide="activity" class="mr-2"></i> Real-Time Pledge Monitor
+                        </h4>
+                        
+                        <div class="mb-3">
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-pink-200">Hygiene Kits</span>
+                                <span class="text-white" id="stat-hygiene">12 / 50 Sets</span>
+                            </div>
+                            <div class="progress-bar-bg w-full">
+                                <div class="progress-bar-fill bg-pink-500" style="width: 24%"></div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-blue-200">School Supplies</span>
+                                <span class="text-white" id="stat-school">30 / 50 Packs</span>
+                            </div>
+                            <div class="progress-bar-bg w-full">
+                                <div class="progress-bar-fill bg-blue-500" style="width: 60%"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between text-xs font-bold mb-1">
+                                <span class="text-yellow-200">Rice (Sacks)</span>
+                                <span class="text-white" id="stat-rice">5 / 20 Sacks</span>
+                            </div>
+                            <div class="progress-bar-bg w-full">
+                                <div class="progress-bar-fill bg-yellow-500" style="width: 25%"></div>
+                            </div>
+                        </div>
+
+                        <p class="text-[10px] text-center mt-4 opacity-50 italic">Data updates every 5 minutes from DARPO records.</p>
                     </div>
                 </div>
             </div>
 
-            <div class="md:w-1/2 p-8 bg-purple-900/80">
-                <h3 class="text-2xl font-bold mb-4 flex items-center text-white">
-                    <i data-lucide="gift" class="mr-2 text-pink-400"></i> Make a Pledge
-                </h3>
-                <p class="text-sm text-purple-200 mb-6">Support the shelter by pledging any of the items on the wishlist.</p>
+            <div class="lg:w-7/12 p-8 bg-purple-900/90">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-bold text-white flex items-center">
+                        <i data-lucide="heart-handshake" class="mr-3 text-pink-400"></i> Make a Pledge
+                    </h3>
+                    <span class="text-xs bg-pink-600 text-white px-3 py-1 rounded-full font-bold animate-pulse">Accepting until March 30</span>
+                </div>
                 
-                <div class="space-y-4">
+                <p class="text-sm text-purple-200 mb-6 border-l-4 border-pink-400 pl-4">
+                    Your pledge provides dignity to victims in our shelter. 
+                    Drop off donations at <strong>DARPO Camarines Sur 1</strong>.
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
                     <div>
-                        <label class="block text-xs font-bold uppercase text-purple-300 mb-1">Donor Name</label>
-                        <input type="text" id="pledgeName" placeholder="Your Name or Organization" class="w-full bg-purple-800 text-white p-3 rounded border border-purple-600 focus:outline-none focus:border-pink-400">
+                        <label class="block text-xs font-bold uppercase text-purple-300 mb-1">Name / Organization</label>
+                        <input type="text" id="pledgeName" placeholder="Juan Dela Cruz / DARMO..." class="w-full bg-purple-800 text-white p-3 rounded border border-purple-600 focus:border-pink-400 focus:outline-none">
                     </div>
                     <div>
                         <label class="block text-xs font-bold uppercase text-purple-300 mb-1">Contact Number</label>
-                        <input type="text" id="pledgeContact" placeholder="Mobile Number" class="w-full bg-purple-800 text-white p-3 rounded border border-purple-600 focus:outline-none focus:border-pink-400">
+                        <input type="text" id="pledgeContact" placeholder="0917xxxxxxx" class="w-full bg-purple-800 text-white p-3 rounded border border-purple-600 focus:border-pink-400 focus:outline-none">
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-purple-300 mb-1">I pledge to donate:</label>
-                        <select id="pledgeItem" class="w-full bg-purple-800 text-white p-3 rounded border border-purple-600 focus:outline-none focus:border-pink-400">
-                            <option value="" disabled selected>Select an item...</option>
-                            <option value="Hygiene Kits">Personal Hygiene Kits</option>
-                            <option value="School Supplies">School Supplies</option>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-xs font-bold uppercase text-purple-300 mb-1">I pledge to donate:</label>
+                    <div class="relative">
+                        <select id="pledgeItem" class="w-full bg-purple-800 text-white p-3 rounded border border-purple-600 focus:border-pink-400 focus:outline-none appearance-none">
+                            <option value="" disabled selected>Select an item from the Wishlist...</option>
+                            <option value="Hygiene Kits">Personal Hygiene Kits (Soap, Toothbrush, etc.)</option>
+                            <option value="School Supplies">School Supplies (Notebooks, Pens)</option>
                             <option value="Slippers">Slippers</option>
-                            <option value="Undergarments">Undergarments</option>
-                            <option value="Biscuits">Biscuits</option>
+                            <option value="Undergarments">Undergarments (New)</option>
                             <option value="Rice">Rice</option>
-                            <option value="Milk">Milk</option>
+                            <option value="Milk">Milk (Powdered/Carton)</option>
                             <option value="Laundry Soap">Laundry Soap</option>
                             <option value="Cash/Others">Cash / Others</option>
                         </select>
+                        <i data-lucide="chevron-down" class="absolute right-3 top-3 text-purple-400 w-5 h-5 pointer-events-none"></i>
                     </div>
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-purple-300 mb-1">Details / Quantity</label>
-                        <textarea id="pledgeDetails" rows="2" placeholder="e.g. 1 sack of rice, 2 boxes of milk..." class="w-full bg-purple-800 text-white p-3 rounded border border-purple-600 focus:outline-none focus:border-pink-400"></textarea>
-                    </div>
-                    
-                    <button onclick="submitPledge()" id="pledgeBtn" class="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold py-3 rounded-lg shadow-lg btn-hover mt-2">
-                        SUBMIT PLEDGE
-                    </button>
-                    <div id="pledgeMsg" class="text-center font-bold text-sm hidden mt-2 text-green-400"></div>
                 </div>
+
+                <div class="mb-6">
+                    <label class="block text-xs font-bold uppercase text-purple-300 mb-1">Quantity / Details</label>
+                    <textarea id="pledgeDetails" rows="2" placeholder="e.g. 5 sets, 1 sack, to be dropped off on Monday..." class="w-full bg-purple-800 text-white p-3 rounded border border-purple-600 focus:border-pink-400 focus:outline-none"></textarea>
+                </div>
+                
+                <button onclick="submitPledge()" id="pledgeBtn" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold py-4 rounded-xl shadow-lg btn-hover flex justify-center items-center">
+                    <i data-lucide="send" class="w-5 h-5 mr-2"></i> SUBMIT PLEDGE
+                </button>
+                <div id="pledgeMsg" class="text-center font-bold text-sm hidden mt-4 text-green-400 bg-green-900/50 p-3 rounded-lg border border-green-500"></div>
             </div>
         </div>
     </section>
 
     <section class="max-w-4xl mx-auto px-6 pb-12">
         <div class="glass-card p-8 rounded-3xl text-center shadow-2xl border-t-4 border-purple-400 mb-10">
-            <h2 class="text-3xl font-black mb-4 uppercase text-white flex justify-center items-center">
-                <i data-lucide="gift" class="mr-3 text-pink-400 w-8 h-8"></i> Exclusive Training Kits
+            <h2 class="text-2xl font-black mb-4 uppercase text-white flex justify-center items-center">
+                <i data-lucide="gift" class="mr-3 text-pink-400"></i> Exclusive Training Kits
             </h2>
-            <img src="training kit.jpg" class="mx-auto rounded-xl w-full object-cover border-2 border-purple-500">
+            <img src="training kit.jpg" class="mx-auto rounded-xl w-full object-cover border-2 border-purple-500" onerror="this.style.display='none'">
         </div>
         <div class="flickr-embed-wrapper rounded-xl border-2 border-green-500 overflow-hidden shadow-lg">
             <a data-flickr-embed="true" href="https://www.flickr.com/photos/204272375@N03/albums/72177720332196566"><img src="https://live.staticflickr.com/65535/55114587266_3dc48bee9c_h.jpg" alt="Gallery"></a>
@@ -216,11 +248,11 @@
 
     <section class="max-w-4xl mx-auto px-6 pb-12">
         <div class="glass-card p-8 rounded-3xl shadow-2xl border-t-4 border-blue-400">
-            <h2 class="text-3xl font-black mb-6 uppercase tracking-tighter text-center text-white">What are you excited about?</h2>
+            <h2 class="text-2xl font-black mb-6 uppercase tracking-tighter text-center text-white">Message Board</h2>
             <div class="bg-purple-800 p-6 rounded-2xl mb-8">
                 <div class="grid md:grid-cols-3 gap-4 mb-4">
                     <input type="text" id="boardName" placeholder="Your Name" class="w-full bg-purple-900 text-white p-3 rounded border border-purple-600">
-                    <textarea id="boardMessage" rows="2" placeholder="Your Message" class="md:col-span-2 w-full bg-purple-900 text-white p-3 rounded border border-purple-600"></textarea>
+                    <textarea id="boardMessage" rows="2" placeholder="What are you excited about?" class="md:col-span-2 w-full bg-purple-900 text-white p-3 rounded border border-purple-600"></textarea>
                 </div>
                 <button onclick="submitMessage()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-lg btn-hover shadow-lg">POST MESSAGE</button>
             </div>
@@ -230,9 +262,9 @@
 
     <section class="max-w-4xl mx-auto px-6 pb-20">
         <div class="bg-accent-yellow text-purple-900 p-8 rounded-3xl text-center shadow-2xl">
-            <h2 class="text-3xl font-black mb-2 uppercase tracking-tighter">Post Evaluation Survey</h2>
-            <p class="mb-6 font-medium">Your feedback helps us make next year's celebration even better!</p>
-            <a href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=hslj_ewKNkSKenSo5u9h5HSub3xMQjNDoEYFXqzwNNBUNkY0NkhNRTY3UTNZV1NKNkVSUTFNUVRMMS4u" target="_blank" class="inline-block bg-purple-900 text-white font-black py-4 px-10 rounded-full btn-hover shadow-xl">START SURVEY NOW</a>
+            <h2 class="text-2xl font-black mb-2 uppercase tracking-tighter">Post Evaluation</h2>
+            <p class="mb-6 font-medium text-sm">Your feedback matters!</p>
+            <a href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=hslj_ewKNkSKenSo5u9h5HSub3xMQjNDoEYFXqzwNNBUNkY0NkhNRTY3UTNZV1NKNkVSUTFNUVRMMS4u" target="_blank" class="inline-block bg-purple-900 text-white font-black py-4 px-10 rounded-full btn-hover shadow-xl">START SURVEY</a>
         </div>
     </section>
 
@@ -240,8 +272,19 @@
         lucide.createIcons();
         const scriptURL = 'https://script.google.com/macros/s/AKfycbw7xqjXxIFzTMR3kU9VvxeIEWBeDhjQPqnIH2bkOKbblu3x4REc_2878fki9Xq-kuEX_g/exec';
 
-        const masseurs = ["Masseur A (Female) - Conference", "Masseur B (Female) - Conference", "Masseur C (Female) - Conference", "Masseur D (Female) - Conference", "Masseur E (Male) - PARPO I", "Masseur F (Male) - PARPO II", "Masseur G (Female) - LTSP", "Masseur H (Female) - LTSP", "Masseur I (Female) - LEGAL", "Masseur J (Female) - STOD"];
-        const beauticians = ["Beautician 1", "Beautician 2", "Beautician 3", "Beautician 4", "Beautician 5", "Beautician 6"];
+        // --- INIT & MOCK DATA ---
+        function initPage() {
+            updateProviders();
+            fetchMessages();
+            // Simulating fetching pledge data. Connect this to your Google Sheet later.
+            // Example response logic:
+            // const stats = await fetch(scriptURL + '?action=getStats');
+            // updateProgressBar('hygiene', stats.hygiene, 50);
+        }
+
+        // --- BOOKING LOGIC ---
+        const masseurs = ["Masseur A (Female)", "Masseur B (Female)", "Masseur C (Female)", "Masseur E (Male)"];
+        const beauticians = ["Beautician 1", "Beautician 2", "Beautician 3"];
 
         function updateProviders() {
             const sel = document.getElementById('provider');
@@ -249,15 +292,14 @@
             const opts = document.getElementById('serviceType').value === 'Massage' ? masseurs : beauticians;
             opts.forEach(o => { const el = document.createElement('option'); el.value = o; el.textContent = o; sel.appendChild(el); });
         }
-        updateProviders();
 
         async function handleAction(action) {
-            const deadline = new Date(2026, 2, 27, 23, 59, 59); // March 27
-            if (new Date() > deadline) return alert("Transactions are only allowed until March 27, 2026.");
+            const deadline = new Date(2026, 2, 27, 23, 59, 59);
+            if (new Date() > deadline) return alert("Transactions closed.");
             const name = document.getElementById('full_name').value;
-            if (!name) return alert("Full Name is required.");
+            if (!name) return alert("Full Name required.");
             
-            const btn = document.getElementById(action === 'book' ? 'bookBtn' : 'cancelBtn');
+            const btn = document.getElementById('bookBtn');
             const msg = document.getElementById('statusMsg');
             btn.disabled = true; btn.innerText = 'Processing...';
 
@@ -273,33 +315,34 @@
                 });
                 const res = await response.json();
                 msg.classList.remove('hidden');
-                msg.textContent = res.message || (res.status === 'success' ? 'Successful!' : 'Error.');
-                msg.className = `text-center font-bold text-sm mt-2 ${res.status === 'success' ? 'text-green-400' : 'text-red-400'}`;
-                if (res.status === 'success' && action === 'book') document.getElementById('full_name').value = '';
+                msg.textContent = res.message || 'Success!';
+                msg.className = `text-center font-bold text-xs mt-2 ${res.status === 'success' ? 'text-green-400' : 'text-red-400'}`;
+                if (res.status === 'success') document.getElementById('full_name').value = '';
             } catch (e) { alert("Connection Error."); }
-            finally { btn.disabled = false; btn.innerText = action === 'book' ? 'BOOK MY SLOT' : 'CANCEL BOOKING'; }
+            finally { btn.disabled = false; btn.innerText = 'BOOK SLOT'; }
         }
 
+        // --- MESSAGE BOARD ---
         async function fetchMessages() {
             try {
                 const r = await fetch(scriptURL);
                 const ms = await r.json();
                 const g = document.getElementById('messagesGrid');
-                g.innerHTML = ms.length ? '' : '<div class="col-span-full text-center py-4 italic">No messages yet.</div>';
-                ms.forEach(m => { g.innerHTML += `<div class="message-card p-4 rounded-lg"><p class="italic">"${m.text}"</p><p class="text-xs font-bold text-yellow-200 mt-2">- ${m.name}</p></div>`; });
+                g.innerHTML = ms.length ? '' : '<div class="col-span-full text-center py-4 italic text-sm text-purple-300">No messages yet.</div>';
+                ms.forEach(m => { g.innerHTML += `<div class="message-card p-4 rounded-lg"><p class="italic text-sm">"${m.text}"</p><p class="text-xs font-bold text-yellow-200 mt-2">- ${m.name}</p></div>`; });
             } catch (e) {}
         }
 
         async function submitMessage() {
             const n = document.getElementById('boardName').value;
             const m = document.getElementById('boardMessage').value;
-            if (!n || !m) return alert("Fill out both name and message.");
+            if (!n || !m) return alert("Fill out both fields.");
             await fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'message', name: n, message: m }) });
             document.getElementById('boardName').value = ''; document.getElementById('boardMessage').value = '';
             fetchMessages();
         }
 
-        // NEW: Function to handle Donation Pledge
+        // --- PLEDGE LOGIC ---
         async function submitPledge() {
             const name = document.getElementById('pledgeName').value;
             const contact = document.getElementById('pledgeContact').value;
@@ -310,35 +353,32 @@
 
             const btn = document.getElementById('pledgeBtn');
             const msg = document.getElementById('pledgeMsg');
-            btn.disabled = true; btn.innerText = "Submitting Pledge...";
+            const originalText = btn.innerHTML;
+            btn.disabled = true; btn.innerHTML = '<i data-lucide="loader" class="animate-spin w-5 h-5 mr-2"></i> Sending...';
+            lucide.createIcons();
 
             try {
-                // Sends action: 'pledge' to your existing Google Sheet script
                 await fetch(scriptURL, { 
                     method: 'POST', 
                     body: JSON.stringify({ 
-                        action: 'pledge', 
-                        name: name, 
-                        contact: contact, 
-                        item: item,
-                        details: details 
+                        action: 'pledge', name: name, contact: contact, item: item, details: details 
                     }) 
                 });
-                
                 msg.classList.remove('hidden');
                 msg.textContent = "Thank you! Your pledge has been recorded.";
                 
-                // Clear fields
+                // Reset Form
                 document.getElementById('pledgeName').value = '';
                 document.getElementById('pledgeContact').value = '';
                 document.getElementById('pledgeItem').value = '';
                 document.getElementById('pledgeDetails').value = '';
                 
             } catch (e) {
-                alert("Connection Error. Please try again.");
+                alert("Connection Error.");
             } finally {
                 btn.disabled = false;
-                btn.innerText = "SUBMIT PLEDGE";
+                btn.innerHTML = originalText;
+                lucide.createIcons();
             }
         }
     </script>
