@@ -8,16 +8,18 @@
 
 <style>
 :root{
-    --purple:#3b2164;
-    --deep-purple:#2a1649;
-    --light-purple:#f4edff;
-    --gold:#d4af37;
+    --purple:#5a2ca0;
+    --deep-purple:#2e1461;
+    --light-purple:#f6f0ff;
+    --gold:#f4c542;
+    --pink:#ff8fcf;
 }
 
+/* BODY */
 body{
     font-family:'Montserrat',sans-serif;
     margin:0;
-    background:#eee;
+    background:#ececec;
 }
 
 /* CONTROLS */
@@ -25,17 +27,16 @@ body{
     padding:20px;
     text-align:center;
     background:white;
-    margin-bottom:20px;
 }
 
 button{
-    background:var(--purple);
+    background:linear-gradient(45deg,var(--purple),var(--pink));
     color:white;
     border:none;
-    padding:10px 24px;
+    padding:12px 26px;
     font-weight:700;
-    cursor:pointer;
     border-radius:6px;
+    cursor:pointer;
 }
 
 /* PRINT SETTINGS */
@@ -67,59 +68,71 @@ button{
 .card{
     width:85.6mm;
     height:54mm;
-    border-radius:8px;
-    border:1px solid var(--purple);
-    background:linear-gradient(135deg,var(--light-purple),#ffffff);
+    border-radius:10px;
+    border:1px solid var(--deep-purple);
+    background:
+        linear-gradient(135deg,var(--light-purple),#ffffff);
     display:flex;
     position:relative;
     overflow:hidden;
     box-sizing:border-box;
+
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
 }
 
-/* WOMEN'S MONTH WATERMARK */
-.card::after{
-    content:"";
-    position:absolute;
-    right:4mm;
-    bottom:4mm;
-    width:28mm;
-    height:28mm;
-    background:url('wm_logo.png') no-repeat center;
-    background-size:contain;
-    opacity:0.12;
-    pointer-events:none;
-}
-
-/* LEFT PURPLE STRIPE */
+/* COLORFUL LEFT STRIPE */
 .card::before{
     content:"";
     position:absolute;
     left:0;
     top:0;
     bottom:0;
-    width:11mm;
-    background:linear-gradient(var(--deep-purple),var(--purple));
+    width:12mm;
+    background:linear-gradient(
+        180deg,
+        var(--deep-purple),
+        var(--purple),
+        var(--pink)
+    );
+
+    -webkit-print-color-adjust:exact;
+}
+
+/* WM WATERMARK */
+.card::after{
+    content:"";
+    position:absolute;
+    right:5mm;
+    bottom:5mm;
+    width:30mm;
+    height:30mm;
+    background:url('wm_logo.png') no-repeat center;
+    background-size:contain;
+    opacity:0.15;
+
+    -webkit-print-color-adjust:exact;
 }
 
 /* YEAR BADGE */
 .year{
     position:absolute;
-    top:5px;
+    top:6px;
     right:8px;
-    font-size:10px;
+    font-size:11px;
     font-weight:900;
     color:var(--gold);
 }
 
-/* LOGO AREA */
+/* LOGOS */
 .logo-area{
     width:32%;
     display:flex;
     flex-direction:column;
     align-items:center;
     justify-content:center;
-    padding-left:6mm;
-    gap:3px;
+    padding-left:7mm;
+    gap:4px;
 }
 
 .logo-area img{
@@ -128,7 +141,7 @@ button{
     object-fit:contain;
 }
 
-/* INFO AREA */
+/* INFO */
 .info-area{
     width:68%;
     padding:8px 10px 8px 6px;
@@ -137,7 +150,7 @@ button{
     justify-content:center;
 }
 
-/* TEXT STYLES */
+/* TEXT */
 .event-name{
     font-size:10px;
     font-weight:700;
@@ -147,31 +160,29 @@ button{
 }
 
 .pass-title{
-    font-size:15px;
+    font-size:16px;
     font-weight:900;
     color:var(--gold);
     margin:2px 0 3px;
 }
 
 .comm{
-    font-size:8px;
+    font-size:9px;
     color:#666;
     margin-bottom:4px;
 }
 
-/* NAME — ALL CAPS */
 .name{
-    font-size:12px;
+    font-size:13px;
     font-weight:900;
     color:var(--deep-purple);
     text-transform:uppercase;
-    letter-spacing:.5px;
+    letter-spacing:.6px;
 }
 
 .detail{
     font-size:11px;
     color:#333;
-    line-height:1.2;
 }
 </style>
 </head>
@@ -186,13 +197,15 @@ button{
 <div id="container"></div>
 
 <script>
-const scriptURL='https://script.google.com/macros/s/AKfycbwIRpvQezzXayJ8N3S_gpvz6yZxtLTmZp6RXrN-u7w7M4UfzqVfvLz-DPIpqNTKedK17Q/exec';
+const scriptURL =
+'https://script.google.com/macros/s/AKfycbwIRpvQezzXayJ8N3S_gpvz6yZxtLTmZp6RXrN-u7w7M4UfzqVfvLz-DPIpqNTKedK17Q/exec';
 
 async function loadData(){
     try{
-        const res=await fetch(`${scriptURL}?action=getBookings`);
-        const data=await res.json();
-        document.getElementById('status').innerText=`Loaded ${data.length} cards.`;
+        const res = await fetch(`${scriptURL}?action=getBookings`);
+        const data = await res.json();
+        document.getElementById('status').innerText =
+            `Loaded ${data.length} cards.`;
         render(data);
     }catch(e){
         document.getElementById('status').innerText="Error loading data.";
@@ -227,7 +240,7 @@ function render(data){
 
             <div class="logo-area">
                 <img src="dar-logo.png" onerror="this.style.display='none'">
-                <img src="gad_logo.png" onerror="this.style.display='none'">
+                <img src="gad-logo.png" onerror="this.style.display='none'">
             </div>
 
             <div class="info-area">
