@@ -16,6 +16,9 @@
         .message-card { background: rgba(0, 0, 0, 0.2); border-left: 4px solid #f9e18b; }
         .flickr-embed-wrapper { position: relative; width: 100%; height: 0; padding-bottom: 56.25%; }
         .flickr-embed-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+        
+        /* JuanaHELP Specific Styles */
+        .juana-bg { background: linear-gradient(135deg, #3b1e6e 0%, #d689a8 100%); }
     </style>
 </head>
 <body class="overflow-x-hidden" onload="fetchMessages()">
@@ -100,7 +103,7 @@
                     </select>
                 </div>
                 <div class="p-3 bg-purple-800 rounded-lg">
-                    <label class="block text-sm font-bold mb-1">Select Provider & Room:</label>
+                    <label class="block text-sm font-bold mb-1">Select Provider:</label>
                     <select id="provider" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600"></select>
                 </div>
                 <div class="p-3 bg-purple-800 rounded-lg">
@@ -115,9 +118,9 @@
                         <option value="4:15-5:15">4:15 PM - 5:15 PM</option>
                     </select>
                 </div>
-                <div class="space-y-2 mt-2">
-                    <button id="bookBtn" onclick="handleAction('book')" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg btn-hover shadow-lg">BOOK MY SLOT</button>
-                    <button id="cancelBtn" onclick="handleAction('cancel')" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 rounded-lg btn-hover shadow-lg">CANCEL BOOKING</button>
+                <div class="space-y-2">
+                    <button id="bookBtn" onclick="handleAction('book')" class="w-full bg-blue-500 py-3 rounded-lg font-bold btn-hover">BOOK MY SLOT</button>
+                    <button id="cancelBtn" onclick="handleAction('cancel')" class="w-full bg-red-500 py-3 rounded-lg font-bold btn-hover">CANCEL BOOKING</button>
                 </div>
                 <div id="statusMsg" class="text-center font-bold text-sm hidden mt-2"></div>
             </div>
@@ -125,39 +128,89 @@
 
         <section class="glass-card p-6 rounded-2xl border-t-4 border-yellow-400">
             <h3 class="text-xl font-bold flex items-center mb-2"><i data-lucide="shopping-bag" class="mr-2 text-yellow-400"></i> AGRARYO MERKADO</h3>
-            <div class="text-sm font-semibold text-yellow-200 mb-6">
-                <p class="flex items-center"><i data-lucide="calendar" class="w-4 h-4 mr-2"></i> March 30, 2026</p>
-            </div>
-            <div class="space-y-4">
-                <p class="text-sm">Visit the DARPO at DARMO to support our local women entrepreneurs and ARBOs.</p>
-                <a href="https://www.facebook.com/profile.php?id=61587180002234" target="_blank" class="inline-flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded shadow-md">
-                    <i data-lucide="facebook" class="w-4 h-4 mr-2"></i> Visit Official FB Page
-                </a>
-                <div class="flex items-center space-x-2 text-yellow-200"><i data-lucide="award"></i> <span>Awarding Ceremony</span></div>
-                <div class="flex items-center space-x-2 text-pink-300"><i data-lucide="heart"></i> <span>Grand Launching</span></div>
-                <div class="flex items-center space-x-2 text-blue-300"><i data-lucide="map"></i> <span>ARBO 360 Tour</span></div>
-            </div>
+            <p class="text-sm mb-4 text-yellow-100">Visit the DARPO at DARMO to support our local women entrepreneurs and ARBOs.</p>
+            <a href="https://www.facebook.com/profile.php?id=61587180002234" target="_blank" class="inline-flex items-center justify-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 rounded shadow-md transition-colors">
+                <i data-lucide="facebook" class="w-4 h-4 mr-2"></i> Visit Official FB Page
+            </a>
         </section>
     </main>
 
-    <section class="max-w-4xl mx-auto px-6 pb-12">
-        <div class="glass-card p-8 rounded-3xl text-center shadow-2xl border-t-4 border-purple-400">
-            <h2 class="text-3xl font-black mb-4 uppercase text-white flex justify-center items-center">
-                <i data-lucide="gift" class="mr-3 text-pink-400 w-8 h-8"></i> Exclusive Training Kits
-            </h2>
-            <img src="training kit.jpg" alt="Training Kits" class="mx-auto rounded-xl shadow-lg border-2 border-purple-500 w-full object-cover">
+    <section class="max-w-6xl mx-auto px-6 mb-12">
+        <div class="glass-card rounded-3xl overflow-hidden shadow-2xl border-2 border-purple-400 flex flex-col md:flex-row">
+            <div class="md:w-1/2 p-8 juana-bg flex flex-col justify-center items-center text-center">
+                <img src="JuanaHELP.png" alt="JuanaHELP Logo" class="w-64 mb-4 drop-shadow-lg" onerror="this.style.display='none'"> 
+                <h2 class="text-3xl font-black text-yellow-200 uppercase mb-2">JuanaHELP Outreach</h2>
+                <p class="text-sm font-bold text-pink-200 tracking-widest uppercase mb-6">Women Helping Children in Crisis</p>
+                
+                <div class="bg-white/10 p-4 rounded-xl w-full text-left">
+                    <h4 class="font-bold text-yellow-300 mb-3 flex items-center"><i data-lucide="heart-handshake" class="mr-2"></i> Wishlist / Needs:</h4>
+                    <div class="grid grid-cols-2 gap-2 text-sm text-white">
+                        <div class="flex items-center"><i data-lucide="check-circle" class="w-3 h-3 text-pink-400 mr-2"></i> Personal Hygiene</div>
+                        <div class="flex items-center"><i data-lucide="check-circle" class="w-3 h-3 text-pink-400 mr-2"></i> School Supplies</div>
+                        <div class="flex items-center"><i data-lucide="check-circle" class="w-3 h-3 text-pink-400 mr-2"></i> Slippers</div>
+                        <div class="flex items-center"><i data-lucide="check-circle" class="w-3 h-3 text-pink-400 mr-2"></i> Undergarments</div>
+                        <div class="flex items-center"><i data-lucide="check-circle" class="w-3 h-3 text-pink-400 mr-2"></i> Biscuits</div>
+                        <div class="flex items-center"><i data-lucide="check-circle" class="w-3 h-3 text-pink-400 mr-2"></i> Rice</div>
+                        <div class="flex items-center"><i data-lucide="check-circle" class="w-3 h-3 text-pink-400 mr-2"></i> Milk</div>
+                        <div class="flex items-center"><i data-lucide="check-circle" class="w-3 h-3 text-pink-400 mr-2"></i> Laundry Soap</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:w-1/2 p-8 bg-purple-900/80">
+                <h3 class="text-2xl font-bold mb-4 flex items-center text-white">
+                    <i data-lucide="gift" class="mr-2 text-pink-400"></i> Make a Pledge
+                </h3>
+                <p class="text-sm text-purple-200 mb-6">Support the shelter by pledging any of the items on the wishlist.</p>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-purple-300 mb-1">Donor Name</label>
+                        <input type="text" id="pledgeName" placeholder="Your Name or Organization" class="w-full bg-purple-800 text-white p-3 rounded border border-purple-600 focus:outline-none focus:border-pink-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-purple-300 mb-1">Contact Number</label>
+                        <input type="text" id="pledgeContact" placeholder="Mobile Number" class="w-full bg-purple-800 text-white p-3 rounded border border-purple-600 focus:outline-none focus:border-pink-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-purple-300 mb-1">I pledge to donate:</label>
+                        <select id="pledgeItem" class="w-full bg-purple-800 text-white p-3 rounded border border-purple-600 focus:outline-none focus:border-pink-400">
+                            <option value="" disabled selected>Select an item...</option>
+                            <option value="Hygiene Kits">Personal Hygiene Kits</option>
+                            <option value="School Supplies">School Supplies</option>
+                            <option value="Slippers">Slippers</option>
+                            <option value="Undergarments">Undergarments</option>
+                            <option value="Biscuits">Biscuits</option>
+                            <option value="Rice">Rice</option>
+                            <option value="Milk">Milk</option>
+                            <option value="Laundry Soap">Laundry Soap</option>
+                            <option value="Cash/Others">Cash / Others</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-purple-300 mb-1">Details / Quantity</label>
+                        <textarea id="pledgeDetails" rows="2" placeholder="e.g. 1 sack of rice, 2 boxes of milk..." class="w-full bg-purple-800 text-white p-3 rounded border border-purple-600 focus:outline-none focus:border-pink-400"></textarea>
+                    </div>
+                    
+                    <button onclick="submitPledge()" id="pledgeBtn" class="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white font-bold py-3 rounded-lg shadow-lg btn-hover mt-2">
+                        SUBMIT PLEDGE
+                    </button>
+                    <div id="pledgeMsg" class="text-center font-bold text-sm hidden mt-2 text-green-400"></div>
+                </div>
+            </div>
         </div>
     </section>
 
     <section class="max-w-4xl mx-auto px-6 pb-12">
-        <div class="glass-card p-8 rounded-3xl text-center shadow-2xl border-t-4 border-green-400">
+        <div class="glass-card p-8 rounded-3xl text-center shadow-2xl border-t-4 border-purple-400 mb-10">
             <h2 class="text-3xl font-black mb-4 uppercase text-white flex justify-center items-center">
-                <i data-lucide="images" class="mr-3 text-green-400 w-8 h-8"></i> Activity Gallery
+                <i data-lucide="gift" class="mr-3 text-pink-400 w-8 h-8"></i> Exclusive Training Kits
             </h2>
-            <div class="flickr-embed-wrapper rounded-xl border-2 border-green-500 overflow-hidden">
-                <a data-flickr-embed="true" href="https://www.flickr.com/photos/204272375@N03/albums/72177720332196566"><img src="https://live.staticflickr.com/65535/55114587266_3dc48bee9c_h.jpg" alt="Gallery"></a>
-                <script async src="//embedr.flickr.com/assets/client-code.js" charset="utf-8"></script>
-            </div>
+            <img src="training kit.jpg" class="mx-auto rounded-xl w-full object-cover border-2 border-purple-500">
+        </div>
+        <div class="flickr-embed-wrapper rounded-xl border-2 border-green-500 overflow-hidden shadow-lg">
+            <a data-flickr-embed="true" href="https://www.flickr.com/photos/204272375@N03/albums/72177720332196566"><img src="https://live.staticflickr.com/65535/55114587266_3dc48bee9c_h.jpg" alt="Gallery"></a>
+            <script async src="//embedr.flickr.com/assets/client-code.js"></script>
         </div>
     </section>
 
@@ -171,7 +224,7 @@
                 </div>
                 <button onclick="submitMessage()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-lg btn-hover shadow-lg">POST MESSAGE</button>
             </div>
-            <div id="messagesGrid" class="grid sm:grid-cols-2 gap-4 max-h-96 overflow-y-auto"></div>
+            <div id="messagesGrid" class="grid sm:grid-cols-2 gap-4 max-h-96 overflow-y-auto pr-2"></div>
         </div>
     </section>
 
@@ -199,10 +252,10 @@
         updateProviders();
 
         async function handleAction(action) {
-            const deadline = new Date(2026, 2, 27, 23, 59, 59); // March 27, 2026 deadline
+            const deadline = new Date(2026, 2, 27, 23, 59, 59); // March 27
             if (new Date() > deadline) return alert("Transactions are only allowed until March 27, 2026.");
             const name = document.getElementById('full_name').value;
-            if (!name) return alert("Name is required.");
+            if (!name) return alert("Full Name is required.");
             
             const btn = document.getElementById(action === 'book' ? 'bookBtn' : 'cancelBtn');
             const msg = document.getElementById('statusMsg');
@@ -223,7 +276,7 @@
                 msg.textContent = res.message || (res.status === 'success' ? 'Successful!' : 'Error.');
                 msg.className = `text-center font-bold text-sm mt-2 ${res.status === 'success' ? 'text-green-400' : 'text-red-400'}`;
                 if (res.status === 'success' && action === 'book') document.getElementById('full_name').value = '';
-            } catch (e) { alert("Connection error."); }
+            } catch (e) { alert("Connection Error."); }
             finally { btn.disabled = false; btn.innerText = action === 'book' ? 'BOOK MY SLOT' : 'CANCEL BOOKING'; }
         }
 
@@ -234,7 +287,7 @@
                 const g = document.getElementById('messagesGrid');
                 g.innerHTML = ms.length ? '' : '<div class="col-span-full text-center py-4 italic">No messages yet.</div>';
                 ms.forEach(m => { g.innerHTML += `<div class="message-card p-4 rounded-lg"><p class="italic">"${m.text}"</p><p class="text-xs font-bold text-yellow-200 mt-2">- ${m.name}</p></div>`; });
-            } catch (e) { document.getElementById('messagesGrid').innerHTML = "Failed to load messages."; }
+            } catch (e) {}
         }
 
         async function submitMessage() {
@@ -244,6 +297,49 @@
             await fetch(scriptURL, { method: 'POST', body: JSON.stringify({ action: 'message', name: n, message: m }) });
             document.getElementById('boardName').value = ''; document.getElementById('boardMessage').value = '';
             fetchMessages();
+        }
+
+        // NEW: Function to handle Donation Pledge
+        async function submitPledge() {
+            const name = document.getElementById('pledgeName').value;
+            const contact = document.getElementById('pledgeContact').value;
+            const item = document.getElementById('pledgeItem').value;
+            const details = document.getElementById('pledgeDetails').value;
+            
+            if (!name || !contact || !item) return alert("Please fill out Name, Contact, and Pledge Item.");
+
+            const btn = document.getElementById('pledgeBtn');
+            const msg = document.getElementById('pledgeMsg');
+            btn.disabled = true; btn.innerText = "Submitting Pledge...";
+
+            try {
+                // Sends action: 'pledge' to your existing Google Sheet script
+                await fetch(scriptURL, { 
+                    method: 'POST', 
+                    body: JSON.stringify({ 
+                        action: 'pledge', 
+                        name: name, 
+                        contact: contact, 
+                        item: item,
+                        details: details 
+                    }) 
+                });
+                
+                msg.classList.remove('hidden');
+                msg.textContent = "Thank you! Your pledge has been recorded.";
+                
+                // Clear fields
+                document.getElementById('pledgeName').value = '';
+                document.getElementById('pledgeContact').value = '';
+                document.getElementById('pledgeItem').value = '';
+                document.getElementById('pledgeDetails').value = '';
+                
+            } catch (e) {
+                alert("Connection Error. Please try again.");
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "SUBMIT PLEDGE";
+            }
         }
     </script>
 </body>
