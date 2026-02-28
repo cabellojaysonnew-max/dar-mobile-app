@@ -104,6 +104,7 @@
                     <select id="provider" class="w-full bg-purple-900 text-white p-2 rounded border border-purple-600 text-sm"></select>
                 </div>
                 <button id="bookBtn" onclick="handleAction('book')" class="w-full bg-blue-500 py-3 rounded-lg font-bold btn-hover text-sm">BOOK SLOT</button>
+                <button id="cancelBtn" onclick="handleAction('cancel')" class="w-full bg-red-500 py-3 rounded-lg font-bold btn-hover text-sm mt-2">CANCEL BOOKING</button>
                 <div id="statusMsg" class="text-center font-bold text-xs hidden mt-2"></div>
             </div>
         </section>
@@ -135,7 +136,7 @@
                 
                 <div class="relative z-10 flex flex-col h-full justify-center">
                     <div class="mb-8 flex justify-center lg:justify-start">
-                        <img src="JuanaHELP.png" alt="JuanaHELP Logo" class="w-64 drop-shadow-2xl hover:scale-105 transition-transform duration-500">
+                        <img src="JuanaHELP.png" alt="JuanaHELP Logo" class="w-64 drop-shadow-2xl hover:scale-105 transition-transform duration-500" onerror="this.style.display='none'">
                     </div>
                     
                     <div class="bg-black/20 backdrop-blur-md rounded-xl p-5 border border-white/10">
@@ -276,15 +277,11 @@
         function initPage() {
             updateProviders();
             fetchMessages();
-            // Simulating fetching pledge data. Connect this to your Google Sheet later.
-            // Example response logic:
-            // const stats = await fetch(scriptURL + '?action=getStats');
-            // updateProgressBar('hygiene', stats.hygiene, 50);
         }
 
         // --- BOOKING LOGIC ---
-        const masseurs = ["Masseur A (Female)", "Masseur B (Female)", "Masseur C (Female)", "Masseur E (Male)"];
-        const beauticians = ["Beautician 1", "Beautician 2", "Beautician 3"];
+        const masseurs = ["Masseur A (Female) - Conference", "Masseur B (Female) - Conference", "Masseur C (Female) - Conference", "Masseur D (Female) - Conference", "Masseur E (Male) - PARPO I", "Masseur F (Male) - PARPO II", "Masseur G (Female) - LTSP", "Masseur H (Female) - LTSP", "Masseur I (Female) - LEGAL", "Masseur J (Female) - STOD"];
+        const beauticians = ["Beautician 1", "Beautician 2", "Beautician 3", "Beautician 4", "Beautician 5", "Beautician 6"];
 
         function updateProviders() {
             const sel = document.getElementById('provider');
@@ -299,8 +296,9 @@
             const name = document.getElementById('full_name').value;
             if (!name) return alert("Full Name required.");
             
-            const btn = document.getElementById('bookBtn');
+            const btn = document.getElementById(action === 'book' ? 'bookBtn' : 'cancelBtn');
             const msg = document.getElementById('statusMsg');
+            const originalText = btn.innerText;
             btn.disabled = true; btn.innerText = 'Processing...';
 
             try {
@@ -317,9 +315,9 @@
                 msg.classList.remove('hidden');
                 msg.textContent = res.message || 'Success!';
                 msg.className = `text-center font-bold text-xs mt-2 ${res.status === 'success' ? 'text-green-400' : 'text-red-400'}`;
-                if (res.status === 'success') document.getElementById('full_name').value = '';
+                if (res.status === 'success' && action === 'book') document.getElementById('full_name').value = '';
             } catch (e) { alert("Connection Error."); }
-            finally { btn.disabled = false; btn.innerText = 'BOOK SLOT'; }
+            finally { btn.disabled = false; btn.innerText = originalText; }
         }
 
         // --- MESSAGE BOARD ---
