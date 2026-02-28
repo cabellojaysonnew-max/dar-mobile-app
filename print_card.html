@@ -1,133 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Service Cards (1x2 inch)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root { --purple: #3b2164; --gold: #f9e18b; }
-        body { font-family: 'Montserrat', sans-serif; margin: 0; background: #eee; }
-        
-        .controls { padding: 20px; text-align: center; background: white; margin-bottom: 20px; }
-        button { background: var(--purple); color: var(--gold); border: none; padding: 10px 20px; font-weight: bold; cursor: pointer; }
+<meta charset="UTF-8">
+<title>Women's Month Commemorative Cards</title>
 
-        @media print {
-            body { background: none; margin: 0; }
-            .controls { display: none; }
-            @page { size: A4; margin: 10mm; }
-        }
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet">
 
-        .page {
-            width: 210mm;
-            min-height: 297mm;
-            background: white;
-            display: flex;
-            flex-wrap: wrap;
-            align-content: flex-start;
-            gap: 2mm;
-            padding: 10mm;
-            margin: 0 auto;
-            box-sizing: border-box;
-            page-break-after: always;
-        }
+<style>
+:root{
+    --purple:#3b2164;
+    --light-purple:#f3ecff;
+    --accent:#c9a7ff;
+    --gold:#f9e18b;
+}
 
-        /* 1 inch height x 2 inches width */
-        .card {
-            width: 2in;
-            height: 1in;
-            background: var(--purple);
-            color: white;
-            border: 1px solid #000;
-            display: flex;
-            align-items: center;
-            padding: 5px;
-            box-sizing: border-box;
-            position: relative;
-            overflow: hidden;
-        }
+body{
+    font-family:'Montserrat',sans-serif;
+    margin:0;
+    background:#eee;
+}
 
-        .logo-area {
-            width: 30%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .logo-area img { width: 40px; height: 40px; object-fit: contain; }
+/* CONTROL PANEL */
+.controls{
+    padding:20px;
+    text-align:center;
+    background:white;
+    margin-bottom:20px;
+}
 
-        .info-area {
-            width: 70%;
-            padding-left: 5px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+button{
+    background:var(--purple);
+    color:white;
+    border:none;
+    padding:10px 22px;
+    font-weight:700;
+    cursor:pointer;
+    border-radius:5px;
+}
 
-        .event-name { font-size: 6px; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; }
-        .pass-title { font-size: 9px; font-weight: 900; line-height: 1; margin: 2px 0; }
-        .detail { font-size: 5px; color: #ddd; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .highlight { color: var(--gold); font-weight: bold; }
+/* PRINT SETTINGS */
+@media print{
+    body{background:none;margin:0;}
+    .controls{display:none;}
 
-    </style>
+    @page{
+        size:A4;
+        margin:8mm;
+    }
+}
+
+/* PAGE */
+.page{
+    width:210mm;
+    min-height:297mm;
+    background:white;
+    display:flex;
+    flex-wrap:wrap;
+    gap:4mm;
+    padding:8mm;
+    margin:0 auto;
+    box-sizing:border-box;
+    page-break-after:always;
+}
+
+/* ATM CARD SIZE */
+.card{
+    width:85.6mm;
+    height:54mm;
+    border-radius:8px;
+    border:1px solid #000;
+    background:linear-gradient(135deg,var(--light-purple),#ffffff);
+    display:flex;
+    position:relative;
+    overflow:hidden;
+    box-sizing:border-box;
+}
+
+/* Decorative stripe */
+.card::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    bottom:0;
+    width:10mm;
+    background:linear-gradient(var(--purple),#5a3a91);
+}
+
+/* YEAR BADGE */
+.year{
+    position:absolute;
+    top:6px;
+    right:8px;
+    font-weight:900;
+    font-size:10px;
+    color:var(--purple);
+    opacity:.7;
+}
+
+/* LEFT LOGO */
+.logo-area{
+    width:30%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding-left:6mm;
+}
+
+.logo-area img{
+    width:42px;
+    height:42px;
+    object-fit:contain;
+}
+
+/* RIGHT CONTENT */
+.info-area{
+    width:70%;
+    padding:8px 10px 8px 6px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+}
+
+.event-name{
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:1px;
+    color:var(--purple);
+    text-transform:uppercase;
+}
+
+.pass-title{
+    font-size:15px;
+    font-weight:900;
+    color:var(--purple);
+    margin:2px 0 4px;
+}
+
+.comm{
+    font-size:8px;
+    color:#666;
+    margin-bottom:4px;
+}
+
+.detail{
+    font-size:11px;
+    color:#333;
+    line-height:1.2;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.highlight{
+    font-weight:700;
+    color:var(--purple);
+}
+</style>
 </head>
+
 <body onload="loadData()">
 
-    <div class="controls">
-        <button onclick="window.print()">PRINT CARDS</button>
-        <p id="status" style="font-size: 12px; margin-top: 5px;">Loading...</p>
-    </div>
+<div class="controls">
+<button onclick="window.print()">PRINT COMMEMORATIVE CARDS</button>
+<p id="status" style="font-size:12px;margin-top:5px;">Loading...</p>
+</div>
 
-    <div id="container"></div>
+<div id="container"></div>
 
-    <script>
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbwIRpvQezzXayJ8N3S_gpvz6yZxtLTmZp6RXrN-u7w7M4UfzqVfvLz-DPIpqNTKedK17Q/exec';
+<script>
+const scriptURL='https://script.google.com/macros/s/AKfycbwIRpvQezzXayJ8N3S_gpvz6yZxtLTmZp6RXrN-u7w7M4UfzqVfvLz-DPIpqNTKedK17Q/exec';
 
-        async function loadData() {
-            try {
-                const res = await fetch(`${scriptURL}?action=getBookings`);
-                const data = await res.json();
-                document.getElementById('status').innerText = `Loaded ${data.length} cards.`;
-                render(data);
-            } catch (e) {
-                document.getElementById('status').innerText = "Error loading data.";
-            }
-        }
+async function loadData(){
+    try{
+        const res=await fetch(`${scriptURL}?action=getBookings`);
+        const data=await res.json();
+        document.getElementById('status').innerText=`Loaded ${data.length} cards.`;
+        render(data);
+    }catch(e){
+        document.getElementById('status').innerText="Error loading data.";
+    }
+}
 
-        function render(data) {
-            const container = document.getElementById('container');
-            let page = document.createElement('div');
-            page.className = 'page';
+function render(data){
+
+    const container=document.getElementById('container');
+
+    let page=document.createElement('div');
+    page.className='page';
+    container.appendChild(page);
+
+    const perPage=10;
+    let count=0;
+
+    data.forEach(item=>{
+
+        if(count>=perPage){
+            page=document.createElement('div');
+            page.className='page';
             container.appendChild(page);
-
-            // A4 fits approx 27 cards
-            let count = 0;
-            const perPage = 27; 
-
-            data.forEach(item => {
-                if (count >= perPage) {
-                    page = document.createElement('div');
-                    page.className = 'page';
-                    container.appendChild(page);
-                    count = 0;
-                }
-
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    <div class="logo-area">
-                        <img src="dar-logo.png" onerror="this.style.display='none'">
-                    </div>
-                    <div class="info-area">
-                        <div class="event-name">Women's Month 2026</div>
-                        <div class="pass-title">SERVICE PASS</div>
-                        <div class="detail highlight">${item.name}</div>
-                        <div class="detail">${item.service}</div>
-                        <div class="detail">${item.time} | ${item.provider}</div>
-                    </div>
-                `;
-                page.appendChild(card);
-                count++;
-            });
+            count=0;
         }
-    </script>
+
+        const card=document.createElement('div');
+        card.className='card';
+
+        card.innerHTML=`
+            <div class="year">2026</div>
+
+            <div class="logo-area">
+                <img src="dar-logo.png"
+                onerror="this.style.display='none'">
+            </div>
+
+            <div class="info-area">
+                <div class="event-name">Women's Month</div>
+                <div class="pass-title">SERVICE CARD</div>
+                <div class="comm">Commemorative Edition</div>
+
+                <div class="detail highlight">${item.name}</div>
+                <div class="detail">${item.service}</div>
+                <div class="detail">${item.time} | ${item.provider}</div>
+            </div>
+        `;
+
+        page.appendChild(card);
+        count++;
+    });
+}
+</script>
+
 </body>
 </html>
