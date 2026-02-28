@@ -9,9 +9,9 @@
 <style>
 :root{
     --purple:#3b2164;
-    --light-purple:#f3ecff;
-    --accent:#c9a7ff;
-    --gold:#f9e18b;
+    --deep-purple:#2a1649;
+    --light-purple:#f4edff;
+    --gold:#d4af37;
 }
 
 body{
@@ -20,7 +20,7 @@ body{
     background:#eee;
 }
 
-/* CONTROL PANEL */
+/* CONTROLS */
 .controls{
     padding:20px;
     text-align:center;
@@ -32,10 +32,10 @@ button{
     background:var(--purple);
     color:white;
     border:none;
-    padding:10px 22px;
+    padding:10px 24px;
     font-weight:700;
     cursor:pointer;
-    border-radius:5px;
+    border-radius:6px;
 }
 
 /* PRINT SETTINGS */
@@ -63,12 +63,12 @@ button{
     page-break-after:always;
 }
 
-/* ATM CARD SIZE */
+/* CARD */
 .card{
     width:85.6mm;
     height:54mm;
     border-radius:8px;
-    border:1px solid #000;
+    border:1px solid var(--purple);
     background:linear-gradient(135deg,var(--light-purple),#ffffff);
     display:flex;
     position:relative;
@@ -76,52 +76,68 @@ button{
     box-sizing:border-box;
 }
 
-/* Decorative stripe */
+/* WOMEN'S MONTH WATERMARK */
+.card::after{
+    content:"";
+    position:absolute;
+    right:4mm;
+    bottom:4mm;
+    width:28mm;
+    height:28mm;
+    background:url('wm_logo.png') no-repeat center;
+    background-size:contain;
+    opacity:0.12;
+    pointer-events:none;
+}
+
+/* LEFT PURPLE STRIPE */
 .card::before{
     content:"";
     position:absolute;
     left:0;
     top:0;
     bottom:0;
-    width:10mm;
-    background:linear-gradient(var(--purple),#5a3a91);
+    width:11mm;
+    background:linear-gradient(var(--deep-purple),var(--purple));
 }
 
 /* YEAR BADGE */
 .year{
     position:absolute;
-    top:6px;
+    top:5px;
     right:8px;
-    font-weight:900;
     font-size:10px;
-    color:var(--purple);
-    opacity:.7;
+    font-weight:900;
+    color:var(--gold);
 }
 
-/* LEFT LOGO */
+/* LOGO AREA */
 .logo-area{
-    width:30%;
+    width:32%;
     display:flex;
-    justify-content:center;
+    flex-direction:column;
     align-items:center;
+    justify-content:center;
     padding-left:6mm;
+    gap:3px;
 }
 
 .logo-area img{
-    width:42px;
-    height:42px;
+    width:36px;
+    height:36px;
     object-fit:contain;
 }
 
-/* RIGHT CONTENT */
+/* INFO AREA */
 .info-area{
-    width:70%;
+    width:68%;
     padding:8px 10px 8px 6px;
     display:flex;
     flex-direction:column;
     justify-content:center;
 }
 
+/* TEXT STYLES */
 .event-name{
     font-size:10px;
     font-weight:700;
@@ -133,8 +149,8 @@ button{
 .pass-title{
     font-size:15px;
     font-weight:900;
-    color:var(--purple);
-    margin:2px 0 4px;
+    color:var(--gold);
+    margin:2px 0 3px;
 }
 
 .comm{
@@ -143,18 +159,19 @@ button{
     margin-bottom:4px;
 }
 
+/* NAME — ALL CAPS */
+.name{
+    font-size:12px;
+    font-weight:900;
+    color:var(--deep-purple);
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+
 .detail{
     font-size:11px;
     color:#333;
     line-height:1.2;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-.highlight{
-    font-weight:700;
-    color:var(--purple);
 }
 </style>
 </head>
@@ -209,8 +226,8 @@ function render(data){
             <div class="year">2026</div>
 
             <div class="logo-area">
-                <img src="dar-logo.png"
-                onerror="this.style.display='none'">
+                <img src="dar-logo.png" onerror="this.style.display='none'">
+                <img src="gad_logo.png" onerror="this.style.display='none'">
             </div>
 
             <div class="info-area">
@@ -218,7 +235,7 @@ function render(data){
                 <div class="pass-title">SERVICE CARD</div>
                 <div class="comm">Commemorative Edition</div>
 
-                <div class="detail highlight">${item.name}</div>
+                <div class="name">${item.name}</div>
                 <div class="detail">${item.service}</div>
                 <div class="detail">${item.time} | ${item.provider}</div>
             </div>
