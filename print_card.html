@@ -11,11 +11,10 @@
     --purple:#5a2ca0;
     --deep-purple:#2b0f63;
     --pink:#ff6ec7;
-    --gold:#ffd54f;
-    --lavender:#d9c6ff;
+    --lavender:#e8dcff;
+    --gold:#f4c542;
 }
 
-/* BODY */
 body{
     font-family:'Montserrat',sans-serif;
     margin:0;
@@ -38,7 +37,7 @@ button{
     cursor:pointer;
 }
 
-/* PRINT SETTINGS */
+/* PRINT */
 @media print{
     body{background:none;margin:0;}
     .controls{display:none;}
@@ -67,13 +66,10 @@ button{
 .card{
     width:85.6mm;
     height:54mm;
-    border:1.5px solid var(--deep-purple);
-    border-radius:0; /* SQUARE CORNER */
+    border:1.2px solid var(--deep-purple);
+    border-radius:0;
     background:
-        linear-gradient(135deg,
-            var(--lavender),
-            #f3e8ff,
-            #ffd6f2);
+        linear-gradient(135deg,#f7f2ff,var(--lavender));
     display:flex;
     position:relative;
     overflow:hidden;
@@ -83,14 +79,14 @@ button{
     print-color-adjust:exact;
 }
 
-/* COLORFUL STRIPE */
+/* MODERN LEFT ACCENT */
 .card::before{
     content:"";
     position:absolute;
     left:0;
     top:0;
     bottom:0;
-    width:13mm;
+    width:10mm;
     background:linear-gradient(
         180deg,
         var(--deep-purple),
@@ -99,30 +95,26 @@ button{
     );
 }
 
-/* WM WATERMARK */
-.card::after{
-    content:"";
+/* LARGE SOFT YEAR BACKGROUND */
+.card .year-bg{
     position:absolute;
-    right:4mm;
-    bottom:4mm;
-    width:32mm;
-    height:32mm;
-    background:url('wm_logo.png') no-repeat center;
-    background-size:contain;
-    opacity:0.18;
+    right:6mm;
+    bottom:2mm;
+    font-size:42px;
+    font-weight:900;
+    color:var(--purple);
+    opacity:0.08;
+    letter-spacing:2px;
+    pointer-events:none;
 }
 
-/* 2026 BADGE (FUN STYLE) */
-.year{
+/* WM WATERMARK */
+.card .wm{
     position:absolute;
-    top:5px;
-    right:6px;
-    background:linear-gradient(45deg,var(--gold),#fff2a8);
-    color:var(--deep-purple);
-    font-weight:900;
-    font-size:12px;
-    padding:3px 8px;
-    border:1px solid var(--deep-purple);
+    right:6mm;
+    top:6mm;
+    width:24mm;
+    opacity:0.15;
 }
 
 /* LOGOS */
@@ -137,8 +129,8 @@ button{
 }
 
 .logo-area img{
-    width:36px;
-    height:36px;
+    width:34px;
+    height:34px;
     object-fit:contain;
 }
 
@@ -169,7 +161,7 @@ button{
 
 .comm{
     font-size:9px;
-    color:#4b3c74;
+    color:#555;
     margin-bottom:4px;
 }
 
@@ -179,13 +171,12 @@ button{
     font-weight:900;
     color:var(--deep-purple);
     text-transform:uppercase;
-    letter-spacing:.5px;
 }
 
 /* DETAILS */
 .detail{
     font-size:11px;
-    color:#2e2e2e;
+    color:#333;
 }
 </style>
 </head>
@@ -239,7 +230,8 @@ function render(data){
         card.className='card';
 
         card.innerHTML=`
-            <div class="year">2026</div>
+            <div class="year-bg">2026</div>
+            <img class="wm" src="wm_logo.png">
 
             <div class="logo-area">
                 <img src="dar-logo.png" onerror="this.style.display='none'">
